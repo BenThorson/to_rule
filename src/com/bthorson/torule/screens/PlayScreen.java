@@ -2,7 +2,6 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 
@@ -41,7 +40,7 @@ public class PlayScreen implements Screen{
 
         System.out.printf("player is at x:%d y:%d\n", player.x, player.y);
         terminal.write(player.glyph(), player.x - left, player.y - top, player.color());
-        terminal.writeCenter("-- press [escape] to lose or [enter] to win --", 22);
+        terminal.writeCenter("-- press [escape] to lose or [enter] to win --", SCREEN_HEIGHT - 1);
     }
 
     private void displayTiles(AsciiPanel terminal, int left, int top) {

@@ -2,7 +2,7 @@ package com.bthorson.torule.entity;
 
 import com.bthorson.torule.map.World;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * User: ben
@@ -19,6 +19,9 @@ public class Entity {
     private final int id;
 
     private World world;
+    public World getWorld() {
+        return world;
+    }
 
     public int x;
     public int y;

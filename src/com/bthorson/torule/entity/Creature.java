@@ -2,7 +2,7 @@ package com.bthorson.torule.entity;
 
 import com.bthorson.torule.map.World;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * User: ben
@@ -18,7 +18,9 @@ public class Creature extends Entity {
     }
 
     public void move(int dx, int dy){
-        x += dx;
-        y += dy;
+        if (getWorld().tile(x + dx, y + dy).passable()){
+            x += dx;
+            y += dy;
+        }
     }
 }
