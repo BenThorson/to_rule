@@ -1,5 +1,12 @@
 package com.bthorson.torule.map;
 
+import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.CreatureFactory;
+
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * User: ben
  * Date: 9/7/12
@@ -9,13 +16,7 @@ public class World {
 
     private Region[][] regions;
 
-    public int width() {
-        return 1000;
-    }
-
-    public int height() {
-        return 1000;
-    }
+    List<Creature> creatures = new ArrayList<Creature>();
 
     public World(){
         regions = new Region[1][1];
@@ -24,9 +25,48 @@ public class World {
                 regions[x][y] = new Region(x,y);
             }
         }
+        populateSomeCreatures();
     }
 
+    public int width() {
+        return 1000;
+    }
+
+    public int height() {
+        return 1000;
+    }
+
+
     public Tile tile(int x, int y){
-        return regions[x/1000][y/1000].tile(x%1000,y%1000);
+        return regions[x/1000][y/1000].tile(x % 1000, y % 1000);
+    }
+
+    public Creature creature(int x, int y){
+        for (Creature creature : creatures){
+            if (creature.x == x && creature.y == y){
+                return creature;
+            }
+        }
+        return null;
+    }
+
+    public void addCreature(Creature creature){
+        creatures.add(creature);
+    }
+
+    public void populateSomeCreatures(){
+        for (int i = 0; i < 20; i++){
+            addCreature(CreatureFactory.buildVillager(this, 20 + i, 20 + i));
+        }
+    }
+
+    public List<Creature> getCreatures() {
+        return creatures;
+    }
+
+    public void update() {
+        for (Creature creature: getCreatures()){
+            creature.update();
+        }
     }
 }

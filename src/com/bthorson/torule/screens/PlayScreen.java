@@ -2,6 +2,7 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.CreatureFactory;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 
@@ -19,7 +20,8 @@ public class PlayScreen implements Screen{
 
     public PlayScreen(World world) {
         this.world = world;
-        player = new Creature(world, 10,10, '@', AsciiPanel.yellow);
+        player = CreatureFactory.buildPlayer(world, 10, 10);
+        world.addCreature(player);
     }
 
     public int getScrollX() {
@@ -38,9 +40,15 @@ public class PlayScreen implements Screen{
         int top = getScrollY();
         displayTiles(terminal, left, top);
 
-        System.out.printf("player is at x:%d y:%d\n", player.x, player.y);
         terminal.write(player.glyph(), player.x - left, player.y - top, player.color());
         terminal.writeCenter("-- press [escape] to lose or [enter] to win --", SCREEN_HEIGHT - 1);
+
+        for (Creature creature: world.getCreatures()){
+            if (creature.x >= left && creature.x < left + SCREEN_WIDTH && creature.y >= top && creature.y < top + SCREEN_HEIGHT){
+                terminal.write(creature.glyph(), creature.x - left, creature.y - top, creature.color());
+            } else {
+            }
+        }
     }
 
     private void displayTiles(AsciiPanel terminal, int left, int top) {
@@ -48,7 +56,6 @@ public class PlayScreen implements Screen{
             for (int y = 0; y < Screen.SCREEN_HEIGHT; y++){
                 int wx = x + left;
                 int wy = y + top;
-                System.out.printf("rendering tile x: %d y: %d\n",wx,wy);
                 Tile tile = world.tile(wx, wy);
                 terminal.write(tile.glyph(), x, y, tile.color());
             }
@@ -73,6 +80,8 @@ public class PlayScreen implements Screen{
             case KeyEvent.VK_NUMPAD1: player.move(-1, 1); break;
             case KeyEvent.VK_NUMPAD3: player.move(1, 1); break;
         }
+
+        world.update();
 
         return this;
     }
