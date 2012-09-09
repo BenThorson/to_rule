@@ -52,7 +52,7 @@ public class Menu  {
         terminal.write(makeDivider(), x, y + 2, foreground, background);
         for (int i = 0; i < choices.length; i++){
             if (i == currentChoice){
-                terminal.write(choices[i], x + 1, y + i + 3, highlightColor(foreground), background);
+                terminal.write(choices[i], x + 1, y + i + 3, foreground, AsciiPanel.red);
             } else {
                 terminal.write(choices[i], x + 1, y + i + 3, foreground, background);
             }
@@ -61,11 +61,11 @@ public class Menu  {
 
     private String makeDivider() {
         StringBuilder sb = new StringBuilder();
-        sb.append((char)195);
+        sb.append((char)204);
         for (int i = 1; i < width; i++){
-            sb.append((char)196);
+            sb.append((char)205);
         }
-        sb.append((char)180);
+        sb.append((char)185);
         return sb.toString();
     }
 

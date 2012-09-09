@@ -11,8 +11,8 @@ import java.awt.event.KeyEvent;
  */
 public interface Screen {
 
-    public static final int SCREEN_HEIGHT = 30;
-    public static final int SCREEN_WIDTH = 100;
+    public static final int SCREEN_HEIGHT = 45;
+    public static final int SCREEN_WIDTH = 60;
 
     public void displayOutput(AsciiPanel terminal);
     public Screen respondToUserInput(KeyEvent key);

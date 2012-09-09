@@ -1,6 +1,8 @@
-package com.bthorson.torule.entity;
+package com.bthorson.torule.entity.ai;
 
-import com.bthorson.torule.map.World;
+import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.entity.ai.CreatureAI;
 
 import java.util.Random;
 

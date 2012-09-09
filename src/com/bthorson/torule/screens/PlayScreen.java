@@ -3,9 +3,9 @@ package com.bthorson.torule.screens;
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.CreatureFactory;
-import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 /**
@@ -40,24 +40,28 @@ public class PlayScreen implements Screen{
         int top = getScrollY();
         displayTiles(terminal, left, top);
 
-        terminal.write(player.glyph(), player.x - left, player.y - top, player.color());
-        terminal.writeCenter("-- press [escape] to lose or [enter] to win --", SCREEN_HEIGHT - 1);
+        terminal.writeHumanoid(71, player.x - left, player.y - top);
+        terminal.writeCenter("abcdefghijklmnopqrstuvwxyz", SCREEN_HEIGHT - 1);
+        terminal.writeCenter("ABCDEFGHIJKLMNOPQRSTUVWXYZ", SCREEN_HEIGHT - 2);
 
-        for (Creature creature: world.getCreatures()){
-            if (creature.x >= left && creature.x < left + SCREEN_WIDTH && creature.y >= top && creature.y < top + SCREEN_HEIGHT){
-                terminal.write(creature.glyph(), creature.x - left, creature.y - top, creature.color());
-            } else {
-            }
-        }
+
     }
 
     private void displayTiles(AsciiPanel terminal, int left, int top) {
-        for (int x = 0; x < Screen.SCREEN_WIDTH; x++){
-            for (int y = 0; y < Screen.SCREEN_HEIGHT; y++){
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            for (int y = 0; y < SCREEN_HEIGHT; y++){
                 int wx = x + left;
                 int wy = y + top;
-                Tile tile = world.tile(wx, wy);
-                terminal.write(tile.glyph(), x, y, tile.color());
+
+                if (player.canSee(wx, wy)){
+                    Creature creature = world.creature(wx, wy);
+                    if (creature != null){
+                        terminal.writeHumanoid(64, creature.x - left, creature.y - top);
+                    }
+                    terminal.write(world.tile(wx, wy).glyph(), x, y, world.tile(wx, wy).color(), world.tile(wx, wy).color());
+                } else {
+                    terminal.write(world.tile(wx, wy).glyph(), x, y, ColorUtil.darken(world.tile(wx, wy).color(), 25), ColorUtil.darken(world.tile(wx, wy).color(), 25));
+                }
             }
         }
     }

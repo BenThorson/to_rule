@@ -1,4 +1,7 @@
-package com.bthorson.torule.entity;
+package com.bthorson.torule.entity.ai;
+
+import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.entity.ai.CreatureAI;
 
 /**
  * User: ben

@@ -13,13 +13,22 @@ import java.util.Random;
  */
 public enum Tile {
 
+
+
     GRASS_1('.', AsciiPanel.green, true, false, 4),
     GRASS_2('\'', AsciiPanel.green, true, false, 4),
     GRASS_3(',', AsciiPanel.green, true, false, 4),
     GRASS_4('`', AsciiPanel.green, true, false, 4),
-    TREE((char)5, AsciiPanel.brightGreen, false, true, 1000),
+    TREE((char)5, AsciiPanel.green, false, true, 1000),
     ROAD('~', Color.gray, true, false, 2),
-    BOUNDS('x', AsciiPanel.brightBlack, false, true, 1000);
+    WALL_NW((char)201, Color.gray, false, true, 1000),
+    WALL_NE((char)187, Color.gray, false, true, 1000),
+    WALL_SE((char)188, Color.gray, false, true, 1000),
+    WALL_SW((char)200, Color.gray, false, true, 1000),
+    WALL_VERT((char)186, Color.gray, false, true, 1000),
+    WALL_HORIZ((char)205, Color.gray, false, true, 1000),
+    BOUNDS('x', AsciiPanel.brightBlack, false, true, 1000),
+    GROUND((char)219, new Color(0x444444), true, false, 2);
 
 
 

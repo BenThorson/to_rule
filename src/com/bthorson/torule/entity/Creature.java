@@ -1,8 +1,11 @@
 package com.bthorson.torule.entity;
 
+import com.bthorson.torule.entity.ai.CreatureAI;
+import com.bthorson.torule.geom.Line;
+import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * User: ben
@@ -13,12 +16,11 @@ public class Creature extends Entity {
 
     private CreatureAI ai = null;
 
-    public void setAi(CreatureAI ai) {
-        this.ai = ai;
-    }
+    private int visionRadius;
 
-    public Creature(World world, int x, int y, char glyph, Color color) {
+    public Creature(World world, int x, int y, char glyph, Color color, int visionRadius) {
         super(world, x, y, glyph, color);
+        this.visionRadius = visionRadius;
     }
 
     public void move(int dx, int dy){
@@ -38,5 +40,33 @@ public class Creature extends Entity {
 
     public void update() {
         ai.execute();
+    }
+
+    public boolean dead() {
+        return false; 
+    }
+
+    public void setAi(CreatureAI ai) {
+        this.ai = ai;
+    }
+
+    public int visionRadius(){
+        return visionRadius;
+    }
+
+    public boolean canSee(int wx, int wy) {
+
+        if ((x-wx)*(x-wx) + (y-wy)*(y-wy) > visionRadius*visionRadius)
+            return false;
+
+        for (Point p : new Line(x,y, wx, wy)){
+            if (!getWorld().tile(p.x(), p.y()).blockSight() || p.x() == wx && p.y() == wy){
+                continue;
+            }
+
+            return false;
+        }
+
+        return true;
     }
 }

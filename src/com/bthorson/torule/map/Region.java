@@ -19,7 +19,7 @@ public class Region {
         locals = new Local[10][10];
         for (int x = 0; x < 10; x++){
             for (int y = 0; y < 10; y++){
-                locals[x][y] = new LocalBuilder().makeGrassland().build(worldX, worldY, x, y);
+                locals[x][y] = new LocalBuilder().makeGrassland().buildBuilding(10,10,10,10).build(worldX, worldY, x, y);
             }
         }
     }

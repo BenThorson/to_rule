@@ -12,12 +12,12 @@ import java.awt.Color;
 public class ScreenUtil {
 
     public static void makeRect(AsciiPanel terminal, int x, int y, int w, int h, Color foreground, Color background){
-        char tl = (char)218;
-        char tr = (char)191;
-        char bl = (char)192;
-        char br = (char)217;
-        char horizontal = (char)196;
-        char vertical = (char)179;
+        char tl = (char)201;
+        char tr = (char)187;
+        char bl = (char)200;
+        char br = (char)188;
+        char horizontal = (char)205;
+        char vertical = (char)186;
 
         StringBuilder topLine = new StringBuilder();
         StringBuilder bottomLine = new StringBuilder();

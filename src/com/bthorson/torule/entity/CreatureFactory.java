@@ -1,5 +1,7 @@
 package com.bthorson.torule.entity;
 
+import com.bthorson.torule.entity.ai.PlayerAI;
+import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.map.World;
 
 import java.awt.Color;
@@ -12,13 +14,13 @@ import java.awt.Color;
 public class CreatureFactory {
 
     public static Creature buildVillager(World world, int x, int y){
-        Creature creature = new Creature(world, x, y, (char)1, Color.CYAN);
+        Creature creature = new Creature(world, x, y, (char)1, Color.CYAN, 20);
         creature.setAi(new WanderAI(creature));
         return creature;
     }
 
     public static Creature buildPlayer(World world, int x, int y){
-        Creature creature = new Creature(world, x, y, '@', Color.YELLOW);
+        Creature creature = new Creature(world, x, y, '@', Color.YELLOW, 20);
         creature.setAi(new PlayerAI());
         return creature;
     }
