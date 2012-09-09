@@ -2,28 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72eb154b-c8dc-4bf6-894c-cc437e3b4193" name="Default" comment="added some rudimentary ai">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/asciiPanel/BGFilter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/AggroAI.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/geom/Line.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/geom/Point.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/screens/ColorUtil.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/lib/asciiPanel.jar" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureAI.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/CreatureAI.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/entity/PlayerAI.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/PlayerAI.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/entity/WanderAI.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/WanderAI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/ToRuleMain.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/ToRuleMain.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/entity/Creature.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/Creature.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/map/LocalBuilder.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/map/LocalBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/map/Region.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/map/Region.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/map/Tile.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/map/Tile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/screens/Menu.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/screens/Menu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/screens/PlayScreen.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/screens/PlayScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/screens/Screen.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/screens/Screen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/screens/ScreenUtil.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/screens/ScreenUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/screens/StartScreen.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/screens/StartScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/to_rule.iml" afterPath="$PROJECT_DIR$/to_rule.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/to_rule.ipr" afterPath="$PROJECT_DIR$/to_rule.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/to_rule.iws" afterPath="$PROJECT_DIR$/to_rule.iws" />
     </list>
     <list id="24ba5ed9-a3a4-414d-b903-f93f3b3acca4" name="DON'T COMMIT" comment="" />
@@ -179,27 +158,6 @@
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
-  <component name="DockManager">
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file leaf-file-name="Tile.java" pinned="false" current="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/map/Tile.java">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state line="32" column="31" selection-start="997" selection-end="997" vertical-scroll-proportion="0.123595506">
-                    <folding>
-                      <element signature="imports" expanded="true" />
-                    </folding>
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
-  </component>
   <component name="FavoritesManager">
     <favorites_list name="to_rule" />
   </component>
@@ -227,13 +185,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CreatureFactory.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CreatureFactory.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="13" selection-start="667" selection-end="667" vertical-scroll-proportion="0.81947744">
+            <state line="12" column="3" selection-start="247" selection-end="247" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1" column="0" selection-start="8" selection-end="8" vertical-scroll-proportion="0.035629455">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -287,15 +254,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Metacity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar:///usr/lib/jvm/jdk1.7.0_3/src.zip!/com/sun/java/swing/plaf/gtk/Metacity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="631" column="18" selection-start="25387" selection-end="25387" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="StartScreen.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/StartScreen.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -320,7 +278,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/Creature.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/screens/ColorUtil.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/map/Tile.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/screens/Screen.java" />
@@ -336,6 +293,7 @@
         <option value="$PROJECT_DIR$/src/asciiPanel/AsciiPanel.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/ToRuleMain.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -593,20 +551,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="asciiPanel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="to_rule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="to_rule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -926,13 +870,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///usr/lib/jvm/jdk1.7.0_3/src.zip!/java/awt/Toolkit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1109" column="0" selection-start="47845" selection-end="47845" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/ScreenUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="19" column="33" selection-start="478" selection-end="478" vertical-scroll-proportion="0.0">
@@ -1018,15 +955,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/map/Tile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="31" selection-start="997" selection-end="997" vertical-scroll-proportion="0.123595506">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/asciiPanel/AsciiPanel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="320" column="58" selection-start="9318" selection-end="9318" vertical-scroll-proportion="-4.2">
@@ -1054,10 +982,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="13" selection-start="667" selection-end="667" vertical-scroll-proportion="0.81947744">
+        <state line="12" column="3" selection-start="247" selection-end="247" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/map/Tile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="31" selection-start="997" selection-end="997" vertical-scroll-proportion="0.123595506">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="0" selection-start="8" selection-end="8" vertical-scroll-proportion="0.035629455">
+          <folding />
         </state>
       </provider>
     </entry>
