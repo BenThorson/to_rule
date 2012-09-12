@@ -2,8 +2,8 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
-import com.bthorson.torule.entity.ai.CreatureAI;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -13,12 +13,17 @@ import java.util.Random;
  */
 public class WanderAI implements CreatureAI {
 
-    private Creature creature;
-    public WanderAI(Creature creature){
-        this.creature = creature;
+    private Creature self;
+    public WanderAI(Creature self){
+        this.self = self;
     }
     @Override
     public void execute() {
+
+        List<Creature> visibleCreatures = self.getVisibleCreatures();
+        for (Creature other: visibleCreatures){
+        //todo add hostility logic
+        }
         int check = new Random().nextInt(10);
 
         switch (check){
@@ -30,16 +35,16 @@ public class WanderAI implements CreatureAI {
             case 5:
                 break;
             case 6:
-                creature.move(1, 0);
+                self.move(1, 0);
                 break;
             case 7:
-                creature.move(-1, 0);
+                self.move(-1, 0);
                 break;
             case 8:
-                creature.move(0,1);
+                self.move(0, 1);
                 break;
             case 9:
-                creature.move(0,-1);
+                self.move(0, -1);
                 break;
         }
     }

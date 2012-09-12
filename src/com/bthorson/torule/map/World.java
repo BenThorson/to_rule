@@ -88,4 +88,14 @@ public class World {
     public Creature getPlayer() {
         return player;
     }
+
+    public List<Creature> getCreaturesInRange(int x, int y, int x2, int y2) {
+        List<Creature> retList = new ArrayList<Creature>();
+        for (Creature c: getCreatures()){
+            if (c.x >= x && c.x <= x2 && c.y >= y && c.y <= y2){
+                retList.add(c);
+            }
+        }
+        return retList;
+    }
 }

@@ -163,4 +163,15 @@ public class Creature extends Entity {
     public List<Message> getMessages() {
         return messages;
     }
+
+    public List<Creature> getVisibleCreatures() {
+        List<Creature> inApproxRange = getWorld().getCreaturesInRange(x - visionRadius, y - visionRadius(), x + visionRadius * 2, y + visionRadius);
+        List<Creature> visible = new ArrayList<Creature>();
+        for (Creature c : inApproxRange){
+            if (this != c && canSee(c.x, c.y)){
+                visible.add(c);
+            }
+        }
+        return visible;
+    }
 }
