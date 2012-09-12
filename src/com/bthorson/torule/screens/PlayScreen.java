@@ -19,12 +19,14 @@ public class PlayScreen implements Screen{
     private Creature player;
     private StatusScreen statusScreen;
     private MessageScreen messageScreen;
+    private int xBorder = 45;
+    private int yBorder = 40;
 
     public PlayScreen(World world) {
         this.world = world;
         this.player = world.getPlayer();
-        this.statusScreen = new StatusScreen(world, 40);
-        this.messageScreen = new MessageScreen(world, 40);
+        this.statusScreen = new StatusScreen(world, xBorder);
+        this.messageScreen = new MessageScreen(world, yBorder);
     }
 
     public int getScrollX() {
@@ -50,8 +52,8 @@ public class PlayScreen implements Screen{
     }
 
     private void displayTiles(AsciiPanel terminal, int left, int top) {
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            for (int y = 0; y < SCREEN_HEIGHT; y++){
+        for (int x = 0; x < xBorder; x++){
+            for (int y = 0; y < yBorder; y++){
                 int wx = x + left;
                 int wy = y + top;
 

@@ -42,4 +42,16 @@ public class ScreenUtil {
 
 
     }
+
+    public static String blankString(int length) {
+        return solidLine(length, (char)0);
+    }
+
+    public static String solidLine(int length, char ch) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++){
+            sb.append(ch);
+        }
+        return sb.toString();
+    }
 }

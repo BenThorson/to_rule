@@ -1,6 +1,7 @@
 package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
+import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 
 import java.awt.Color;
@@ -23,8 +24,12 @@ public class StatusScreen implements Screen {
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        terminal.write("HP:  " + world.getPlayer().getHitpoints() + "/" + world.getPlayer().getMaxHitpoints(), xOffset, 1, Color.WHITE, Color.BLACK);
-
+        String blank = ScreenUtil.blankString(SCREEN_WIDTH - xOffset);
+        for (int i = 0; i < SCREEN_HEIGHT; i++){
+            terminal.write(blank, xOffset, i, Color.WHITE, Color.BLACK);
+            terminal.write(Tile.WALL_VERT.glyph(), xOffset, i, Color.WHITE, Color.blue);
+        }
+        terminal.write(String.format("%d/%d HP", world.getPlayer().getHitpoints(), world.getPlayer().getMaxHitpoints()), xOffset + 1, 0, Color.WHITE, Color.BLACK);
     }
 
     @Override

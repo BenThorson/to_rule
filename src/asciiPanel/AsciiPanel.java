@@ -667,7 +667,7 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null" );
 
-        if (x + string.length() >= widthInCharacters)
+        if (x + string.length() > widthInCharacters)
             throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + "." );
 
         if (x < 0 || x >= widthInCharacters)
@@ -693,13 +693,13 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null." );
         
-        if (x + string.length() >= widthInCharacters)
-            throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than " + widthInCharacters + "." );
+        if (x + string.length() > widthInCharacters)
+            throw new IllegalArgumentException("x + string.length() " + (x + string.length()) + " must be less than or equal to" + widthInCharacters + "." );
 
-        if (x < 0 || x >= widthInCharacters)
+        if (x < 0 || x > widthInCharacters)
             throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")." );
 
-        if (y < 0 || y >= heightInCharacters)
+        if (y < 0 || y >heightInCharacters)
             throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")." );
 
         if (foreground == null)

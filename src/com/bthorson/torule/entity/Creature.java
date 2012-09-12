@@ -144,7 +144,12 @@ public class Creature extends Entity {
     }
 
     private boolean doesHit(Creature other) {
-        return new Random().nextInt(10) > 7;
+        if(!(new Random().nextInt(10) > 7)) {
+            messages.add(new Message(this, String.format("You missed %s completely.", other.getName())));
+            other.getMessages().add(new Message(this, String.format("%s missed you completely.", getName())));
+            return false;
+        }
+        return true;
     }
 
     public int getHitpoints() {
