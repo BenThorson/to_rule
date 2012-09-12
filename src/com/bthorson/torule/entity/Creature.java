@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * User: ben
@@ -33,6 +34,7 @@ public class Creature extends Entity {
     private boolean dead = false;
 
     private List<Message> messages = new ArrayList<Message>();
+    private Faction faction;
 
     public Creature(World world, int x, int y, int glyph, int visionRadius, int hitpoints) {
         super(world, x, y, glyph, Color.WHITE);
@@ -173,5 +175,17 @@ public class Creature extends Entity {
             }
         }
         return visible;
+    }
+
+    public void setFaction(Faction faction) {
+        this.faction = faction;
+    }
+
+    public Set<Faction> getFactionEnemies() {
+        return faction.getEnemies();
+    }
+
+    public Faction getFaction() {
+        return faction;
     }
 }

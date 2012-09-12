@@ -2,6 +2,7 @@ package com.bthorson.torule.map;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.CreatureFactory;
+import com.bthorson.torule.entity.Faction;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -26,9 +27,7 @@ public class World {
                 regions[x][y] = new Region(x,y);
             }
         }
-        makePlayer();
         populateSomeCreatures();
-        makeBadGuy();
     }
 
 
@@ -60,19 +59,22 @@ public class World {
     }
 
     public void populateSomeCreatures(){
-        for (int i = 0; i < 20; i++){
-            addCreature(CreatureFactory.buildVillager(this, 20 + i, 20 + i));
-        }
-    }
-
-    public void makeBadGuy(){
-        addCreature(CreatureFactory.buildGoblin(this, 1,1));
-        addCreature(CreatureFactory.buildGoblin(this, 1,2));
-    }
-
-    private void makePlayer() {
-        player = CreatureFactory.buildPlayer(this, 5, 5);
+        Faction human = new Faction("Human");
+        Faction goblin = new Faction("Goblin");
+        human.addEnemyFaction(goblin);
+        goblin.addEnemyFaction(human);
+        player = CreatureFactory.buildPlayer(this, 22, 18);
+        player.setFaction(human);
         addCreature(player);
+
+        for (int i = 0; i < 20; i++){
+            Creature villy = CreatureFactory.buildVillager(this, 20 + i, 20 + i);
+            addCreature(villy);
+            villy.setFaction(human);
+            Creature gobby = CreatureFactory.buildGoblin(this, 20 + i, 22 + i);
+            gobby.setFaction(goblin);
+            addCreature(gobby);
+        }
     }
 
     public List<Creature> getCreatures() {

@@ -3,6 +3,7 @@ package com.bthorson.torule.entity.ai;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,8 +22,18 @@ public class WanderAI implements CreatureAI {
     public void execute() {
 
         List<Creature> visibleCreatures = self.getVisibleCreatures();
+        List<Creature> hostilable = new ArrayList<Creature>();
         for (Creature other: visibleCreatures){
-        //todo add hostility logic
+            if (shouldHostile(other)){
+                hostilable.add(other);
+            }
+        }
+        if (hostilable.size() > 0){
+            Creature toAggro = hostilable.get(new Random().nextInt(hostilable.size()));
+            AggroAI aggroAI = new AggroAI(self, toAggro);
+            aggroAI.execute();
+            self.setAi(aggroAI);
+            return;
         }
         int check = new Random().nextInt(10);
 
@@ -47,6 +58,10 @@ public class WanderAI implements CreatureAI {
                 self.move(0, -1);
                 break;
         }
+    }
+
+    private boolean shouldHostile(Creature other) {
+        return self.getFactionEnemies().contains(other.getFaction()) || other.getFactionEnemies().contains(self.getFactionEnemies());
     }
 
     @Override
