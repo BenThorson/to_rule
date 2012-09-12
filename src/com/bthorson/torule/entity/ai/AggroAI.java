@@ -26,7 +26,7 @@ public class AggroAI implements CreatureAI {
         }
         if (target != null){
             if (self.canSee(target.x, target.y)){
-
+                self.goToTarget(target.x, target.y);
             }
         }
     }
@@ -34,7 +34,7 @@ public class AggroAI implements CreatureAI {
     @Override
     public void interact(Entity entity) {
         if (entity == target){
-
+            self.attack((Creature)entity);
         }
         //To change body of implemented methods use File | Settings | File Templates.
     }

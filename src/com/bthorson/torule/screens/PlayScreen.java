@@ -17,11 +17,14 @@ public class PlayScreen implements Screen{
 
     private World world;
     private Creature player;
+    private StatusScreen statusScreen;
+    private MessageScreen messageScreen;
 
     public PlayScreen(World world) {
         this.world = world;
-        player = CreatureFactory.buildPlayer(world, 10, 10);
-        world.addCreature(player);
+        this.player = world.getPlayer();
+        this.statusScreen = new StatusScreen(world, 40);
+        this.messageScreen = new MessageScreen(world, 40);
     }
 
     public int getScrollX() {
@@ -40,11 +43,10 @@ public class PlayScreen implements Screen{
         int top = getScrollY();
         displayTiles(terminal, left, top);
 
-        terminal.writeHumanoid(71, player.x - left, player.y - top);
-        terminal.writeCenter("abcdefghijklmnopqrstuvwxyz", SCREEN_HEIGHT - 1);
-        terminal.writeCenter("ABCDEFGHIJKLMNOPQRSTUVWXYZ", SCREEN_HEIGHT - 2);
+        terminal.writeHumanoid(player.glyph(), player.x - left, player.y - top);
 
-
+        statusScreen.displayOutput(terminal);
+        messageScreen.displayOutput(terminal);
     }
 
     private void displayTiles(AsciiPanel terminal, int left, int top) {
@@ -56,7 +58,7 @@ public class PlayScreen implements Screen{
                 if (player.canSee(wx, wy)){
                     Creature creature = world.creature(wx, wy);
                     if (creature != null){
-                        terminal.writeHumanoid(64, creature.x - left, creature.y - top);
+                        terminal.writeHumanoid(creature.glyph(), creature.x - left, creature.y - top);
                     }
                     terminal.write(world.tile(wx, wy).glyph(), x, y, world.tile(wx, wy).color(), world.tile(wx, wy).color());
                 } else {
@@ -68,6 +70,9 @@ public class PlayScreen implements Screen{
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        if (player.dead()){
+            return new DeadScreen(this);
+        }
         switch (key.getKeyCode()){
             case KeyEvent.VK_ESCAPE: return new StartScreen();
             case KeyEvent.VK_ENTER: return new StartScreen();

@@ -12,6 +12,8 @@ import java.awt.*;
 public class Entity {
 
     private static int idGen;
+    private String name;
+
     private static int getId() {
         return idGen++;
     }
@@ -26,8 +28,8 @@ public class Entity {
     public int x;
     public int y;
 
-    private char glyph;
-    public char glyph(){
+    private int glyph;
+    public int glyph(){
         return glyph;
     }
 
@@ -36,12 +38,24 @@ public class Entity {
         return color;
     }
 
-    public Entity(World world, int x, int y, char glyph, Color color) {
+    public Entity(World world, int x, int y, int glyph, Color color) {
         this.id = getId();
         this.world = world;
         this.x = x;
         this.y = y;
         this.glyph = glyph;
         this.color = color;
+    }
+
+    public void setGlyph(int glyph) {
+        this.glyph = glyph;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

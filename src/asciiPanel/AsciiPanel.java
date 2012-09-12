@@ -324,7 +324,11 @@ public class AsciiPanel extends JPanel {
 
             glyphs[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
             glyphs[i].getGraphics().drawImage(glyphSprite, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
+        }
 
+        for (int i = 0; i < 144; i++){
+            int sx = (i % 12) * charWidth;
+            int sy = (i / 12) * charWidth;
             humanoids[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
             humanoids[i].getGraphics().drawImage(humanoidsSprite, 0,0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
         }

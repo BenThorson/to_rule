@@ -28,23 +28,7 @@ public class ToRuleMain extends JFrame implements KeyListener {
         screen = new StartScreen();
         addKeyListener(this);
         repaint();
-//        super();
-//        terminal = new AsciiPanel(1,1);
-//        add(terminal);
-//        pack();
-//        screen = new Screen() {
-//            @Override
-//            public void displayOutput(AsciiPanel terminal) {
-//                terminal.write(Tile.TREE.glyph(), 0,0, Color.GREEN, Color.BLUE);
-//            }
-//
-//            @Override
-//            public Screen respondToUserInput(KeyEvent key) {
-//                return this;
-//            }
-//        };
-//        addKeyListener(this);
-//        repaint();
+
     }
 
     @Override
@@ -61,11 +45,6 @@ public class ToRuleMain extends JFrame implements KeyListener {
     public void keyPressed(KeyEvent e) {
         screen = screen.respondToUserInput(e);
         repaint();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
     }
 
     @Override

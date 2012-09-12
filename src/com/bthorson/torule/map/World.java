@@ -17,6 +17,7 @@ public class World {
     private Region[][] regions;
 
     List<Creature> creatures = new ArrayList<Creature>();
+    private Creature player;
 
     public World(){
         regions = new Region[1][1];
@@ -25,8 +26,12 @@ public class World {
                 regions[x][y] = new Region(x,y);
             }
         }
+        makePlayer();
         populateSomeCreatures();
+        makeBadGuy();
     }
+
+
 
     public int width() {
         return 1000;
@@ -60,6 +65,16 @@ public class World {
         }
     }
 
+    public void makeBadGuy(){
+        addCreature(CreatureFactory.buildGoblin(this, 1,1));
+        addCreature(CreatureFactory.buildGoblin(this, 1,2));
+    }
+
+    private void makePlayer() {
+        player = CreatureFactory.buildPlayer(this, 5, 5);
+        addCreature(player);
+    }
+
     public List<Creature> getCreatures() {
         return creatures;
     }
@@ -68,5 +83,9 @@ public class World {
         for (Creature creature: getCreatures()){
             creature.update();
         }
+    }
+
+    public Creature getPlayer() {
+        return player;
     }
 }

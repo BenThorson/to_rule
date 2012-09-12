@@ -1,5 +1,6 @@
 package com.bthorson.torule.entity.ai;
 
+import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.ai.CreatureAI;
 
@@ -10,6 +11,12 @@ import com.bthorson.torule.entity.ai.CreatureAI;
  */
 public class PlayerAI implements CreatureAI {
 
+    private Creature self;
+
+    public PlayerAI(Creature self) {
+        this.self = self;
+    }
+
     @Override
     public void execute() {
         //To change body of implemented methods use File | Settings | File Templates.
@@ -17,6 +24,8 @@ public class PlayerAI implements CreatureAI {
 
     @Override
     public void interact(Entity entity) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (entity instanceof Creature){
+            self.attack((Creature)entity);
+        }
     }
 }
