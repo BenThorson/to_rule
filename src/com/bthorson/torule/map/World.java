@@ -17,6 +17,7 @@ public class World {
 
     List<Entity> items = new ArrayList<Entity>();
     List<Creature> creatures = new ArrayList<Creature>();
+    List<Creature> toRemove = new ArrayList<Creature>();
     private Creature player;
 
     public World(){
@@ -62,7 +63,7 @@ public class World {
         Faction goblin = new Faction("Goblin");
         human.addEnemyFaction(goblin);
         goblin.addEnemyFaction(human);
-        player = CreatureFactory.buildPlayer(this, 29, 20);
+        player = CreatureFactory.buildPlayer(this, 40, 19);
         player.setFaction(human);
         addCreature(player);
 
@@ -84,6 +85,10 @@ public class World {
         for (Creature creature: getCreatures()){
             creature.update();
         }
+        for (Creature dead : toRemove){
+            creatures.remove(dead);
+        }
+        toRemove.clear();
     }
 
     public Creature getPlayer() {
@@ -101,7 +106,8 @@ public class World {
     }
 
     public void creatureDead(Creature creature){
-        creatures.remove(creature);
+
+        toRemove.add(creature);
         items.add(new Corpse(this, creature.glyph(), creature.x, creature.y, creature.color()));
     }
 

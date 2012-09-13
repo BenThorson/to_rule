@@ -15,11 +15,11 @@ public enum Tile {
 
 
 
-    GRASS_1('.', AsciiPanel.green, true, false, 4),
-    GRASS_2('\'', AsciiPanel.green, true, false, 4),
-    GRASS_3(',', AsciiPanel.green, true, false, 4),
-    GRASS_4('`', AsciiPanel.green, true, false, 4),
-    TREE((char)5, AsciiPanel.green, false, true, 1000),
+    GRASS_1('.', AsciiPanel.brightGreen, true, false, 4),
+    GRASS_2('\'', AsciiPanel.brightGreen, true, false, 4),
+    GRASS_3(',', AsciiPanel.brightGreen, true, false, 4),
+    GRASS_4('`', AsciiPanel.brightGreen, true, false, 4),
+    TREE((char)5, AsciiPanel.brightGreen, false, true, 1000),
     ROAD('~', Color.gray, true, false, 2),
     WALL_NW((char)201, Color.gray, false, true, 1000),
     WALL_NE((char)187, Color.gray, false, true, 1000),

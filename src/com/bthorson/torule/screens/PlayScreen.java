@@ -60,14 +60,14 @@ public class PlayScreen implements Screen{
 
                 if (player.canSee(wx, wy)){
                     terminal.write(world.tile(wx, wy).glyph(), x, y, world.tile(wx, wy).color(), world.tile(wx, wy).color());
+                    Entity item = world.item(wx, wy);
+                    if (item != null){
+                        terminal.writeHumanoid(item.glyph(), item.x - left, item.y - top);
+                    }
 
                     Creature creature = world.creature(wx, wy);
                     if (creature != null){
                         terminal.writeHumanoid(creature.glyph(), creature.x - left, creature.y - top);
-                    }
-                    Entity item = world.item(wx, wy);
-                    if (item != null){
-                        terminal.writeHumanoid(item.glyph(), item.x - left, item.y - top);
                     }
                 } else {
                     terminal.write(world.tile(wx, wy).glyph(), x, y, ColorUtil.darken(world.tile(wx, wy).color(), 25), ColorUtil.darken(world.tile(wx, wy).color(), 25));

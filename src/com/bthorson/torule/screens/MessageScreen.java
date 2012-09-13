@@ -30,12 +30,9 @@ public class MessageScreen implements Screen{
     @Override
     public void displayOutput(AsciiPanel terminal) {
         List<Message> msg = world.getPlayer().getMessages();
-        String blankLine = ScreenUtil.blankString(SCREEN_WIDTH);
         String border = ScreenUtil.solidLine(SCREEN_WIDTH, Tile.WALL_HORIZ.glyph());
-        terminal.write(border, 0, yOffset, Color.WHITE);
-        for (int i = yOffset + 1; i < SCREEN_HEIGHT ; i++){
-            terminal.write(blankLine, 0, i, Color.WHITE);
-        }
+        terminal.write(border, 0, yOffset, Color.WHITE, Color.BLUE);
+
         for (int i = 0; i < msg.size(); i++){
             terminal.write(msg.get(i).getMessage(), 0, yOffset+ 1 +i);
         }

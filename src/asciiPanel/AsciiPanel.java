@@ -1,5 +1,7 @@
 package asciiPanel;
 
+import com.sun.xml.internal.bind.v2.model.core.MaybeElement;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
@@ -8,6 +10,8 @@ import java.awt.image.FilteredImageSource;
 import java.awt.image.LookupOp;
 import java.awt.image.ShortLookupTable;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This simulates a code page 437 ASCII terminal display.
@@ -104,8 +108,8 @@ public class AsciiPanel extends JPanel {
     private Color defaultForegroundColor;
     private int cursorX;
     private int cursorY;
-    private BufferedImage glyphSprite;
-    private BufferedImage[] glyphs;
+    private static final int GLYPH_SIZE = 256;
+    private Map<BgFg, BufferedImage[]> glyphs;
     private BufferedImage humanoidsSprite;
     private BufferedImage[] humanoids;
     private int[][] entities;
@@ -270,14 +274,12 @@ public class AsciiPanel extends JPanel {
         backgroundColors = new Color[widthInCharacters][heightInCharacters];
         foregroundColors = new Color[widthInCharacters][heightInCharacters];
 
-        glyphs = new BufferedImage[256];
+        glyphs = new HashMap<BgFg, BufferedImage[]>();
 
         entities= new int[widthInCharacters][heightInCharacters];
-        humanoids = new BufferedImage[256];
+        humanoids = new BufferedImage[144];
+        loadCharacters();
 
-
-        loadGlyphs();
-        
         AsciiPanel.this.clear();
     }
     
@@ -290,49 +292,96 @@ public class AsciiPanel extends JPanel {
     public void paint(Graphics g) {
         if (g == null)
             throw new NullPointerException();
+        Graphics2D g2d = (Graphics2D)g.create();
+        Composite old = g2d.getComposite();
 
         for (int x = 0; x < widthInCharacters; x++) {
             for (int y = 0; y < heightInCharacters; y++) {
-
                 Color bg = backgroundColors[x][y];
                 Color fg = foregroundColors[x][y];
-                Image bgImg = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(glyphs[chars[x][y]].getSource(),
-                        new BGFilter(bg)));
-                Image img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(glyphs[chars[x][y]].getSource(),
-                        new MixerFilter(fg, bg)));
-                g.drawImage(bgImg, x * charWidth, y * charHeight, null);
-                g.drawImage(img, x * charWidth, y * charHeight, null);
+                BgFg bgfg = new BgFg(fg, bg);
+                g2d.setColor(bg);
+                g2d.setComposite(old);
+                g2d.fillRect(x * charWidth, y * charHeight, charWidth, charHeight);
+                if (!glyphs.containsKey(bgfg)){
+                    loadGlyphs(fg, bg);
+                }
+                g2d.drawImage(glyphs.get(bgfg)[chars[x][y]], x * charWidth, y * charHeight, null);
                 if (entities[x][y] != 0){
                     g.drawImage(humanoids[entities[x][y]], x * charWidth, y * charHeight, null);
                     entities[x][y] = 0;
                 }
             }
         }
+        g2d.dispose();
     }
 
-    private void loadGlyphs() {
+    private BufferedImage toCompatibleImage(BufferedImage image)
+    {
+        // obtain the current system graphical settings
+        GraphicsConfiguration gfx_config = GraphicsEnvironment.
+                getLocalGraphicsEnvironment().getDefaultScreenDevice().
+                getDefaultConfiguration();
+
+//        /*
+//         * if image is already compatible and optimized for current system
+//         * settings, simply return it
+//         */
+//        if (image.getColorModel().equals(gfx_config.getColorModel()))
+//            return image;
+
+        // image is not optimized, so create a new image that is
+        BufferedImage new_image = gfx_config.createCompatibleImage(
+                image.getWidth(), image.getHeight(), image.getTransparency());
+
+        // get the graphics context of the new image to draw the old image on
+        Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+
+        // actually draw the image and dispose of context no longer needed
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        // return the new optimized image
+        return new_image;
+    }
+    
+    private void loadCharacters(){
         try {
-            glyphSprite = ImageIO.read(AsciiPanel.class.getResource("ironhand.png"));
             humanoidsSprite = ImageIO.read(AsciiPanel.class.getResource("humanoids2.png"));
         } catch (IOException e) {
-            System.err.println("loadGlyphs(): " + e.getMessage());
+            System.err.println("loadCharacters() " + e.getMessage());
         }
-
-        for (int i = 0; i < 256; i++) {
-            int sx = (i % 16) * charWidth;
-            int sy = (i / 16) * charHeight;
-
-            glyphs[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
-            glyphs[i].getGraphics().drawImage(glyphSprite, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
-        }
-
         for (int i = 0; i < 144; i++){
             int sx = (i % 12) * charWidth;
             int sy = (i / 12) * charWidth;
             humanoids[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
             humanoids[i].getGraphics().drawImage(humanoidsSprite, 0,0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
+            humanoids[i] = toCompatibleImage(humanoids[i]);
         }
 
+    }
+
+    private void loadGlyphs(Color fg, Color bg) {
+        Image glyphSprite = null;
+        Image img = null;
+        try {
+            glyphSprite = ImageIO.read(AsciiPanel.class.getResource("ironhand.png"));
+            img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(glyphSprite.getSource(),
+                    new MixerFilter(fg, bg)));
+        } catch (IOException e) {
+            System.err.println("loadGlyphs(): " + e.getMessage());
+        }
+        BufferedImage[] imgs = new BufferedImage[GLYPH_SIZE];
+
+        for (int i = 0; i < GLYPH_SIZE; i++) {
+            int sx = (i % 16) * charWidth;
+            int sy = (i / 16) * charHeight;
+
+            imgs[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
+            imgs[i].getGraphics().drawImage(img, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
+            imgs[i] = toCompatibleImage(imgs[i]);
+        }
+        glyphs.put(new BgFg(fg, bg), imgs);
     }
 
     /**
@@ -349,8 +398,8 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear(char character) {
-        if (character < 0 || character >= glyphs.length)
-            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
         return clear(character, 0, 0, widthInCharacters, heightInCharacters, defaultForegroundColor, defaultBackgroundColor);
     }
@@ -363,8 +412,8 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear(char character, Color foreground, Color background) {
-        if (character < 0 || character >= glyphs.length)
-            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
         return clear(character, 0, 0, widthInCharacters, heightInCharacters, foreground, background);
     }
@@ -379,8 +428,8 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear(char character, int x, int y, int width, int height) {
-        if (character < 0 || character >= glyphs.length)
-            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
         if (x < 0 || x >= widthInCharacters)
             throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")." );
@@ -416,8 +465,8 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear(char character, int x, int y, int width, int height, Color foreground, Color background) {
-        if (character < 0 || character >= glyphs.length)
-            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
         if (x < 0 || x >= widthInCharacters)
             throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
@@ -452,8 +501,8 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character) {
-        if (character < 0 || character >= glyphs.length)
-            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
         return write(character, cursorX, cursorY, defaultForegroundColor, defaultBackgroundColor);
     }
@@ -466,8 +515,8 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character, Color foreground) {
-        if (character < 0 || character >= glyphs.length)
-            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
         return write(character, cursorX, cursorY, foreground, defaultBackgroundColor);
     }
@@ -481,8 +530,8 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character, Color foreground, Color background) {
-        if (character < 0 || character >= glyphs.length)
-            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
         return write(character, cursorX, cursorY, foreground, background);
     }
@@ -496,8 +545,8 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character, int x, int y) {
-        if (character < 0 || character >= glyphs.length)
-            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
         if (x < 0 || x >= widthInCharacters)
             throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
@@ -518,8 +567,8 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character, int x, int y, Color foreground) {
-        if (character < 0 || character >= glyphs.length)
-            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
         if (x < 0 || x >= widthInCharacters)
             throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
@@ -541,8 +590,8 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel write(char character, int x, int y, Color foreground, Color background) {
-        if (character < 0 || character >= glyphs.length)
-            throw new IllegalArgumentException("character " + character + " must be within range [0," + glyphs.length + "]." );
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
         if (x < 0 || x >= widthInCharacters)
             throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
@@ -563,7 +612,7 @@ public class AsciiPanel extends JPanel {
 
     public AsciiPanel writeHumanoid(int position, int x, int y) {
         if (position < 0 || position >= humanoids.length)
-            throw new IllegalArgumentException("position " + position + " must be within range [0," + glyphs.length + "]." );
+            throw new IllegalArgumentException("position " + position + " must be within range [0," + GLYPH_SIZE + "]." );
 
         if (x < 0 || x >= widthInCharacters)
             throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")" );
