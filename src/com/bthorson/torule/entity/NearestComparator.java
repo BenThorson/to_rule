@@ -1,5 +1,8 @@
 package com.bthorson.torule.entity;
 
+import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
+
 import java.util.Comparator;
 
 /**
@@ -19,12 +22,8 @@ public class NearestComparator implements Comparator<Creature> {
 
     @Override
     public int compare(Creature o1, Creature o2) {
-        return getDiagDist(o1) - getDiagDist(o2);
-    }
-
-    private int getDiagDist(Creature o1) {
-        int x1Dist = Math.abs(o1.x - thisCreature.x);
-        int y1Dist = Math.abs(o1.y - thisCreature.y);
-        return Math.max(x1Dist, y1Dist);
+        Point thisCreat = new Point(thisCreature.x, thisCreature.y, 0);
+        return PointUtil.getDiagDist(thisCreat, new Point(o1.x, o1.y, 0)) -
+                PointUtil.getDiagDist(thisCreat, new Point(o2.x, o2.y,0));
     }
 }

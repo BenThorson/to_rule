@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface PathTo {
 
-    public List<Point> buildPath(World world, Point target);
+    public List<Point> buildPath(World world, Point start, Point target);
 }

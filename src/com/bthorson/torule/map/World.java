@@ -119,4 +119,8 @@ public class World {
         }
         return null;
     }
+
+    public boolean isTravelable(int x, int y) {
+        return x >= 0 && x < width() && y >= 0 && y < height() && creature(x,y) == null && tile(x,y).passable();
+    }
 }
