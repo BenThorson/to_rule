@@ -3,6 +3,7 @@ package com.bthorson.torule.screens;
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.CreatureFactory;
+import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.map.World;
 
 import java.awt.Color;
@@ -20,7 +21,7 @@ public class PlayScreen implements Screen{
     private StatusScreen statusScreen;
     private MessageScreen messageScreen;
     private int xBorder = 45;
-    private int yBorder = 40;
+    private int yBorder = 30;
 
     public PlayScreen(World world) {
         this.world = world;
@@ -58,11 +59,16 @@ public class PlayScreen implements Screen{
                 int wy = y + top;
 
                 if (player.canSee(wx, wy)){
+                    terminal.write(world.tile(wx, wy).glyph(), x, y, world.tile(wx, wy).color(), world.tile(wx, wy).color());
+
                     Creature creature = world.creature(wx, wy);
                     if (creature != null){
                         terminal.writeHumanoid(creature.glyph(), creature.x - left, creature.y - top);
                     }
-                    terminal.write(world.tile(wx, wy).glyph(), x, y, world.tile(wx, wy).color(), world.tile(wx, wy).color());
+                    Entity item = world.item(wx, wy);
+                    if (item != null){
+                        terminal.writeHumanoid(item.glyph(), item.x - left, item.y - top);
+                    }
                 } else {
                     terminal.write(world.tile(wx, wy).glyph(), x, y, ColorUtil.darken(world.tile(wx, wy).color(), 25), ColorUtil.darken(world.tile(wx, wy).color(), 25));
                 }

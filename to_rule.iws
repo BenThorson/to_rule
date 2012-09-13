@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72eb154b-c8dc-4bf6-894c-cc437e3b4193" name="Default" comment="added some rudimentary ai">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/Faction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/Corpse.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/NearestComparator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/entity/Creature.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/Creature.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/WanderAI.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/WanderAI.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/map/World.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/map/World.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/screens/PlayScreen.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/screens/PlayScreen.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/bthorson/torule/screens/Screen.java" afterPath="$PROJECT_DIR$/src/com/bthorson/torule/screens/Screen.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/to_rule.iws" afterPath="$PROJECT_DIR$/to_rule.iws" />
     </list>
     <list id="24ba5ed9-a3a4-414d-b903-f93f3b3acca4" name="DON'T COMMIT" comment="" />
@@ -30,7 +34,7 @@
   </component>
   <component name="DebuggerManager">
     <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/AggroAI.java" line="23" class="com.bthorson.torule.entity.ai.AggroAI" package="com.bthorson.torule.entity.ai">
+      <breakpoint url="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/Creature.java" line="47" class="com.bthorson.torule.entity.Creature" package="com.bthorson.torule.entity">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -91,8 +95,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="exception_breakpoints_groupByClasses" value="true" />
+      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -101,47 +105,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="World.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="World.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/map/World.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="29" selection-start="1899" selection-end="1899" vertical-scroll-proportion="0.6037296">
-              <folding>
-                <element signature="e#402#412#0" expanded="true" />
-                <element signature="e#2307#2317#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MessageScreen.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/MessageScreen.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="60" selection-start="1060" selection-end="1060" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WanderAI.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/WanderAI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="133" selection-start="1724" selection-end="1724" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#562#572#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Faction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/Faction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="25" selection-start="722" selection-end="722" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="105" column="117" selection-start="2643" selection-end="2643" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -149,10 +117,8 @@
       <file leaf-file-name="StatusScreen.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/StatusScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="16" selection-start="508" selection-end="508" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="14" column="39" selection-start="294" selection-end="294" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -175,15 +141,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Creature.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Creature.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/Creature.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="187" column="18" selection-start="4804" selection-end="4811" vertical-scroll-proportion="-4.82">
+            <state line="52" column="0" selection-start="1348" selection-end="1348" vertical-scroll-proportion="0.33333334">
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#816#825#0" expanded="true" />
-                <element signature="e#4427#4437#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CreatureFactory.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="24" column="89" selection-start="761" selection-end="761" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -191,7 +164,7 @@
       <file leaf-file-name="AggroAI.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/AggroAI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="25" selection-start="579" selection-end="579" vertical-scroll-proportion="0.0">
+            <state line="23" column="0" selection-start="443" selection-end="443" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -200,7 +173,25 @@
       <file leaf-file-name="PlayScreen.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/PlayScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="59" selection-start="1160" selection-end="1160" vertical-scroll-proportion="0.0">
+            <state line="91" column="48" selection-start="3234" selection-end="3234" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CreatureAI.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/CreatureAI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="17" selection-start="192" selection-end="192" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Screen.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/Screen.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="17" selection-start="173" selection-end="173" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -219,29 +210,29 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/DeadAi.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/PlayerAI.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/AggroAI.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/Message.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/screens/DeadScreen.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/Entity.java" />
-        <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/screens/ScreenUtil.java" />
         <option value="$PROJECT_DIR$/src/asciiPanel/AsciiPanel.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/screens/StatusScreen.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/screens/MessageScreen.java" />
-        <option value="$PROJECT_DIR$/src/com/bthorson/torule/screens/PlayScreen.java" />
-        <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/Creature.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/WanderAI.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/Faction.java" />
+        <option value="$PROJECT_DIR$/src/com/bthorson/torule/screens/Screen.java" />
+        <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java" />
         <option value="$PROJECT_DIR$/src/com/bthorson/torule/map/World.java" />
+        <option value="$PROJECT_DIR$/src/com/bthorson/torule/screens/PlayScreen.java" />
+        <option value="$PROJECT_DIR$/src/com/bthorson/torule/entity/Creature.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="5" />
-    <option name="width" value="1440" />
-    <option name="height" value="847" />
+    <option name="y" value="22" />
+    <option name="width" value="1280" />
+    <option name="height" value="625" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -423,6 +414,36 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="geom" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="to_rule" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="to_rule" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bthorson" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="torule" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="entity" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -497,11 +518,12 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FullScreen" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -572,24 +594,6 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -616,6 +620,24 @@
       <envs />
       <properties />
       <listeners />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -698,7 +720,7 @@
     <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
     <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
     <option name="FORCE_UPDATE" value="false" />
-    <option name="IGNORE_EXTERNALS" value="false" />
+    <configuration useDefault="true">$USER_HOME$/.subversion_IDEA</configuration>
     <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
   </component>
   <component name="TaskManager">
@@ -712,30 +734,30 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="5" width="1440" height="847" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="22" width="1280" height="625" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299712" sideWeight="0.58428574" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32714286" sideWeight="0.4884726" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4157143" sideWeight="0.9978386" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41468254" sideWeight="0.9978386" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5036023" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32714286" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24927954" sideWeight="0.68" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32" sideWeight="0.49135447" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2471637" sideWeight="0.58531743" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31746033" sideWeight="0.49135447" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299712" sideWeight="0.58428574" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
     </layout>
@@ -801,46 +823,52 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/PlayerAI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="5" selection-start="665" selection-end="665" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/Message.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="33" selection-start="352" selection-end="352" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/DeadScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="37" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
+        <state line="29" column="5" selection-start="665" selection-end="665" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="38" selection-start="996" selection-end="996" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="57" column="38" selection-start="996" selection-end="996" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/Screen.java">
+    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/MessageScreen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="28" selection-start="211" selection-end="211" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="36" column="60" selection-start="1060" selection-end="1060" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/WanderAI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="133" selection-start="1724" selection-end="1724" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/Faction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="25" selection-start="722" selection-end="722" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/StatusScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="39" selection-start="294" selection-end="294" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/ScreenUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="30" selection-start="1611" selection-end="1611" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/CreatureFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="44" selection-start="1085" selection-end="1085" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="24" column="89" selection-start="761" selection-end="761" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/CreatureAI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="17" selection-start="192" selection-end="192" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/Screen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="17" selection-start="173" selection-end="173" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/asciiPanel/AsciiPanel.java">
@@ -850,80 +878,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/ScreenUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/AggroAI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="30" selection-start="1611" selection-end="1611" vertical-scroll-proportion="0.0">
+        <state line="23" column="0" selection-start="443" selection-end="443" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/StatusScreen.java">
+    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/map/World.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="16" selection-start="508" selection-end="508" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/MessageScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="60" selection-start="1060" selection-end="1060" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="105" column="117" selection-start="2643" selection-end="2643" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/screens/PlayScreen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="59" selection-start="1160" selection-end="1160" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/AggroAI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="25" selection-start="579" selection-end="579" vertical-scroll-proportion="0.0">
+        <state line="91" column="48" selection-start="3234" selection-end="3234" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/Creature.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="187" column="18" selection-start="4804" selection-end="4811" vertical-scroll-proportion="-4.82">
+        <state line="52" column="0" selection-start="1348" selection-end="1348" vertical-scroll-proportion="0.33333334">
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#816#825#0" expanded="true" />
-            <element signature="e#4427#4437#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/ai/WanderAI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="133" selection-start="1724" selection-end="1724" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#562#572#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/entity/Faction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="25" selection-start="722" selection-end="722" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/bthorson/torule/map/World.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="29" selection-start="1899" selection-end="1899" vertical-scroll-proportion="0.6037296">
-          <folding>
-            <element signature="e#402#412#0" expanded="true" />
-            <element signature="e#2307#2317#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -986,6 +966,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

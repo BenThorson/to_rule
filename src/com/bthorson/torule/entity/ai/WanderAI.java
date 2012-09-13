@@ -2,8 +2,10 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.entity.NearestComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -29,7 +31,8 @@ public class WanderAI implements CreatureAI {
             }
         }
         if (hostilable.size() > 0){
-            Creature toAggro = hostilable.get(new Random().nextInt(hostilable.size()));
+            Collections.sort(hostilable, new NearestComparator(self));
+            Creature toAggro = hostilable.get(0);
             AggroAI aggroAI = new AggroAI(self, toAggro);
             aggroAI.execute();
             self.setAi(aggroAI);

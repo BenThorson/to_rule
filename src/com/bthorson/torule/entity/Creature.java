@@ -135,6 +135,7 @@ public class Creature extends Entity {
             dead = true;
             ai = new DeadAi();
             super.setGlyph(10);
+            getWorld().creatureDead(this);
         }
         if (hitpoints > maxHitpoints){
             hitpoints = maxHitpoints;

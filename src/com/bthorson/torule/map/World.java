@@ -1,8 +1,6 @@
 package com.bthorson.torule.map;
 
-import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.CreatureFactory;
-import com.bthorson.torule.entity.Faction;
+import com.bthorson.torule.entity.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -17,6 +15,7 @@ public class World {
 
     private Region[][] regions;
 
+    List<Entity> items = new ArrayList<Entity>();
     List<Creature> creatures = new ArrayList<Creature>();
     private Creature player;
 
@@ -63,15 +62,15 @@ public class World {
         Faction goblin = new Faction("Goblin");
         human.addEnemyFaction(goblin);
         goblin.addEnemyFaction(human);
-        player = CreatureFactory.buildPlayer(this, 22, 18);
+        player = CreatureFactory.buildPlayer(this, 29, 20);
         player.setFaction(human);
         addCreature(player);
 
         for (int i = 0; i < 20; i++){
-            Creature villy = CreatureFactory.buildVillager(this, 20 + i, 20 + i);
+            Creature villy = CreatureFactory.buildVillager(this, 30 + i, 20);
             addCreature(villy);
             villy.setFaction(human);
-            Creature gobby = CreatureFactory.buildGoblin(this, 20 + i, 22 + i);
+            Creature gobby = CreatureFactory.buildGoblin(this, 30 + i, 25);
             gobby.setFaction(goblin);
             addCreature(gobby);
         }
@@ -99,5 +98,19 @@ public class World {
             }
         }
         return retList;
+    }
+
+    public void creatureDead(Creature creature){
+        creatures.remove(creature);
+        items.add(new Corpse(this, creature.glyph(), creature.x, creature.y, creature.color()));
+    }
+
+    public Entity item(int x, int y) {
+        for (Entity item : items){
+            if (item.x == x && item.y == y){
+                return item;
+            }
+        }
+        return null;
     }
 }
