@@ -9,12 +9,10 @@ import com.bthorson.torule.entity.ai.CreatureAI;
  * Date: 9/7/12
  * Time: 9:11 PM
  */
-public class PlayerAI implements CreatureAI {
-
-    private Creature self;
+public class PlayerAI extends CreatureAI {
 
     public PlayerAI(Creature self) {
-        this.self = self;
+        super(self);
     }
 
     @Override
@@ -24,7 +22,7 @@ public class PlayerAI implements CreatureAI {
 
     @Override
     public void interact(Entity entity) {
-        if (entity instanceof Creature){
+        if (entity instanceof Creature && shouldHostile((Creature)entity)){
             self.attack((Creature)entity);
         }
     }

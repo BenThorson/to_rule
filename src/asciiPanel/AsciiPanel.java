@@ -363,11 +363,8 @@ public class AsciiPanel extends JPanel {
 
     private void loadGlyphs(Color fg, Color bg) {
         Image glyphSprite = null;
-        Image img = null;
         try {
             glyphSprite = ImageIO.read(AsciiPanel.class.getResource("ironhand.png"));
-            img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(glyphSprite.getSource(),
-                    new MixerFilter(fg, bg)));
         } catch (IOException e) {
             System.err.println("loadGlyphs(): " + e.getMessage());
         }
@@ -378,7 +375,9 @@ public class AsciiPanel extends JPanel {
             int sy = (i / 16) * charHeight;
 
             imgs[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
-            imgs[i].getGraphics().drawImage(img, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
+            imgs[i].getGraphics().drawImage(glyphSprite, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
+            Image img2 = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(imgs[i].getSource(), new MixerFilter(fg, bg)));
+            imgs[i].getGraphics().drawImage(img2, 0,0, null);
             imgs[i] = toCompatibleImage(imgs[i]);
         }
         glyphs.put(new BgFg(fg, bg), imgs);

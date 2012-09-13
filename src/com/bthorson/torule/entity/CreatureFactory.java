@@ -15,21 +15,21 @@ import java.awt.Color;
 public class CreatureFactory {
 
     public static Creature buildVillager(World world, int x, int y){
-        Creature creature = new Creature(world, x, y, CreatureImage.H_PEASANT.num(), 10, 10);
+        Creature creature = new Creature(world, x, y, CreatureImage.H_PEASANT.num(), 15, 10);
         creature.setAi(new WanderAI(creature));
         creature.setName("villie");
         return creature;
     }
 
     public static Creature buildPlayer(World world, int x, int y){
-        Creature creature = new Creature(world, x, y, CreatureImage.H_KNIGHT.num(), 10, 20);
+        Creature creature = new Creature(world, x, y, CreatureImage.H_KNIGHT.num(), 15, 20);
         creature.setAi(new PlayerAI(creature));
         creature.setName("player");
         return creature;
     }
 
     public static Creature buildGoblin(World world, int x, int y){
-        Creature creature = new Creature(world, x, y, CreatureImage.G_KNIGHT.num(), 10, 10);
+        Creature creature = new Creature(world, x, y, CreatureImage.G_KNIGHT.num(), 15, 10);
         creature.setAi(new WanderAI(creature));
         creature.setName("gobbo");
         return creature;

@@ -49,13 +49,6 @@ public class MixerFilter extends RGBImageFilter
             ng = (int) Math.round(g * bgRatioG);
             nb = (int) Math.round(b * bgRatioB);
         }
-//
-//        if (a != 0xFF){
-//            float aRatio = (0xff - a)/255f;
-//            nr += (int) Math.round(r * aRatio * bgRatioR);
-//            ng += (int) Math.round(g * aRatio * bgRatioG);
-//            nb += (int) Math.round(b * aRatio * bgRatioB);
-//        }
 
         if (r < 0) r = 0; else if (r > 255) r = 255;
         if (g < 0) g = 0; else if (g > 255) g = 255;

@@ -8,14 +8,13 @@ import com.bthorson.torule.entity.Entity;
  * Date: 9/7/12
  * Time: 10:51 PM
  */
-public class AggroAI implements CreatureAI {
-    private Creature self;
+public class AggroAI extends CreatureAI {
 
     private Creature target;
 
     public AggroAI(Creature self, Creature target){
+        super(self);
         this.target = target;
-        this.self = self;
     }
 
     @Override

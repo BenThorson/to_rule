@@ -14,11 +14,10 @@ import java.util.Random;
  * Date: 9/7/12
  * Time: 8:51 PM
  */
-public class WanderAI implements CreatureAI {
+public class WanderAI extends CreatureAI {
 
-    private Creature self;
     public WanderAI(Creature self){
-        this.self = self;
+        super(self);
     }
     @Override
     public void execute() {
@@ -61,10 +60,6 @@ public class WanderAI implements CreatureAI {
                 self.move(0, -1);
                 break;
         }
-    }
-
-    private boolean shouldHostile(Creature other) {
-        return self.getFactionEnemies().contains(other.getFaction()) || other.getFactionEnemies().contains(self.getFactionEnemies());
     }
 
     @Override
