@@ -1,5 +1,7 @@
 package com.bthorson.torule.geom;
 
+import com.bthorson.torule.entity.Creature;
+
 /**
  * User: ben
  * Date: 9/7/12
@@ -19,6 +21,12 @@ public class Point {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public Point(Point copy) {
+        this.x = copy.x;
+        this.y = copy.y;
+        this.z = copy.z;
     }
 
     public int x() {
@@ -54,4 +62,45 @@ public class Point {
         result = 31 * result + z;
         return result;
     }
+
+    public Point add(Point other){
+        return new Point(x + other.x, y + other.y, other.z);
+    }
+
+    public Point subtract(Point other){
+        return new Point(x-other.x, y() -other.y);
+    }
+
+    public boolean withinRect(Point topLeft, Point bottomRight){
+        return x() >= topLeft.x() &&
+                x() <= bottomRight.x() &&
+                y() >= topLeft.y() &&
+                y() <= bottomRight.y();
+    }
+
+    public Point squared() {
+        return new Point(x * x, y * y);
+    }
+
+    public Point absoluteDifference(Point p0) {
+        return new Point(Math.abs(x - p0.x()), Math.abs(y - p0.y()));
+    }
+
+    public Point getDeltaOne(Point point) {
+        return new Point(getDelta(x, point.x), getDelta(y, point.y));
+    }
+
+    private int getDelta(int x1, int x2) {
+        int dx;
+
+        if (x1 > x2){
+            dx = -1;
+        } else if (x1 < x2){
+            dx = 1;
+        } else {
+            dx = 0;
+        }
+        return dx;
+    }
+
 }

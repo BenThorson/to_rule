@@ -24,7 +24,7 @@ public class AggroAI extends CreatureAI {
     public AggroAI(Creature self, Creature target){
         super(self);
         this.target = target;
-        targetPosition = new Point(target.x, target.y);
+        targetPosition = new Point(target.position());
     }
 
     @Override
@@ -38,33 +38,30 @@ public class AggroAI extends CreatureAI {
         }
 
 
-        if (!self.canSee(target.x, target.y)){
+        if (!self.canSee(target.position())){
             return;
         }
-        if(target.x == targetPosition.x() && target.y == targetPosition.y()){
+        if(target.equals(targetPosition)){
             if (path.empty()){
-                path = pathTo.buildPath(self.getWorld(), new Point(self.x, self.y), targetPosition);
-                path.pop();
+                path = pathTo.buildPath(self.getWorld(), self.position(), targetPosition);
             }
             Point nextMove = path.peek();
-            if (nextMove != null && self.getWorld().isTravelable(nextMove.x(), nextMove.y()) || nextMove.equals(targetPosition)){
-                self.move(nextMove.x() - self.x, nextMove.y() - self.y);
+            if (nextMove != null && self.getWorld().isTravelable(nextMove) || nextMove.equals(targetPosition)){
+                self.move(nextMove.subtract(self.position()));
                 if (!nextMove.equals(targetPosition)){
                     path.pop();
                 }
             } else {
-                targetPosition = new Point(target.x, target.y);
-                path = pathTo.buildPath(self.getWorld(), new Point(self.x, self.y), targetPosition);
-                path.pop();
+                targetPosition = new Point(target.position());
+                path = pathTo.buildPath(self.getWorld(), self.position(), targetPosition);
                 nextMove = path.pop();
-                self.move(nextMove.x() - self.x, nextMove.y() - self.y);
+                self.move(nextMove.subtract(self.position()));
             }
         } else {
-            targetPosition = new Point(target.x, target.y);
-            path = pathTo.buildPath(self.getWorld(), new Point(self.x, self.y), targetPosition);
-            path.pop();
+            targetPosition = new Point(target.position());
+            path = pathTo.buildPath(self.getWorld(), self.position(), targetPosition);
             Point nextMove = path.pop();
-            self.move(nextMove.x() - self.x, nextMove.y() - self.y);
+            self.move(nextMove.subtract(self.position()));
         }
     }
 

@@ -40,12 +40,12 @@ public class AStarPathTo implements PathTo {
                 if(closedList.contains(n)){
                     continue;
                 }
-                int g = current.getG() + world.tile(n.getPnt().x(), n.getPnt().y()).moveCost();
+                int g = current.getG() + world.tile(n.getPnt()).moveCost();
 
                 if (!openList.contains(n)){
                     n.setParent(current);
                     n.setG(g);
-                    n.setH(PointUtil.getDiagDist(n.getPnt(), target) * 2);
+                    n.setH(PointUtil.diagMoves(n.getPnt(), target) * 4);
                     openList.add(n);
                 } else if (g < current.getG()){
                     updateVals = true;
@@ -56,7 +56,7 @@ public class AStarPathTo implements PathTo {
                 if (updateVals){
                     n.setParent(current);
                     n.setG(g);
-                    n.setH(PointUtil.getDiagDist(n.getPnt(), target) * 2);
+                    n.setH(PointUtil.diagMoves(n.getPnt(), target) * 4);
                 }
             }
         }
@@ -65,10 +65,9 @@ public class AStarPathTo implements PathTo {
 
     private Stack<Point> constructPath(Node current) {
         Stack<Point> path = new Stack<Point>();
-        path.add(current.getPnt());
         while (current.getParent() != null){
-            current = current.getParent();
             path.add(current.getPnt());
+            current = current.getParent();
         }
         return path;
     }
@@ -81,29 +80,38 @@ public class AStarPathTo implements PathTo {
             ret.add(target);
             return ret;
         }
-        if (world.isTravelable(x-1,y)){
-            ret.add(new Point(x-1,y));
+        Point west = new Point(x - 1, y);
+        if (world.isTravelable(west)){
+            ret.add(west);
         }
-        if (world.isTravelable(x-1,y-1)) {
-            ret.add(new Point(x - 1, y - 1));
+
+        Point northWest = new Point(x - 1, y - 1);
+        if (world.isTravelable(northWest)) {
+            ret.add(northWest);
         }
-        if (world.isTravelable(x-1,y+1)){
-            ret.add(new Point(x-1,y+1));
+        Point southWest = new Point(x - 1, y + 1);
+        if (world.isTravelable(southWest)){
+            ret.add(southWest);
         }
-        if (world.isTravelable(x+1,y)) {
-            ret.add(new Point(x + 1, y));
+        Point east = new Point(x + 1, y);
+        if (world.isTravelable(east)) {
+            ret.add(east);
         }
-        if (world.isTravelable(x+1,y-1)) {
-            ret.add(new Point(x + 1, y - 1));
+        Point northEast = new Point(x + 1, y - 1);
+        if (world.isTravelable(northEast)) {
+            ret.add(northEast);
         }
-        if (world.isTravelable(x+1,y+1)) {
-            ret.add(new Point(x + 1, y + 1));
+        Point southEast = new Point(x + 1, y + 1);
+        if (world.isTravelable(southEast)) {
+            ret.add(southEast);
         }
-        if(world.isTravelable(x,y-1)) {
-            ret.add(new Point(x, y - 1));
+        Point north = new Point(x, y - 1);
+        if(world.isTravelable(north)) {
+            ret.add(north);
         }
-        if (world.isTravelable(x, y+1)) {
-            ret.add(new Point(x, y + 1));
+        Point south = new Point(x, y + 1);
+        if (world.isTravelable(south)) {
+            ret.add(south);
         }
         return ret;
     }

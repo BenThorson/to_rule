@@ -9,12 +9,12 @@ import java.awt.*;
  * Time: 8:30 AM
  * To change this template use File | Settings | File Templates.
  */
-public class BgFg {
+public class ForeGroundBackGround {
 
     Color bg;
     Color fg;
 
-    public BgFg(Color fg, Color bg) {
+    public ForeGroundBackGround(Color fg, Color bg) {
         this.bg = bg;
         this.fg = fg;
     }
@@ -32,7 +32,7 @@ public class BgFg {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BgFg bgFg = (BgFg) o;
+        ForeGroundBackGround bgFg = (ForeGroundBackGround) o;
 
         if (!bg.equals(bgFg.bg)) return false;
         if (!fg.equals(bgFg.fg)) return false;

@@ -1,6 +1,7 @@
 package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
+import com.bthorson.torule.geom.Point;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -47,14 +48,15 @@ public class Menu  {
     }
 
     public void displayOutput(AsciiPanel terminal, int x, int y) {
+        Point pos = new Point(x,y);
         ScreenUtil.makeRect(terminal, x, y, width, height, foreground, background);
-        terminal.write(title, x + 1, y + 1, foreground, background);
-        terminal.write(makeDivider(), x, y + 2, foreground, background);
+        terminal.write(title, pos.add(new Point(1,1)), foreground, background);
+        terminal.write(makeDivider(), pos.add(new Point(0,2)), foreground, background);
         for (int i = 0; i < choices.length; i++){
             if (i == currentChoice){
-                terminal.write(choices[i], x + 1, y + i + 3, foreground, AsciiPanel.red);
+                terminal.write(choices[i], pos.add(new Point(1, i + 3)),foreground, AsciiPanel.red);
             } else {
-                terminal.write(choices[i], x + 1, y + i + 3, foreground, background);
+                terminal.write(choices[i], pos.add(new Point(1, i + 3)), foreground, background);
             }
         }
     }

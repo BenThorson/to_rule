@@ -22,13 +22,10 @@ public class NearestComparator implements Comparator<Creature> {
 
     @Override
     public int compare(Creature o1, Creature o2) {
-        Point thisCreat = new Point(thisCreature.x, thisCreature.y, 0);
-        Point other1 = new Point(o1.x, o1.y);
-        Point other2 = new Point(o2.x, o2.y);
-        int diff = PointUtil.getDiagDist(thisCreat, other1) -
-                PointUtil.getDiagDist(thisCreat, other2);
-        if (diff == 0){
-            return PointUtil.diagMoves(thisCreat, other1) - PointUtil.diagMoves(thisCreat, other2);
+        int diff = PointUtil.getDiagDist(thisCreature.position(), o1.position()) -
+                PointUtil.getDiagDist(thisCreature.position(), o2.position());
+        if (diff == 0) {
+            return PointUtil.diagMoves(thisCreature.position(), o1.position()) - PointUtil.diagMoves(thisCreature.position(), o2.position());
         } else {
             return diff;
         }

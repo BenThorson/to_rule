@@ -1,6 +1,7 @@
 package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
+import com.bthorson.torule.geom.Point;
 
 import java.awt.Color;
 
@@ -34,11 +35,11 @@ public class ScreenUtil {
         bottomLine.append(br);
         vertLines.append(vertical);
 
-        terminal.write(topLine.toString(), x, y, foreground, background);
+        terminal.write(topLine.toString(), new Point(x, y), foreground, background);
         for (int i = 1; i < h; i++ ){
-            terminal.write(vertLines.toString(), x,y + i, foreground, background);
+            terminal.write(vertLines.toString(), new Point(x,y + i), foreground, background);
         }
-        terminal.write(bottomLine.toString(), x, y + h, foreground, background);
+        terminal.write(bottomLine.toString(), new Point(x, y + h), foreground, background);
 
 
     }

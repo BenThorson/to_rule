@@ -6,6 +6,7 @@ import com.bthorson.torule.entity.ai.DeadAi;
 import com.bthorson.torule.geom.Line;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
+import com.bthorson.torule.player.ExploredMap;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -35,26 +36,40 @@ public class Creature extends Entity {
 
     private List<Message> messages = new ArrayList<Message>();
     private Faction faction;
+    
+    private ExploredMap explored;
 
-    public Creature(World world, int x, int y, int glyph, int visionRadius, int hitpoints) {
-        super(world, x, y, glyph, Color.WHITE);
+    public Creature(World world, Point position, int glyph, int visionRadius, int hitpoints) {
+        super(world, position, glyph, Color.WHITE);
         this.visionRadius = visionRadius;
         this.maxHitpoints = hitpoints;
         this.hitpoints = hitpoints;
     }
+    
+    public void setExplored(ExploredMap explored){
+        this.explored = explored;
+    }
+    
+    public boolean hasExplored(Point point){
+        if (explored == null){
+            return false;
+        }
+        return explored.hasExplored(point);    
+    }
 
-    public void move(int dx, int dy){
+    public void move(Point delta){
 
-        if (x + dx < 0 || x + dx > getWorld().width() || y < 0 || y > getWorld().height()){
+        Point moveTo = position().add(delta);
+
+        if (!moveTo.withinRect(getWorld().topLeft(), getWorld().bottomRight())){
             return;
         }
 
-        Creature other = getWorld().creature(x + dx, y + dy);
+        Creature other = getWorld().creature(moveTo);
         if (other != null){
             ai.interact(other);
-        } else if (getWorld().tile(x + dx, y + dy).passable()){
-            x += dx;
-            y += dy;
+        } else if (getWorld().tile(moveTo).passable()){
+            position = moveTo;
         }
     }
 
@@ -78,13 +93,14 @@ public class Creature extends Entity {
         return visionRadius;
     }
 
-    public boolean canSee(int wx, int wy) {
+    public boolean canSee(Point positionPoint) {
+        Point product = position().subtract(positionPoint).squared();
 
-        if ((x-wx)*(x-wx) + (y-wy)*(y-wy) > visionRadius*visionRadius)
+        if (product.x() + product.y() > visionRadius*visionRadius)
             return false;
 
-        for (Point p : new Line(x,y, wx, wy)){
-            if (!getWorld().tile(p.x(), p.y()).blockSight() || p.x() == wx && p.y() == wy){
+        for (Point p : new Line(position, positionPoint)){
+            if (!getWorld().tile(p).blockSight() || p.equals(positionPoint)){
                 continue;
             }
 
@@ -94,27 +110,12 @@ public class Creature extends Entity {
         return true;
     }
 
-    public void goToTarget(int x, int y) {
-        Point point = new Point(x,y,0);
+    public void goToTarget(Point point) {
         if (!point.equals(target)){
             target = point;
         }
-        int dx = getDelta(this.x, x);
-        int dy = getDelta(this.y, y);
-        move(dx,dy);
+        move(position().getDeltaOne(point));
 
-    }
-
-    private int getDelta(int x1, int x2) {
-        int dx;
-        if (x1 > x2){
-            dx = -1;
-        } else if (x1 < x2){
-            dx = 1;
-        } else {
-            dx = 0;
-        }
-        return dx;
     }
 
     public void attack(Creature other){
@@ -168,10 +169,11 @@ public class Creature extends Entity {
     }
 
     public List<Creature> getVisibleCreatures() {
-        List<Creature> inApproxRange = getWorld().getCreaturesInRange(x - visionRadius, y - visionRadius(), x + visionRadius * 2, y + visionRadius);
+        Point vis = new Point(visionRadius, visionRadius);
+        List<Creature> inApproxRange = getWorld().getCreaturesInRange(position().subtract(vis), position().add(vis));
         List<Creature> visible = new ArrayList<Creature>();
         for (Creature c : inApproxRange){
-            if (this != c && canSee(c.x, c.y)){
+            if (this != c && canSee(c.position())){
                 visible.add(c);
             }
         }
@@ -188,5 +190,10 @@ public class Creature extends Entity {
 
     public Faction getFaction() {
         return faction;
+    }
+
+
+    public void explore(Point point) {
+        explored.explore(point);
     }
 }

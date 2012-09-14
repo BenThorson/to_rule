@@ -13,8 +13,14 @@ public class Line implements Iterable<Point>{
 
     private List<Point> points;
 
-    public Line(int x0, int y0, int x1, int y1) {
+    public Line(Point p0, Point p1) {
         points = new ArrayList<Point>();
+
+        int x0 = p0.x();
+        int x1 = p1.x();
+
+        int y0 = p0.y();
+        int y1 = p1.y();
 
         int dx = Math.abs(x1-x0);
         int dy = Math.abs(y1-y0);

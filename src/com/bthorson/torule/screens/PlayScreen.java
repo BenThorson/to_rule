@@ -4,6 +4,7 @@ import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.CreatureFactory;
 import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
 import java.awt.Color;
@@ -30,47 +31,45 @@ public class PlayScreen implements Screen{
         this.messageScreen = new MessageScreen(world, yBorder);
     }
 
-    public int getScrollX() {
-        return Math.max(0, Math.min(player.x - Screen.SCREEN_WIDTH / 2,
-                                    world.width() - Screen.SCREEN_WIDTH));
-    }
-
-    public int getScrollY() {
-        return Math.max(0, Math.min(player.y - Screen.SCREEN_HEIGHT / 2,
-                                    world.height() - Screen.SCREEN_HEIGHT));
+    public Point getOffset() {
+        return new Point(Math.max(0, Math.min(player.position().x() - Screen.SCREEN_WIDTH / 2,
+                                    world.width() - Screen.SCREEN_WIDTH)),
+                         Math.max(0, Math.min(player.position().y() - Screen.SCREEN_HEIGHT / 2,
+                                    world.height() - Screen.SCREEN_HEIGHT)));
     }
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        int left = getScrollX();
-        int top = getScrollY();
-        displayTiles(terminal, left, top);
 
-        terminal.writeHumanoid(player.glyph(), player.x - left, player.y - top);
+        Point offset = getOffset();
+        displayTiles(terminal, offset);
+
+        terminal.writeHumanoid(player.glyph(), player.position().subtract(offset), world.tile(player.position()));
 
         statusScreen.displayOutput(terminal);
         messageScreen.displayOutput(terminal);
     }
 
-    private void displayTiles(AsciiPanel terminal, int left, int top) {
+    private void displayTiles(AsciiPanel terminal, Point offset) {
         for (int x = 0; x < xBorder; x++){
             for (int y = 0; y < yBorder; y++){
-                int wx = x + left;
-                int wy = y + top;
+                Point viewPort = new Point(x,y);
+                Point worldPoint = viewPort.add(offset);
+                if (player.canSee(worldPoint)){
+                    player.explore(worldPoint);
+                    terminal.writeTile(world.tile(worldPoint), viewPort);
 
-                if (player.canSee(wx, wy)){
-                    terminal.write(world.tile(wx, wy).glyph(), x, y, world.tile(wx, wy).color(), world.tile(wx, wy).color());
-                    Entity item = world.item(wx, wy);
+                    Entity item = world.item(worldPoint);
                     if (item != null){
-                        terminal.writeHumanoid(item.glyph(), item.x - left, item.y - top);
+                        terminal.writeHumanoid(item.glyph(), item.position().subtract(offset), world.tile(worldPoint));
                     }
 
-                    Creature creature = world.creature(wx, wy);
+                    Creature creature = world.creature(worldPoint);
                     if (creature != null){
-                        terminal.writeHumanoid(creature.glyph(), creature.x - left, creature.y - top);
+                        terminal.writeHumanoid(creature.glyph(), creature.position().subtract(offset), world.tile(worldPoint));
                     }
-                } else {
-                    terminal.write(world.tile(wx, wy).glyph(), x, y, ColorUtil.darken(world.tile(wx, wy).color(), 25), ColorUtil.darken(world.tile(wx, wy).color(), 25));
+                } else if (player.hasExplored(worldPoint)) {
+                    terminal.writeDarkTile(world.tile(worldPoint), viewPort, 25);
                 }
             }
         }
@@ -85,17 +84,17 @@ public class PlayScreen implements Screen{
             case KeyEvent.VK_ESCAPE: return new StartScreen();
             case KeyEvent.VK_ENTER: return new StartScreen();
             case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_NUMPAD4: player.move(-1, 0); break;
+            case KeyEvent.VK_NUMPAD4: player.move(new Point(-1,0)); break;
             case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_NUMPAD6: player.move(1, 0); break;
+            case KeyEvent.VK_NUMPAD6: player.move(new Point(1, 0)); break;
             case KeyEvent.VK_UP:
-            case KeyEvent.VK_NUMPAD8: player.move(0, -1); break;
+            case KeyEvent.VK_NUMPAD8: player.move(new Point(0, -1)); break;
             case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_NUMPAD2: player.move(0, 1); break;
-            case KeyEvent.VK_NUMPAD7: player.move(-1, -1); break;
-            case KeyEvent.VK_NUMPAD9: player.move(1, -1); break;
-            case KeyEvent.VK_NUMPAD1: player.move(-1, 1); break;
-            case KeyEvent.VK_NUMPAD3: player.move(1, 1); break;
+            case KeyEvent.VK_NUMPAD2: player.move(new Point(0, 1)); break;
+            case KeyEvent.VK_NUMPAD7: player.move(new Point(-1, -1)); break;
+            case KeyEvent.VK_NUMPAD9: player.move(new Point(1, -1)); break;
+            case KeyEvent.VK_NUMPAD1: player.move(new Point(-1, 1)); break;
+            case KeyEvent.VK_NUMPAD3: player.move(new Point(1, 1)); break;
         }
 
         world.update();

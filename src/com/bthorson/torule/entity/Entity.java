@@ -1,8 +1,10 @@
 package com.bthorson.torule.entity;
 
+import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
-import java.awt.*;
+import java.awt.Color;
+
 
 /**
  * User: ben
@@ -25,8 +27,10 @@ public class Entity {
         return world;
     }
 
-    public int x;
-    public int y;
+    protected Point position;
+    public Point position() {
+        return position;
+    }
 
     private int glyph;
     public int glyph(){
@@ -38,11 +42,10 @@ public class Entity {
         return color;
     }
 
-    public Entity(World world, int x, int y, int glyph, Color color) {
+    public Entity(World world, Point pos, int glyph, Color color) {
         this.id = getId();
         this.world = world;
-        this.x = x;
-        this.y = y;
+        this.position = pos;
         this.glyph = glyph;
         this.color = color;
     }
@@ -58,4 +61,6 @@ public class Entity {
     public void setName(String name) {
         this.name = name;
     }
+
+
 }

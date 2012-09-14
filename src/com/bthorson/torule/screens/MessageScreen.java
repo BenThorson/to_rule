@@ -2,6 +2,7 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.Message;
+import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 
@@ -31,10 +32,10 @@ public class MessageScreen implements Screen{
     public void displayOutput(AsciiPanel terminal) {
         List<Message> msg = world.getPlayer().getMessages();
         String border = ScreenUtil.solidLine(SCREEN_WIDTH, Tile.WALL_HORIZ.glyph());
-        terminal.write(border, 0, yOffset, Color.WHITE, Color.BLUE);
+        terminal.write(border, new Point(0, yOffset), Color.WHITE, Color.BLUE);
 
         for (int i = 0; i < msg.size(); i++){
-            terminal.write(msg.get(i).getMessage(), 0, yOffset+ 1 +i);
+            terminal.write(msg.get(i).getMessage(), new Point(0, yOffset+ 1 +i));
         }
         msg.clear();
     }

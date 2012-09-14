@@ -3,6 +3,7 @@ package com.bthorson.torule.entity.ai;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.NearestComparator;
+import com.bthorson.torule.geom.Point;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,16 +41,16 @@ public class WanderAI extends CreatureAI {
             case 5:
                 break;
             case 6:
-                self.move(1, 0);
+                self.move(new Point(1, 0));
                 break;
             case 7:
-                self.move(-1, 0);
+                self.move(new Point(-1, 0));
                 break;
             case 8:
-                self.move(0, 1);
+                self.move(new Point(0, 1));
                 break;
             case 9:
-                self.move(0, -1);
+                self.move(new Point(0, -1));
                 break;
         }
     }

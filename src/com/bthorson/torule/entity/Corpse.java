@@ -1,8 +1,10 @@
 package com.bthorson.torule.entity;
 
+import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
-import java.awt.*;
+import java.awt.Color;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +14,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class Corpse extends Entity {
-    public Corpse(World world, int glyph, int x, int y, Color color) {
-        super(world, x, y, glyph, color);
+    public Corpse(World world, Creature creature) {
+        super(world,  creature.position(), creature.glyph(), creature.color());
     }
 }

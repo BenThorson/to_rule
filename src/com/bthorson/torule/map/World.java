@@ -1,8 +1,8 @@
 package com.bthorson.torule.map;
 
 import com.bthorson.torule.entity.*;
+import com.bthorson.torule.geom.Point;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +41,13 @@ public class World {
     }
 
 
-    public Tile tile(int x, int y){
-        return regions[x/1000][y/1000].tile(x % 1000, y % 1000);
+    public Tile tile(Point tilePoint){
+        return regions[tilePoint.x()/1000][tilePoint.y()/1000].tile(tilePoint.x() % 1000, tilePoint.y() % 1000);
     }
 
-    public Creature creature(int x, int y){
+    public Creature creature(Point position){
         for (Creature creature : creatures){
-            if (creature.x == x && creature.y == y){
+            if (creature.position().equals(position)){
                 return creature;
             }
         }
@@ -63,15 +63,15 @@ public class World {
         Faction goblin = new Faction("Goblin");
         human.addEnemyFaction(goblin);
         goblin.addEnemyFaction(human);
-        player = CreatureFactory.buildPlayer(this, 40, 19);
+        player = CreatureFactory.buildPlayer(this, new Point(40, 19));
         player.setFaction(human);
         addCreature(player);
 
-        for (int i = 0; i < 20; i++){
-            Creature villy = CreatureFactory.buildVillager(this, 30 + i, 20);
+        for (int i = 0; i < 20; i++) {
+            Creature villy = CreatureFactory.buildVillager(this, new Point(30 + i, 20));
             addCreature(villy);
             villy.setFaction(human);
-            Creature gobby = CreatureFactory.buildGoblin(this, 30 + i, 25);
+            Creature gobby = CreatureFactory.buildGoblin(this, new Point(30 + i, 25));
             gobby.setFaction(goblin);
             addCreature(gobby);
         }
@@ -95,10 +95,10 @@ public class World {
         return player;
     }
 
-    public List<Creature> getCreaturesInRange(int x, int y, int x2, int y2) {
+    public List<Creature> getCreaturesInRange(Point p1, Point p2) {
         List<Creature> retList = new ArrayList<Creature>();
         for (Creature c: getCreatures()){
-            if (c.x >= x && c.x <= x2 && c.y >= y && c.y <= y2){
+            if (c.position().withinRect(p1, p2)){
                 retList.add(c);
             }
         }
@@ -108,19 +108,29 @@ public class World {
     public void creatureDead(Creature creature){
 
         toRemove.add(creature);
-        items.add(new Corpse(this, creature.glyph(), creature.x, creature.y, creature.color()));
+        items.add(new Corpse(this, creature));
     }
 
-    public Entity item(int x, int y) {
+    public Entity item(Point itemPos) {
         for (Entity item : items){
-            if (item.x == x && item.y == y){
+            if (item.position().equals(itemPos)){
                 return item;
             }
         }
         return null;
     }
 
-    public boolean isTravelable(int x, int y) {
-        return x >= 0 && x < width() && y >= 0 && y < height() && creature(x,y) == null && tile(x,y).passable();
+    public boolean isTravelable(Point point) {
+        return point.x() >= 0 && point.x() < width() && point.y() >= 0
+                && point.y() < height()
+                && creature(point) == null && tile(point).passable();
+    }
+
+    public Point topLeft() {
+        return new Point(0,0);
+    }
+
+    public Point bottomRight() {
+        return new Point(width(), height());
     }
 }
