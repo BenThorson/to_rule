@@ -22,19 +22,11 @@ public class WanderAI extends CreatureAI {
     @Override
     public void execute() {
 
-        List<Creature> visibleCreatures = self.getVisibleCreatures();
-        List<Creature> hostilable = new ArrayList<Creature>();
-        for (Creature other: visibleCreatures){
-            if (shouldHostile(other)){
-                hostilable.add(other);
-            }
-        }
-        if (hostilable.size() > 0){
-            Collections.sort(hostilable, new NearestComparator(self));
-            Creature toAggro = hostilable.get(0);
+        Creature toAggro = getTarget();
+        if (toAggro != null){
             AggroAI aggroAI = new AggroAI(self, toAggro);
-            aggroAI.execute();
             self.setAi(aggroAI);
+            aggroAI.execute();
             return;
         }
         int check = new Random().nextInt(10);

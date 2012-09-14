@@ -8,6 +8,7 @@ import com.bthorson.torule.map.World;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Stack;
 
 /**
  * User: ben
@@ -16,23 +17,24 @@ import java.util.PriorityQueue;
  */
 public class AStarPathTo implements PathTo {
     @Override
-    public List<Point> buildPath(World world, Point start, Point target) {
+    public Stack<Point> buildPath(World world, Point start, Point target) {
+        System.out.printf("Starting to build a path from x:%d,y:%d to x:%d,y:%d\n",start.x(), start.y(), target.x(), target.y());
         List<Node> closedList = new ArrayList<Node>();
         PriorityQueue<Node> openList = new PriorityQueue<Node>(PointUtil.getDiagDist(start, target) * PointUtil.getDiagDist(start, target),
                 new NodeCompare());
-        List<Point> path = new ArrayList<Point>();
 
         openList.add(new Node(start));
 
         while (!openList.isEmpty()){
 
             Node current = openList.poll();
-            if (current.equals(target)){
-                return constructPath(closedList);
+            if (current.getPnt().equals(target)){
+                System.out.println("built path");
+                return constructPath(current);
             }
             closedList.add(current);
 
-            for (Point neighbor : getNeighbors(current.getPnt(), world)){
+            for (Point neighbor : getNeighbors(current.getPnt(), world, target)){
                 boolean updateVals = false;
                 Node n = new Node(neighbor);
                 if(closedList.contains(n)){
@@ -41,8 +43,10 @@ public class AStarPathTo implements PathTo {
                 int g = current.getG() + world.tile(n.getPnt().x(), n.getPnt().y()).moveCost();
 
                 if (!openList.contains(n)){
+                    n.setParent(current);
+                    n.setG(g);
+                    n.setH(PointUtil.getDiagDist(n.getPnt(), target) * 2);
                     openList.add(n);
-                    updateVals = true;
                 } else if (g < current.getG()){
                     updateVals = true;
                 } else {
@@ -59,8 +63,8 @@ public class AStarPathTo implements PathTo {
         return null;
     }
 
-    private List<Point> constructPath(Node current) {
-        List<Point> path = new ArrayList<Point>();
+    private Stack<Point> constructPath(Node current) {
+        Stack<Point> path = new Stack<Point>();
         path.add(current.getPnt());
         while (current.getParent() != null){
             current = current.getParent();
@@ -69,10 +73,14 @@ public class AStarPathTo implements PathTo {
         return path;
     }
 
-    private List<Point> getNeighbors(Point current, World world) {
+    private List<Point> getNeighbors(Point current, World world, Point target) {
         List<Point> ret = new ArrayList<Point>();
         int x = current.x();
         int y = current.y();
+        if (PointUtil.getDiagDist(target, current) == 1){
+            ret.add(target);
+            return ret;
+        }
         if (world.isTravelable(x-1,y)){
             ret.add(new Point(x-1,y));
         }

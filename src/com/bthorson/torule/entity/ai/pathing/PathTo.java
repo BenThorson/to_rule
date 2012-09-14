@@ -3,7 +3,7 @@ package com.bthorson.torule.entity.ai.pathing;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
-import java.util.List;
+import java.util.Stack;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface PathTo {
 
-    public List<Point> buildPath(World world, Point start, Point target);
+    public Stack<Point> buildPath(World world, Point start, Point target);
 }
