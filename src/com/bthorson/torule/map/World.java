@@ -2,6 +2,7 @@ package com.bthorson.torule.map;
 
 import com.bthorson.torule.entity.*;
 import com.bthorson.torule.entity.ai.FollowAI;
+import com.bthorson.torule.entity.ai.GroupFollowAI;
 import com.bthorson.torule.geom.Point;
 
 import java.util.ArrayList;
@@ -68,7 +69,9 @@ public class World {
         player.setFaction(human);
         addCreature(player);
 
-        for (int i = 0; i < 20; i++) {
+        List<Creature> group = new ArrayList<Creature>();
+
+        for (int i = 0; i < 35; i++) {
             Creature villy = CreatureFactory.buildSoldier(this, new Point(30 + i, 21));
 //            Creature villy2 = CreatureFactory.buildSoldier(this, new Point(30 + i, 20));
             addCreature(villy);
@@ -76,14 +79,17 @@ public class World {
             villy.setFaction(human);
 //            villy2.setFaction(human);
             villy.setLeader(player);
-            villy.setAi(new FollowAI(villy));
-//            Creature gobby = CreatureFactory.buildGoblin(this, new Point(30 + i, 25));
+            group.add(villy);
+            villy.setAi(new GroupFollowAI(villy));
+            Creature gobby = CreatureFactory.buildGoblin(this, new Point(130 + i, 25));
 //            Creature gobby2 = CreatureFactory.buildGoblin(this, new Point(30 + i, 24));
-//            gobby.setFaction(goblin);
+            gobby.setFaction(goblin);
 //            gobby2.setFaction(goblin);
-//            addCreature(gobby);
+            addCreature(gobby);
 //            addCreature(gobby2);
         }
+        Group grp = new Group(group, player);
+        player.setGroup(grp);
     }
 
     public List<Creature> getCreatures() {
@@ -92,7 +98,7 @@ public class World {
 
     public void update() {
         for (Creature creature: getCreatures()){
-            creature.update();
+//            creature.update();
         }
         for (Creature dead : toRemove){
             creatures.remove(dead);

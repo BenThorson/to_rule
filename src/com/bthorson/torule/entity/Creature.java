@@ -25,6 +25,7 @@ public class Creature extends Entity {
     private CreatureAI ai = null;
 
     private Creature leader;
+    private Group group;
 
     private Direction heading;
 
@@ -51,6 +52,10 @@ public class Creature extends Entity {
         this.hitpoints = hitpoints;
         this.heading = Direction.SOUTH;
     }
+
+    public void setGroup(Group group){
+        this.group = group;
+    }
     
     public void setExplored(ExploredMap explored){
         this.explored = explored;
@@ -69,10 +74,10 @@ public class Creature extends Entity {
         if (!moveTo.withinRect(getWorld().topLeft(), getWorld().bottomRight())){
             return false;
         }
-        heading = Direction.directionOf(delta);
+        heading = Direction.directionOf(delta) != null ? Direction.directionOf(delta) : heading;
 
         Creature other = getWorld().creature(moveTo);
-        if (other != null){
+        if (other != null && !other.equals(this)){
             ai.interact(other);
             return false;
         } else if (getWorld().tile(moveTo).passable()){
@@ -119,12 +124,12 @@ public class Creature extends Entity {
         return true;
     }
 
-    public void goToTarget(Point point) {
-        if (!point.equals(target)){
-            target = point;
-        }
-        move(position().getDeltaOne(point));
+    public Point getTarget(){
+        return target;
+    }
 
+    public void setTarget(Point target){
+        this.target = target;
     }
 
     public void attack(Creature other){
@@ -222,5 +227,17 @@ public class Creature extends Entity {
 
     public Direction getHeading() {
         return heading;
+    }
+
+    public CreatureAI getAi() {
+        return ai;
+    }
+
+    public void doMove(Point point) {
+        if(group != null){
+            group.move(point);
+        } else {
+            move(point);
+        }
     }
 }

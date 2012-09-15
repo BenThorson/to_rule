@@ -9,13 +9,14 @@ public class Rect {
 
     public Point[][] pts;
 
-    public Rect(Point ratio, int units, Point center){
+    public Rect(Point ratio, int units){
 
         int start = (int)Math.sqrt(units);
         for (;start < units; start++){
             Point transform = scale(ratio.x(), ratio.y(), start, start, true);
             if (transform.x() * transform.y() > units) {
-                buildPoints(transform, center);
+                buildPoints(transform);
+                break;
             }
         }
     }
@@ -24,13 +25,12 @@ public class Rect {
         this.pts = pts;
     }
 
-    private void buildPoints(Point transform, Point center) {
+    private void buildPoints(Point transform) {
         pts = new Point[transform.x()][transform.y()];
 
-        Point topRight = new Point(center.x() - transform.x() / 2, center.y() - transform.y() / 2);
         for (int x = 0; x < transform.x(); x++){
             for (int y = 0; y < transform.y(); y++){
-                pts[x][y] = new Point(x,y).add(topRight);
+                pts[x][y] = new Point(x,y);
             }
         }
 

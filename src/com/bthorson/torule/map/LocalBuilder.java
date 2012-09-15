@@ -19,7 +19,7 @@ public class LocalBuilder {
         for (int x = 0; x < Local.WIDTH; x++) {
             for (int y = 0; y < Local.HEIGHT; y++) {
                 if (new Random().nextInt(50) > 48){
-                    tiles[x][y] = Tile.TREE;
+                    tiles[x][y] = Tile.getGrass();
                 } else {
                     tiles[x][y] = Tile.getGrass();
                 }

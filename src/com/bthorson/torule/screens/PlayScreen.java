@@ -3,6 +3,7 @@ package com.bthorson.torule.screens;
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
@@ -90,17 +91,20 @@ public class PlayScreen implements Screen{
             case KeyEvent.VK_ESCAPE: return new StartScreen();
             case KeyEvent.VK_ENTER: return new StartScreen();
             case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_NUMPAD4: player.move(new Point(-1,0)); break;
+            case KeyEvent.VK_NUMPAD4: player.doMove(Direction.WEST.point()); break;
             case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_NUMPAD6: player.move(new Point(1, 0)); break;
+            case KeyEvent.VK_NUMPAD6: player.doMove(Direction.EAST.point()); break;
             case KeyEvent.VK_UP:
-            case KeyEvent.VK_NUMPAD8: player.move(new Point(0, -1)); break;
+            case KeyEvent.VK_NUMPAD8: player.doMove(Direction.NORTH.point()); break;
             case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_NUMPAD2: player.move(new Point(0, 1)); break;
-            case KeyEvent.VK_NUMPAD7: player.move(new Point(-1, -1)); break;
-            case KeyEvent.VK_NUMPAD9: player.move(new Point(1, -1)); break;
-            case KeyEvent.VK_NUMPAD1: player.move(new Point(-1, 1)); break;
-            case KeyEvent.VK_NUMPAD3: player.move(new Point(1, 1)); break;
+            case KeyEvent.VK_NUMPAD2: player.doMove(Direction.SOUTH.point()); break;
+            case KeyEvent.VK_NUMPAD7: player.doMove(Direction.NORTHWEST.point()); break;
+            case KeyEvent.VK_NUMPAD9: player.doMove(Direction.NORTHEAST.point()); break;
+            case KeyEvent.VK_NUMPAD1: player.doMove(Direction.SOUTHWEST.point()); break;
+            case KeyEvent.VK_NUMPAD3: player.doMove(Direction.SOUTHEAST.point()); break;
+            default:
+                player.doMove(new Point(0,0));
+                break;
         }
 
         world.update();
@@ -112,7 +116,7 @@ public class PlayScreen implements Screen{
     public Screen respondToMouseInput(Point mousePos) {
         this.mousePos = mousePos;
         showMouse = true;
-        System.out.printf("%d, %d", mousePos.x(), mousePos.y());
+//        System.out.printf("%d, %d", mousePos.x(), mousePos.y());
         return this;
     }
 }

@@ -17,7 +17,7 @@ public class PlayerAI extends CreatureAI {
 
     @Override
     public void execute() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        self.move(self.getTarget().subtract(self.position()));
     }
 
     @Override

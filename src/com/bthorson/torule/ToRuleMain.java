@@ -39,10 +39,10 @@ public class ToRuleMain extends JFrame implements KeyListener {
                 screen.respondToMouseInput(point);
                 screen.displayOutput(terminal);
                 repaint();
-                System.out.printf("Mouse clicked %d %d\n",e.getX(), adjY);
+//                System.out.printf("Mouse clicked %d %d\n",e.getX(), adjY);
                 int adjX = e.getX() / terminal.charBr().x();
                 adjY= adjY / terminal.charBr().y();
-                System.out.printf("Tile is %d %d\n",adjX, adjY);
+//                System.out.printf("Tile is %d %d\n",adjX, adjY);
             }
         });
         repaint();
