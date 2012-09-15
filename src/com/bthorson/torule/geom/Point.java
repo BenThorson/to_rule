@@ -73,9 +73,9 @@ public class Point {
 
     public boolean withinRect(Point topLeft, Point bottomRight){
         return x() >= topLeft.x() &&
-                x() <= bottomRight.x() &&
+                x() < bottomRight.x() &&
                 y() >= topLeft.y() &&
-                y() <= bottomRight.y();
+                y() < bottomRight.y();
     }
 
     public Point squared() {

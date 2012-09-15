@@ -16,14 +16,14 @@ import javax.swing.text.Position;
 public class CreatureFactory {
 
     public static Creature buildVillager(World world, Point pos){
-        Creature creature = new Creature(world, pos, CreatureImage.H_PEASANT.num(), 15, 10);
+        Creature creature = new Creature(world, pos, CreatureImage.H_PEASANT.num(), 15, 40);
         creature.setAi(new WanderAI(creature));
         creature.setName("villie");
         return creature;
     }
 
     public static Creature buildPlayer(World world, Point pos){
-        Creature creature = new Creature(world, pos, CreatureImage.H_KNIGHT.num(), 15, 20);
+        Creature creature = new Creature(world, pos, CreatureImage.H_KNIGHT.num(), 30, 60);
         creature.setAi(new PlayerAI(creature));
         creature.setExplored(new ExploredMap());
         creature.setName("player");
@@ -31,7 +31,7 @@ public class CreatureFactory {
     }
 
     public static Creature buildGoblin(World world, Point pos){
-        Creature creature = new Creature(world, pos, CreatureImage.G_KNIGHT.num(), 15, 10);
+        Creature creature = new Creature(world, pos, CreatureImage.G_KNIGHT.num(), 15, 40);
         creature.setAi(new WanderAI(creature));
         creature.setName("gobbo");
         return creature;

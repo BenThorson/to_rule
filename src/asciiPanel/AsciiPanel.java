@@ -559,7 +559,7 @@ public class AsciiPanel extends JPanel {
 
         if (!position.withinRect(this.charTL, charBR)) {
             throw new IllegalArgumentException(String.format("Write start position %d %d not within range of %d %d and %d %d",
-                    charTL.x(), charTL.y(), charBR.x(), charBR.y()));
+                    position.x(), position.y(),charTL.x(), charTL.y(), charBR.x(), charBR.y()));
         };
 
         if (foreground == null)
