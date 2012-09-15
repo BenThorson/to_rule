@@ -1,6 +1,7 @@
 package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
+import com.bthorson.torule.geom.Point;
 
 import java.awt.event.KeyEvent;
 
@@ -29,5 +30,10 @@ public class DeadScreen implements Screen {
             return new StartScreen();
         }
         return this;
+    }
+
+    @Override
+    public Screen respondToMouseInput(Point key) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

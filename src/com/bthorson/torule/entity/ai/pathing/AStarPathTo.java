@@ -42,7 +42,7 @@ public class AStarPathTo implements PathTo {
                 }
                 int g = current.getG() + world.tile(n.getPnt()).moveCost();
                 if (world.creature(n.getPnt()) != null){
-                    g += 50;
+                    g += 20;
                 }
 
                 if (!openList.contains(n)){

@@ -3,6 +3,7 @@ package com.bthorson.torule.entity;
 import com.bthorson.torule.Message;
 import com.bthorson.torule.entity.ai.CreatureAI;
 import com.bthorson.torule.entity.ai.DeadAi;
+import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Line;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
@@ -22,6 +23,10 @@ import java.util.Set;
 public class Creature extends Entity {
 
     private CreatureAI ai = null;
+
+    private Creature leader;
+
+    private Direction heading;
 
     private int visionRadius;
 
@@ -44,6 +49,7 @@ public class Creature extends Entity {
         this.visionRadius = visionRadius;
         this.maxHitpoints = hitpoints;
         this.hitpoints = hitpoints;
+        this.heading = Direction.SOUTH;
     }
     
     public void setExplored(ExploredMap explored){
@@ -57,20 +63,23 @@ public class Creature extends Entity {
         return explored.hasExplored(point);    
     }
 
-    public void move(Point delta){
+    public boolean move(Point delta){
 
         Point moveTo = position().add(delta);
-
         if (!moveTo.withinRect(getWorld().topLeft(), getWorld().bottomRight())){
-            return;
+            return false;
         }
+        heading = Direction.directionOf(delta);
 
         Creature other = getWorld().creature(moveTo);
         if (other != null){
             ai.interact(other);
+            return false;
         } else if (getWorld().tile(moveTo).passable()){
             position = moveTo;
+            return true;
         }
+        return false;
     }
 
     public void update() {
@@ -195,5 +204,23 @@ public class Creature extends Entity {
 
     public void explore(Point point) {
         explored.explore(point);
+    }
+
+    public void setLeader(Creature leader) {
+        this.leader = leader;
+    }
+
+    public Creature getLeader() {
+        return leader;
+    }
+
+    public void swapPlaces(Creature other) {
+        Point temp = this.position;
+        this.position = other.position;
+        other.position = temp;
+    }
+
+    public Direction getHeading() {
+        return heading;
     }
 }

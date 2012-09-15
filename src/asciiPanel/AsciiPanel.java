@@ -100,10 +100,11 @@ public class AsciiPanel extends JPanel {
      */
     public static Color brightWhite = new Color(255, 255, 255);
 
-    private int charWidth = 18;
-    private int charHeight = 18;
-    public final Point charTL = new Point(0,0);
-    public final Point charBR;
+
+    public final Point screenTL = new Point(0,0);
+    public final Point screenBR;
+    private final Point charTL = screenTL;
+    private final Point charBr = new Point(18,18);
     private Color defaultBackgroundColor;
     private Color defaultForegroundColor;
     private Point cursor;
@@ -111,25 +112,20 @@ public class AsciiPanel extends JPanel {
     private Map<ForeGroundBackGround, BufferedImage[]> glyphs;
     private BufferedImage humanoidsSprite;
     private BufferedImage[] humanoids;
+    private Point mousePosition = new Point(0,0);
+    private boolean mousePositionShow = false;
     private int[][] entities;
     private char[][] chars;
     private Color[][] backgroundColors;
     private Color[][] foregroundColors;
+    private Color mouseColor = Color.YELLOW;
 
     /**
      * Gets the height, in pixels, of a character.
      * @return
      */
-    public int getCharHeight() {
-        return charHeight;
-    }
-
-    /**
-     * Gets the width, in pixels, of a character.
-     * @return
-     */
-    public int getCharWidth() {
-        return charWidth;
+    public Point charBr(){
+        return charBr;
     }
 
     /**
@@ -201,8 +197,8 @@ public class AsciiPanel extends JPanel {
         if (height < 1)
             throw new IllegalArgumentException("height " + height + " must be greater than 0." );
 
-        charBR = new Point(width, height);
-        setPreferredSize(new Dimension(charWidth * width, charHeight * height));
+        screenBR = new Point(width, height);
+        setPreferredSize(new Dimension(charBr.x() * width, charBr.y() * height));
 
         defaultBackgroundColor = black;
         defaultForegroundColor = white;
@@ -232,25 +228,31 @@ public class AsciiPanel extends JPanel {
         Graphics2D g2d = (Graphics2D)g.create();
         Composite old = g2d.getComposite();
 
-        for (int x = 0; x < charBR.x(); x++) {
-            for (int y = 0; y < charBR.y(); y++) {
-                Color bg = backgroundColors[x][y];
+        for (int x = 0; x < screenBR.x(); x++) {
+            for (int y = 0; y < screenBR.y(); y++) {
                 Color fg = foregroundColors[x][y];
+                Color bg = backgroundColors[x][y];
                 ForeGroundBackGround bgfg = new ForeGroundBackGround(fg, bg);
-                g2d.setColor(bg);
+                Point translate = new Point(x,y).multiply(charBr);
                 g2d.setComposite(old);
-                g2d.fillRect(x * charWidth, y * charHeight, charWidth, charHeight);
+                g2d.fillRect(translate.x(), translate.y(), charBr.x(), charBr.y());
                 if (!glyphs.containsKey(bgfg)){
                     loadGlyphs(fg, bg);
                 }
-                g2d.drawImage(glyphs.get(bgfg)[chars[x][y]], x * charWidth, y * charHeight, null);
+                g2d.drawImage(glyphs.get(bgfg)[chars[x][y]], translate.x(), translate.y(), null);
                 if (entities[x][y] != 0){
-                    g.drawImage(humanoids[entities[x][y]], x * charWidth, y * charHeight, null);
+                    g.drawImage(humanoids[entities[x][y]], translate.x(), translate.y(), null);
                     entities[x][y] = 0;
                 }
+
             }
         }
-        g2d.dispose();
+        if (mousePositionShow){
+            g2d = (Graphics2D)g2d.create();
+            g2d.setColor(mouseColor);
+            Point mouseTrans = mousePosition.multiply(charBr);
+            g2d.drawRect(mouseTrans.x(), mouseTrans.y(), charBr.x(), charBr.y());
+        }        g2d.dispose();
     }
 
     private BufferedImage toCompatibleImage(BufferedImage image)
@@ -289,10 +291,10 @@ public class AsciiPanel extends JPanel {
             System.err.println("loadCharacters() " + e.getMessage());
         }
         for (int i = 0; i < 144; i++){
-            int sx = (i % 12) * charWidth;
-            int sy = (i / 12) * charWidth;
-            humanoids[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
-            humanoids[i].getGraphics().drawImage(humanoidsSprite, 0,0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
+            int sx = (i % 12) * charBr.x();
+            int sy = (i / 12) * charBr.y();
+            humanoids[i] = new BufferedImage(charBr.x(), charBr.y(), BufferedImage.TYPE_INT_ARGB);
+            humanoids[i].getGraphics().drawImage(humanoidsSprite, 0,0, charBr.x(), charBr.y(), sx, sy, sx + charBr.x(), sy + charBr.y(), null);
             humanoids[i] = toCompatibleImage(humanoids[i]);
         }
 
@@ -308,11 +310,11 @@ public class AsciiPanel extends JPanel {
         BufferedImage[] imgs = new BufferedImage[GLYPH_SIZE];
 
         for (int i = 0; i < GLYPH_SIZE; i++) {
-            int sx = (i % 16) * charWidth;
-            int sy = (i / 16) * charHeight;
+            int sx = (i % 16) * charBr.x();
+            int sy = (i / 16) * charBr.y();
 
-            imgs[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
-            imgs[i].getGraphics().drawImage(glyphSprite, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth, sy + charHeight, null);
+            imgs[i] = new BufferedImage(charBr.x(), charBr.y(), BufferedImage.TYPE_INT_ARGB);
+            imgs[i].getGraphics().drawImage(glyphSprite, 0, 0, charBr.x(), charBr.y(), sx, sy, sx + charBr.x(), sy + charBr.y(), null);
             Image img2 = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(imgs[i].getSource(), new MixerFilter(fg, bg)));
             imgs[i].getGraphics().drawImage(img2, 0,0, null);
             imgs[i] = toCompatibleImage(imgs[i]);
@@ -325,7 +327,7 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear() {
-        return clear(' ', charTL, charBR, defaultForegroundColor, defaultBackgroundColor);
+        return clear(' ', screenTL, screenBR, defaultForegroundColor, defaultBackgroundColor);
     }
 
     /**
@@ -334,7 +336,7 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear(char character) {
-        return clear(character, charTL, charBR, defaultForegroundColor, defaultBackgroundColor);
+        return clear(character, screenTL, screenBR, defaultForegroundColor, defaultBackgroundColor);
     }
 
     /**
@@ -345,7 +347,7 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear(char character, Color foreground, Color background) {
-        return clear(character, charTL, charBR, foreground, background);
+        return clear(character, screenTL, screenBR, foreground, background);
     }
 
     /**
@@ -367,9 +369,9 @@ public class AsciiPanel extends JPanel {
     public AsciiPanel clear(char character, Point topLeft, Point bottomRight, Color foreground, Color background) {
         if (character < 0 || character >= GLYPH_SIZE)
             throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
-        if (!topLeft.withinRect(this.charTL, charBR)) {
+        if (!topLeft.withinRect(this.screenTL, screenBR)) {
             throw new IllegalArgumentException(String.format("top left corner not within range of %d %d and %d %d",
-                    charTL.x(), charTL.y(), charBR.x(), charBR.y()));
+                    screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
         };
 
         if (bottomRight.x() < 1 || bottomRight.y() < 1) {
@@ -450,9 +452,9 @@ public class AsciiPanel extends JPanel {
         if (character < 0 || character >= GLYPH_SIZE)
             throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
 
-        if (!position.withinRect(this.charTL, charBR)) {
+        if (!position.withinRect(this.screenTL, screenBR)) {
             throw new IllegalArgumentException(String.format("WritePosition %d %d not within range of %d %d and %d %d",
-                    charTL.x(), charTL.y(), charBR.x(), charBR.y()));
+                    screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
         };
         if (foreground == null) foreground = defaultForegroundColor;
         if (background == null) background = defaultBackgroundColor;
@@ -466,9 +468,9 @@ public class AsciiPanel extends JPanel {
 
     public AsciiPanel writeHumanoid(int catPosition, Point position, Tile background) {
 
-        if (!position.withinRect(this.charTL, charBR)) {
+        if (!position.withinRect(this.screenTL, screenBR)) {
             throw new IllegalArgumentException(String.format("WritePosition %d %d not within range of %d %d and %d %d",
-                    charTL.x(), charTL.y(), charBR.x(), charBR.y()));
+                    screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
         };
 
         entities[position.x()][position.y()] = catPosition;
@@ -554,12 +556,12 @@ public class AsciiPanel extends JPanel {
         if (string == null)
             throw new NullPointerException("string must not be null" );
 
-        if (position.x() + string.length() > charBR.x())
+        if (position.x() + string.length() > screenBR.x())
             throw new IllegalArgumentException("String too big to fit on terminal.  " );
 
-        if (!position.withinRect(this.charTL, charBR)) {
+        if (!position.withinRect(this.screenTL, screenBR)) {
             throw new IllegalArgumentException(String.format("Write start position %d %d not within range of %d %d and %d %d",
-                    position.x(), position.y(),charTL.x(), charTL.y(), charBR.x(), charBR.y()));
+                    position.x(), position.y(), screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
         };
 
         if (foreground == null)
@@ -582,7 +584,7 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel writeCenter(String string, int y) {
-        int x = (charBR.x() - string.length()) / 2;
+        int x = (screenBR.x() - string.length()) / 2;
 
         return write(string, new Point(x,y), defaultForegroundColor, defaultBackgroundColor);
     }
@@ -596,7 +598,7 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel writeCenter(String string, int y, Color foreground) {
-        int x = (charBR.x() - string.length()) / 2;
+        int x = (screenBR.x() - string.length()) / 2;
         return write(string, new Point(x,y), foreground, defaultBackgroundColor);
     }
 
@@ -610,7 +612,7 @@ public class AsciiPanel extends JPanel {
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel writeCenter(String string, int y, Color foreground, Color background) {
-        int x = (charBR.x() - string.length()) / 2;
+        int x = (screenBR.x() - string.length()) / 2;
         if (foreground == null)
             foreground = defaultForegroundColor;
 
@@ -624,7 +626,7 @@ public class AsciiPanel extends JPanel {
     }
     
     public void withEachTile(TileTransformer transformer){
-		withEachTile(charTL, charBR, transformer);
+		withEachTile(screenTL, screenBR, transformer);
     }
     
     public void withEachTile(Point topLeft, Point bottomRight, TileTransformer transformer){
@@ -633,7 +635,7 @@ public class AsciiPanel extends JPanel {
     	for (int x0 = topLeft.x(); x0 < bottomRight.x(); x0++)
     	for (int y0 = topLeft.y(); y0 < bottomRight.y(); y0++){
     		Point current = new Point(x0, y0);
-    		if (current.withinRect(charTL, charBR))
+    		if (current.withinRect(screenTL, screenBR))
     			continue;
     		
     		data.character = chars[x0][y0];
@@ -648,4 +650,9 @@ public class AsciiPanel extends JPanel {
     	}
     }
 
+    public void highlight(Point mousePos, Color color, boolean mousePositionShow) {
+        this.mousePosition = mousePos;
+        this.mouseColor = color;
+        this.mousePositionShow = mousePositionShow;
+    }
 }

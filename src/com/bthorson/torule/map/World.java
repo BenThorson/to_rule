@@ -1,6 +1,7 @@
 package com.bthorson.torule.map;
 
 import com.bthorson.torule.entity.*;
+import com.bthorson.torule.entity.ai.FollowAI;
 import com.bthorson.torule.geom.Point;
 
 import java.util.ArrayList;
@@ -68,18 +69,20 @@ public class World {
         addCreature(player);
 
         for (int i = 0; i < 20; i++) {
-            Creature villy = CreatureFactory.buildVillager(this, new Point(30 + i, 21));
-            Creature villy2 = CreatureFactory.buildVillager(this, new Point(30 + i, 20));
+            Creature villy = CreatureFactory.buildSoldier(this, new Point(30 + i, 21));
+//            Creature villy2 = CreatureFactory.buildSoldier(this, new Point(30 + i, 20));
             addCreature(villy);
-            addCreature(villy2);
+//            addCreature(villy2);
             villy.setFaction(human);
-            villy2.setFaction(human);
-            Creature gobby = CreatureFactory.buildGoblin(this, new Point(30 + i, 25));
-            Creature gobby2 = CreatureFactory.buildGoblin(this, new Point(30 + i, 24));
-            gobby.setFaction(goblin);
-            gobby2.setFaction(goblin);
-            addCreature(gobby);
-            addCreature(gobby2);
+//            villy2.setFaction(human);
+            villy.setLeader(player);
+            villy.setAi(new FollowAI(villy));
+//            Creature gobby = CreatureFactory.buildGoblin(this, new Point(30 + i, 25));
+//            Creature gobby2 = CreatureFactory.buildGoblin(this, new Point(30 + i, 24));
+//            gobby.setFaction(goblin);
+//            gobby2.setFaction(goblin);
+//            addCreature(gobby);
+//            addCreature(gobby2);
         }
     }
 

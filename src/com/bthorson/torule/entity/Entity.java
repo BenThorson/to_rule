@@ -16,11 +16,10 @@ public class Entity {
     private static int idGen;
     private String name;
 
+    public final int id;
     private static int getId() {
         return idGen++;
     }
-
-    private final int id;
 
     private World world;
     public World getWorld() {
@@ -61,6 +60,8 @@ public class Entity {
     public void setName(String name) {
         this.name = name;
     }
+
+
 
 
 }

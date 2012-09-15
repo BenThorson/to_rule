@@ -1,9 +1,9 @@
 package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
+import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 /**
@@ -34,5 +34,10 @@ public class StartScreen implements Screen {
             return new PlayScreen(new World());
         }
         return this;
+    }
+
+    @Override
+    public Screen respondToMouseInput(Point key) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

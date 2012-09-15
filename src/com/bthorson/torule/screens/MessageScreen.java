@@ -44,4 +44,9 @@ public class MessageScreen implements Screen{
     public Screen respondToUserInput(KeyEvent key) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    @Override
+    public Screen respondToMouseInput(Point key) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

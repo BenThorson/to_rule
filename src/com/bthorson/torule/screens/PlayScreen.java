@@ -2,13 +2,13 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.CreatureFactory;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * User: ben
@@ -23,6 +23,9 @@ public class PlayScreen implements Screen{
     private MessageScreen messageScreen;
     private int xBorder = 45;
     private int yBorder = 30;
+
+    private Point mousePos = new Point(0,0);
+    private boolean  showMouse;
 
     public PlayScreen(World world) {
         this.world = world;
@@ -48,6 +51,8 @@ public class PlayScreen implements Screen{
 
         statusScreen.displayOutput(terminal);
         messageScreen.displayOutput(terminal);
+        terminal.highlight(mousePos, Color.GREEN, showMouse);
+
     }
 
     private void displayTiles(AsciiPanel terminal, Point offset) {
@@ -77,6 +82,7 @@ public class PlayScreen implements Screen{
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        showMouse = false;
         if (player.dead()){
             return new DeadScreen(this);
         }
@@ -99,6 +105,14 @@ public class PlayScreen implements Screen{
 
         world.update();
 
+        return this;
+    }
+
+    @Override
+    public Screen respondToMouseInput(Point mousePos) {
+        this.mousePos = mousePos;
+        showMouse = true;
+        System.out.printf("%d, %d", mousePos.x(), mousePos.y());
         return this;
     }
 }

@@ -103,4 +103,11 @@ public class Point {
         return dx;
     }
 
+    public Point multiply(Point other) {
+        return new Point(x*other.x, y*other.y);
+    }
+
+    public Point divide(Point other) {
+        return new Point(x/other.x, y/other.y);
+    }
 }

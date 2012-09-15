@@ -9,6 +9,7 @@ public enum CreatureImage {
 
     H_KNIGHT(84),
     H_PEASANT(48),
+    H_SWORDMAN(74),
     G_KNIGHT(36);
 
     private int num;
