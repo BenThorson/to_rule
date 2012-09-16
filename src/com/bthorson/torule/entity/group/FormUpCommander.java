@@ -12,7 +12,7 @@ import java.util.*;
  * Time: 9:26 PM
  */
 public class FormUpCommander implements MovementCommander {
-
+    InPlaceCommander commander = new InPlaceCommander();
     @Override
     public void move(Group group, Point point) {
         final Point dimension = group.getFormation().getDimensions();
@@ -34,7 +34,7 @@ public class FormUpCommander implements MovementCommander {
                 break;
             }
         }
-        Point offset = group.getSquadCommander().position().subtract(group.getCommanderPoint()).add(point);
+        Point offset = group.getSquadCommander().position().subtract(group.getCommanderPoint());
 
         for (Point pt : pnt){
             if (shouldBeEmpty(pt, dimension, group.getMemList().size() + 1)){
@@ -44,8 +44,9 @@ public class FormUpCommander implements MovementCommander {
                 Creature creature = findNearestCreatureToPoint(pt, offset, group.getMemList(), members);
                 members.put(pt, creature);
             }
-            group.updateForPoint(pt, offset);
+//            group.updateForPoint(pt, offset);
         }
+        commander.move(group, point);
     }
 
     private boolean shouldBeEmpty(Point pt, Point dimension, int groupSize) {

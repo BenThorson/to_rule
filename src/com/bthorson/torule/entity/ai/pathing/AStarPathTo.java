@@ -18,7 +18,7 @@ import java.util.Stack;
 public class AStarPathTo implements PathTo {
     @Override
     public Stack<Point> buildPath(World world, Point start, Point target) {
-        System.out.printf("Starting to build a path from x:%d,y:%d to x:%d,y:%d\n",start.x(), start.y(), target.x(), target.y());
+//        System.out.printf("Starting to build a path from x:%d,y:%d to x:%d,y:%d\n",start.x(), start.y(), target.x(), target.y());
         List<Node> closedList = new ArrayList<Node>();
         PriorityQueue<Node> openList = new PriorityQueue<Node>(PointUtil.getDiagDist(start, target) * PointUtil.getDiagDist(start, target),
                 new NodeCompare());
@@ -29,7 +29,7 @@ public class AStarPathTo implements PathTo {
 
             Node current = openList.poll();
             if (current.getPnt().equals(target)){
-                System.out.println("built path");
+//                System.out.println("built path");
                 return constructPath(current);
             }
             closedList.add(current);

@@ -83,6 +83,7 @@ public class PlayScreen implements Screen{
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        System.out.println(key.paramString());
         showMouse = false;
         if (player.dead()){
             return new DeadScreen(this);
