@@ -34,6 +34,11 @@ public class GroupFollowAI extends CreatureAI {
             lastTarget = self.getTarget();
         }
         Point next = path.peek();
+        Creature creat = self.getWorld().creature(next);
+        if (creat != null && creat.getFaction().equals(self.getFaction())){
+            path = new AStarPathTo().buildPath(self.getWorld(), self.position(), self.getTarget());
+            next = path.peek();
+        }
         if (self.move(next.subtract(self.position()))){
             path.pop();
         }

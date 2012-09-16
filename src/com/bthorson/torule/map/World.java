@@ -1,8 +1,8 @@
 package com.bthorson.torule.map;
 
 import com.bthorson.torule.entity.*;
-import com.bthorson.torule.entity.ai.FollowAI;
 import com.bthorson.torule.entity.ai.GroupFollowAI;
+import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Point;
 
 import java.util.ArrayList;

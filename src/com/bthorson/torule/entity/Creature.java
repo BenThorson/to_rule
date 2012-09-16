@@ -3,6 +3,7 @@ package com.bthorson.torule.entity;
 import com.bthorson.torule.Message;
 import com.bthorson.torule.entity.ai.CreatureAI;
 import com.bthorson.torule.entity.ai.DeadAi;
+import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Line;
 import com.bthorson.torule.geom.Point;
