@@ -5,6 +5,7 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.Rect;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
 public class RectangleFormation implements Formation {
 
     private static final int DEF_WIDTH_RATIO = 5;
-    private static final int DEF_HEIGHT_RATIO = 2;
+    private static final int DEF_HEIGHT_RATIO = 3;
 
     private Rect rect;
 
@@ -26,7 +27,7 @@ public class RectangleFormation implements Formation {
 
     @Override
     public void wheelCW() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        rect.rotateLeft();
     }
 
     @Override
@@ -36,20 +37,14 @@ public class RectangleFormation implements Formation {
 
     @Override
     public List<Point> getPositions() {
-        List<Point> ret = new ArrayList<Point>();
-        for (int i = 0; i < rect.getPoints().length; i++){
-            for (int j = 0; j < rect.getPoints()[0].length; j++){
-                ret.add(rect.getPoints()[i][j]);
-            }
-        }
-        return ret;
+        return new ArrayList<Point>(Arrays.asList(rect.getPoints()));
     }
 
     @Override
     public Point getDimensions() {
         if (rect == null){
-            return new Point(0,0);
+            return Point.BLANK;
         }
-        return new Point(rect.getPoints().length, rect.getPoints()[0].length);
+        return rect.getDimension();
     }
 }

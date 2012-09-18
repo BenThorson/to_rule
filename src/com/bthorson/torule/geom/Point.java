@@ -13,6 +13,8 @@ public class Point {
     private int y;
     private int z;
 
+    public static Point BLANK = new Point(0,0,0);
+
     public Point(int x, int y){
         this(x,y,0);
     }
@@ -109,5 +111,13 @@ public class Point {
 
     public Point divide(Point other) {
         return new Point(x/other.x, y/other.y);
+    }
+
+    public Point invertY() {
+        return new Point(x, -y);
+    }
+
+    public Point cloneDeep() {
+        return new Point(x,y);
     }
 }

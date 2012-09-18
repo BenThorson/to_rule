@@ -2,6 +2,7 @@ package com.bthorson.torule.map;
 
 import com.bthorson.torule.entity.*;
 import com.bthorson.torule.entity.ai.GroupFollowAI;
+import com.bthorson.torule.entity.ai.GroupLeadAI;
 import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Point;
 
@@ -69,27 +70,30 @@ public class World {
         player.setFaction(human);
         addCreature(player);
 
+        Creature gobLeader = CreatureFactory.buildGoblinLeader(this, new Point(60, 52));
+        gobLeader.setFaction(goblin);
+        addCreature(gobLeader);
+        gobLeader.setAi(new GroupLeadAI(gobLeader));
         List<Creature> group = new ArrayList<Creature>();
+        List<Creature> gobGroup = new ArrayList<Creature>();
 
-        for (int i = 0; i < 35; i++) {
+        for (int i = 0; i < 14; i++) {
             Creature villy = CreatureFactory.buildSoldier(this, new Point(30 + i, 21));
-//            Creature villy2 = CreatureFactory.buildSoldier(this, new Point(30 + i, 20));
             addCreature(villy);
-//            addCreature(villy2);
             villy.setFaction(human);
-//            villy2.setFaction(human);
             villy.setLeader(player);
             group.add(villy);
             villy.setAi(new GroupFollowAI(villy));
-            Creature gobby = CreatureFactory.buildGoblin(this, new Point(130 + i, 25));
-//            Creature gobby2 = CreatureFactory.buildGoblin(this, new Point(30 + i, 24));
+            Creature gobby = CreatureFactory.buildGoblin(this, new Point(60 + i, 53));
             gobby.setFaction(goblin);
-//            gobby2.setFaction(goblin);
+            gobby.setAi(new GroupFollowAI(gobby));
             addCreature(gobby);
-//            addCreature(gobby2);
         }
         Group grp = new Group(group, player);
         player.setGroup(grp);
+
+        Group gobGrp = new Group(gobGroup, gobLeader);
+        gobLeader.setGroup(gobGrp);
     }
 
     public List<Creature> getCreatures() {
@@ -98,12 +102,15 @@ public class World {
 
     public void update() {
         for (Creature creature: getCreatures()){
-//            creature.update();
+            creature.update();
         }
         for (Creature dead : toRemove){
             creatures.remove(dead);
         }
         toRemove.clear();
+        for (Creature creature : getCreatures()){
+            creature.reset();
+        }
     }
 
     public Creature getPlayer() {

@@ -46,6 +46,8 @@ public class Creature extends Entity {
     
     private ExploredMap explored;
 
+    private boolean hasUpdated;
+
     public Creature(World world, Point position, int glyph, int visionRadius, int hitpoints) {
         super(world, position, glyph, Color.WHITE);
         this.visionRadius = visionRadius;
@@ -71,6 +73,10 @@ public class Creature extends Entity {
 
     public boolean move(Point delta){
 
+        if (Point.BLANK.equals(delta)){
+            return false;
+        }
+
         Point moveTo = position().add(delta);
         if (!moveTo.withinRect(getWorld().topLeft(), getWorld().bottomRight())){
             return false;
@@ -88,12 +94,20 @@ public class Creature extends Entity {
         return false;
     }
 
+    public void reset(){
+        hasUpdated = false;
+    }
+
     public void update() {
+        if (hasUpdated){
+            return;
+        }
         hpRegenCount = ++hpRegenCount % HP_REGEN_RESET;
         if (hpRegenCount == 0){
             adjustHitpoint(1);
         }
-        ai.execute();
+        ai = ai.execute();
+        hasUpdated = true;
     }
 
     public boolean dead() {
@@ -134,6 +148,7 @@ public class Creature extends Entity {
     }
 
     public void attack(Creature other){
+        heading = Direction.directionOf(other.position().subtract(position()));
         if (doesHit(other)){
             int dmg = determineDmg(other);
             other.adjustHitpoint(-dmg);
@@ -240,5 +255,13 @@ public class Creature extends Entity {
         } else {
             move(point);
         }
+    }
+
+    public boolean isEnemy(Creature creat) {
+        return getFaction().getEnemies().contains(creat.getFaction());
+    }
+
+    public Group getGroup() {
+        return group;
     }
 }

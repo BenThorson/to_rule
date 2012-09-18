@@ -16,8 +16,9 @@ public class PlayerAI extends CreatureAI {
     }
 
     @Override
-    public void execute() {
+    public CreatureAI execute() {
         self.move(self.getTarget().subtract(self.position()));
+        return this;
     }
 
     @Override

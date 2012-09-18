@@ -1,5 +1,6 @@
 package com.bthorson.torule.entity.ai.pathing;
 
+import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.Tile;
@@ -77,44 +78,14 @@ public class AStarPathTo implements PathTo {
 
     private List<Point> getNeighbors(Point current, World world, Point target) {
         List<Point> ret = new ArrayList<Point>();
-        int x = current.x();
-        int y = current.y();
         if (PointUtil.getDiagDist(target, current) == 1){
             ret.add(target);
             return ret;
         }
-        Point west = new Point(x - 1, y);
-        if (world.isTravelable(west)){
-            ret.add(west);
-        }
-
-        Point northWest = new Point(x - 1, y - 1);
-        if (world.isTravelable(northWest)) {
-            ret.add(northWest);
-        }
-        Point southWest = new Point(x - 1, y + 1);
-        if (world.isTravelable(southWest)){
-            ret.add(southWest);
-        }
-        Point east = new Point(x + 1, y);
-        if (world.isTravelable(east)) {
-            ret.add(east);
-        }
-        Point northEast = new Point(x + 1, y - 1);
-        if (world.isTravelable(northEast)) {
-            ret.add(northEast);
-        }
-        Point southEast = new Point(x + 1, y + 1);
-        if (world.isTravelable(southEast)) {
-            ret.add(southEast);
-        }
-        Point north = new Point(x, y - 1);
-        if(world.isTravelable(north)) {
-            ret.add(north);
-        }
-        Point south = new Point(x, y + 1);
-        if (world.isTravelable(south)) {
-            ret.add(south);
+        for (Direction dir : Direction.values()){
+            if (world.isTravelable(dir.point().add(current))){
+                ret.add(dir.point().add(current));
+            }
         }
         return ret;
     }

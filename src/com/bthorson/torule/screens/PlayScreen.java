@@ -36,10 +36,10 @@ public class PlayScreen implements Screen{
     }
 
     public Point getOffset() {
-        return new Point(Math.max(0, Math.min(player.position().x() - Screen.SCREEN_WIDTH / 2,
-                                    world.width() - Screen.SCREEN_WIDTH)),
-                         Math.max(0, Math.min(player.position().y() - Screen.SCREEN_HEIGHT / 2,
-                                    world.height() - Screen.SCREEN_HEIGHT)));
+        return new Point(Math.max(0, Math.min(player.position().x() - xBorder / 2,
+                                    world.width() - xBorder)),
+                         Math.max(0, Math.min(player.position().y() - yBorder / 2,
+                                    world.height() - yBorder)));
     }
 
     @Override
@@ -103,6 +103,7 @@ public class PlayScreen implements Screen{
             case KeyEvent.VK_NUMPAD9: player.doMove(Direction.NORTHEAST.point()); break;
             case KeyEvent.VK_NUMPAD1: player.doMove(Direction.SOUTHWEST.point()); break;
             case KeyEvent.VK_NUMPAD3: player.doMove(Direction.SOUTHEAST.point()); break;
+            case KeyEvent.VK_PERIOD: player.getGroup().rotateTest();
             default:
                 player.doMove(new Point(0,0));
                 break;

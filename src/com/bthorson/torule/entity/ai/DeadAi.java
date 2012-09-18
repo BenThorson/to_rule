@@ -15,8 +15,8 @@ public class DeadAi extends CreatureAI {
     }
 
     @Override
-    public void execute() {
-
+    public CreatureAI execute() {
+        return this;
     }
 
     @Override

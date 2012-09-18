@@ -23,7 +23,7 @@ public abstract class CreatureAI {
         this.self = self;
     }
 
-    public abstract void execute();
+    public abstract CreatureAI execute();
 
     public abstract void interact(Entity entity);
 

@@ -37,9 +37,6 @@ public class FormUpCommander implements MovementCommander {
         Point offset = group.getSquadCommander().position().subtract(group.getCommanderPoint());
 
         for (Point pt : pnt){
-            if (shouldBeEmpty(pt, dimension, group.getMemList().size() + 1)){
-                continue;
-            }
             if (!pt.equals(group.getCommanderPoint())){
                 Creature creature = findNearestCreatureToPoint(pt, offset, group.getMemList(), members);
                 members.put(pt, creature);
@@ -49,9 +46,6 @@ public class FormUpCommander implements MovementCommander {
         commander.move(group, point);
     }
 
-    private boolean shouldBeEmpty(Point pt, Point dimension, int groupSize) {
-        return  ((pt.x() + 1) + (pt.y() * dimension.x()) > groupSize);
-    }
 
     private Creature findNearestCreatureToPoint(Point pt, Point offset, List<Creature> memList, Map<Point, Creature> memMap) {
         Point combined = pt.add(offset);

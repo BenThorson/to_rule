@@ -33,19 +33,18 @@ public class SeekAI extends CreatureAI{
     }
 
     @Override
-    public void execute() {
+    public CreatureAI execute() {
         target = getTarget();
         targetPosition = target.position().add(target.getHeading().point());
 
         if (target == null || target.dead()){
             WanderAI ai = new WanderAI(self);
-            self.setAi(ai);
-            return;
+            return ai;
         }
 
 
         if (!self.canSee(target.position())){
-            return;
+            return this;
         }
         if(target.equals(targetPosition)){
             if (path.empty()){
@@ -64,6 +63,7 @@ public class SeekAI extends CreatureAI{
         } else {           //todo optimize by only modifying the end of the path instead of recalcing
             calcAndExecutePath();
         }
+        return this;
     }
 
     private void calcAndExecutePath() {

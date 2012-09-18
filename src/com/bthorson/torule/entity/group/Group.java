@@ -28,9 +28,14 @@ public class Group {
         formation.buildPositions(memList, squadCommander);
     }
 
+    public void rotateTest(){
+        formation.wheelCW();
+        members = null;
+    }
 
-    private boolean inFormation(){
-        if (getCommanderPoint() == null){
+
+    public boolean inFormation(){
+        if (getCommanderPoint() == null || members == null){
             return false;
         }
         Point offset = getSquadCommander().position().subtract(getCommanderPoint());

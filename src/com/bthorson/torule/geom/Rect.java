@@ -7,36 +7,34 @@ package com.bthorson.torule.geom;
  */
 public class Rect {
 
-    public Point[][] pts;
+    private Point[] pts;
+    private Point dimension;
 
     public Rect(Point ratio, int units){
 
-        int start = (int)Math.sqrt(units);
-        for (;start < units; start++){
+        for (int start = 1;start <= units; start++){
             Point transform = scale(ratio.x(), ratio.y(), start, start, true);
-            if (transform.x() * transform.y() > units) {
-                buildPoints(transform);
+            if (transform.x() * transform.y() >= units) {
+                dimension = transform;
+                buildPoints(transform, units);
                 break;
             }
         }
     }
 
-    public Rect(Point[][] pts) {
+    public Rect(Point[] pts) {
         this.pts = pts;
     }
 
-    private void buildPoints(Point transform) {
-        pts = new Point[transform.x()][transform.y()];
-
-        for (int x = 0; x < transform.x(); x++){
-            for (int y = 0; y < transform.y(); y++){
-                pts[x][y] = new Point(x,y);
-            }
+    private void buildPoints(Point transform, int units) {
+        pts = new Point[units];
+        for (int i = 0; i < units; i++){
+                pts[i] = new Point(i % transform.x(),i / transform.x());
         }
-
+        System.out.println("xx");
     }
 
-    public Point[][] getPoints(){
+    public Point[] getPoints(){
         return pts;
     }
 
@@ -56,12 +54,41 @@ public class Rect {
 
 
     public Rect add(Point point) {
-        Point zzz[][] = new Point[pts.length][pts[0].length];
+        Point zzz[] = new Point[pts.length];
         for (int x = 0; x < pts.length; x++){
-            for (int y = 0; y < pts[x].length; y++){
-                zzz[x][y] = new Point(x,y).add(point);
-            }
+            zzz[x] = pts[x].add(point);
         }
         return new Rect(zzz);
+    }
+
+    public synchronized void rotateLeft(){
+
+        Point[] rotatedCoordinates = new Point[pts.length];
+        Point origin = pts[pts.length / 2];
+
+        for(int i = 0; i < rotatedCoordinates.length; i++){
+
+            // Translates current coordinate to be relative to (0,0)
+            Point translationCoordinate = pts[i].subtract(origin);
+
+            // Java coordinates start at 0 and increase as a point moves down, so
+            // multiply by -1 to reverse
+            translationCoordinate = translationCoordinate.invertY();
+
+            // Clone coordinates, so I can use translation coordinates
+            // in upcoming calculation
+            rotatedCoordinates[i] = translationCoordinate.cloneDeep();
+
+            // May need to round results after rotation
+            int tx = (int)Math.round(translationCoordinate.x() * Math.cos(Math.PI/2) - translationCoordinate.y() * Math.sin(Math.PI/2));
+            int ty = (int)Math.round(translationCoordinate.x() * Math.sin(Math.PI/2) + translationCoordinate.y() * Math.cos(Math.PI/2));
+            rotatedCoordinates[i] = new Point(tx, ty).invertY().add(origin);
+
+        }
+        pts = rotatedCoordinates;
+    }
+
+    public Point getDimension() {
+        return dimension;
     }
 }

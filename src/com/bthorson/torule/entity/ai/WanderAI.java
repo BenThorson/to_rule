@@ -21,14 +21,13 @@ public class WanderAI extends CreatureAI {
         super(self);
     }
     @Override
-    public void execute() {
+    public CreatureAI execute() {
 
         Creature toAggro = getTarget();
         if (toAggro != null){
             AggroAI aggroAI = new AggroAI(self, toAggro);
-            self.setAi(aggroAI);
             aggroAI.execute();
-            return;
+            return aggroAI;
         }
         int check = new Random().nextInt(10);
 
@@ -53,6 +52,7 @@ public class WanderAI extends CreatureAI {
                 self.move(new Point(0, -1));
                 break;
         }
+        return this;
     }
 
     @Override

@@ -3,8 +3,12 @@ package com.bthorson.torule.entity.ai;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
+import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -25,9 +29,10 @@ public class GroupFollowAI extends CreatureAI {
     }
 
     @Override
-    public void execute() {
-        if (self.position().equals(self.getTarget())){
-            return;
+    public CreatureAI execute() {
+        if (self.position().equals(self.getTarget()) || self.getTarget() == null){
+            checkToInteract();
+            return this;
         }
         if (!self.getTarget().equals(lastTarget) || path == null || path.isEmpty()){
             path = new AStarPathTo().buildPath(self.getWorld(), self.position(), self.getTarget());
@@ -41,11 +46,49 @@ public class GroupFollowAI extends CreatureAI {
         }
         if (self.move(next.subtract(self.position()))){
             path.pop();
+        } else {
+            checkToInteract();
         }
+        return this;
+    }
+
+    private void checkToInteract() {
+        Creature adjacentHostile = getAdjacentToHostile();
+        if (adjacentHostile != null){
+            interact(adjacentHostile);
+        }
+    }
+
+    private Creature getAdjacentToHostile() {
+        List<Creature> creatures = new ArrayList<Creature>();
+        Creature facing = self.getWorld().creature(self.position().add(self.getHeading().point()));
+        if (facing != null  && self.isEnemy(facing)){
+            return facing;
+        }
+        for (Direction d : Direction.values()){
+            if (d.equals(self.getHeading())){
+                continue;
+            }
+            Creature candidate = self.getWorld().creature(self.position().add(d.point()));
+            if (candidate != null && self.isEnemy(candidate)){
+                creatures.add(candidate);
+            }
+        }
+        if (creatures.isEmpty()){
+            return null;
+        }
+        Collections.shuffle(creatures);
+        return creatures.get(0);
     }
 
     @Override
     public void interact(Entity entity) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (entity instanceof Creature){
+            Creature creat = (Creature)entity;
+            if (self.isEnemy(creat)){
+                self.attack(creat);
+            }
+        }
+
     }
 }

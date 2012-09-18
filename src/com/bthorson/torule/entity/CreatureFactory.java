@@ -39,9 +39,16 @@ public class CreatureFactory {
     }
 
     public static Creature buildGoblin(World world, Point pos){
-        Creature creature = new Creature(world, pos, CreatureImage.G_KNIGHT.num(), 30, 40);
+        Creature creature = new Creature(world, pos, CreatureImage.G_SWORDMAN.num(), 30, 40);
         creature.setAi(new WanderAI(creature));
         creature.setName("gobbo");
+        return creature;
+    }
+
+    public static Creature buildGoblinLeader(World world, Point pos) {
+        Creature creature = new Creature(world, pos, CreatureImage.G_KNIGHT.num(), 30, 60);
+        creature.setAi(new WanderAI(creature));
+        creature.setName("Gobbo Leader");
         return creature;
     }
 }
