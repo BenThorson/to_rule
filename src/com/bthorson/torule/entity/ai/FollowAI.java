@@ -11,7 +11,7 @@ import com.bthorson.torule.entity.Entity;
 public class FollowAI extends SeekAI {
 
 
-    public FollowAI(Creature self) {
+    public FollowAI(AiControllable self) {
         super(self, self.getLeader());
     }
 

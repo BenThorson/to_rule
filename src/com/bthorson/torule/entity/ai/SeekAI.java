@@ -2,14 +2,10 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
-import com.bthorson.torule.entity.NearestComparator;
 import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
 import com.bthorson.torule.entity.ai.pathing.PathTo;
 import com.bthorson.torule.geom.Point;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Stack;
 
 /**
@@ -26,7 +22,7 @@ public class SeekAI extends CreatureAI{
     private int stuckCountMax = 5;
 
 
-    public SeekAI(Creature self, Creature target){
+    public SeekAI(AiControllable self, Creature target){
         super(self);
         this.target = target;
         targetPosition = new Point(target.position());
@@ -35,13 +31,12 @@ public class SeekAI extends CreatureAI{
     @Override
     public CreatureAI execute() {
         target = getTarget();
-        targetPosition = target.position().add(target.getHeading().point());
-
         if (target == null || target.dead()){
             WanderAI ai = new WanderAI(self);
             return ai;
         }
 
+        targetPosition = target.position().add(target.getHeading().point());
 
         if (!self.canSee(target.position())){
             return this;

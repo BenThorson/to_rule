@@ -2,7 +2,6 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
-import com.bthorson.torule.entity.ai.CreatureAI;
 
 /**
  * User: ben
@@ -11,7 +10,7 @@ import com.bthorson.torule.entity.ai.CreatureAI;
  */
 public class PlayerAI extends CreatureAI {
 
-    public PlayerAI(Creature self) {
+    public PlayerAI(AiControllable self) {
         super(self);
     }
 
@@ -28,7 +27,7 @@ public class PlayerAI extends CreatureAI {
             if (shouldHostile(other)){
                 self.attack(other);
             } else if (other.getLeader().equals(self)){
-                self.swapPlaces(other);
+                ((Creature)self).swapPlaces(other);
             }
         }
 

@@ -1,6 +1,7 @@
 package com.bthorson.torule.entity;
 
 import com.bthorson.torule.Message;
+import com.bthorson.torule.entity.ai.AiControllable;
 import com.bthorson.torule.entity.ai.CreatureAI;
 import com.bthorson.torule.entity.ai.DeadAi;
 import com.bthorson.torule.entity.group.Group;
@@ -21,7 +22,7 @@ import java.util.Set;
  * Date: 9/7/12
  * Time: 12:39 PM
  */
-public class Creature extends Entity {
+public class Creature extends Entity implements AiControllable {
 
     private CreatureAI ai = null;
 
@@ -45,8 +46,6 @@ public class Creature extends Entity {
     private Faction faction;
     
     private ExploredMap explored;
-
-    private boolean hasUpdated;
 
     public Creature(World world, Point position, int glyph, int visionRadius, int hitpoints) {
         super(world, position, glyph, Color.WHITE);
@@ -94,20 +93,13 @@ public class Creature extends Entity {
         return false;
     }
 
-    public void reset(){
-        hasUpdated = false;
-    }
 
     public void update() {
-        if (hasUpdated){
-            return;
-        }
         hpRegenCount = ++hpRegenCount % HP_REGEN_RESET;
         if (hpRegenCount == 0){
             adjustHitpoint(1);
         }
         ai = ai.execute();
-        hasUpdated = true;
     }
 
     public boolean dead() {
@@ -243,10 +235,6 @@ public class Creature extends Entity {
 
     public Direction getHeading() {
         return heading;
-    }
-
-    public CreatureAI getAi() {
-        return ai;
     }
 
     public void doMove(Point point) {

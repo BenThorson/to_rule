@@ -16,9 +16,9 @@ import java.util.List;
  */
 public abstract class CreatureAI {
 
-    protected Creature self;
+    protected AiControllable self;
 
-    public CreatureAI(Creature self){
+    public CreatureAI(AiControllable self){
 
         this.self = self;
     }
@@ -40,7 +40,7 @@ public abstract class CreatureAI {
             }
         }
         if (hostilable.size() > 0){
-            Collections.sort(hostilable, new NearestComparator(self));
+            Collections.sort(hostilable, new NearestComparator(self.position()));
             return hostilable.get(0);
         }
         return null;

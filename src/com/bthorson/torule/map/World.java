@@ -2,7 +2,6 @@ package com.bthorson.torule.map;
 
 import com.bthorson.torule.entity.*;
 import com.bthorson.torule.entity.ai.GroupFollowAI;
-import com.bthorson.torule.entity.ai.GroupLeadAI;
 import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Point;
 
@@ -19,7 +18,6 @@ public class World {
     private Region[][] regions;
 
     List<Entity> items = new ArrayList<Entity>();
-    List<Creature> creatures = new ArrayList<Creature>();
     List<Creature> toRemove = new ArrayList<Creature>();
     private Creature player;
 
@@ -49,16 +47,7 @@ public class World {
     }
 
     public Creature creature(Point position){
-        for (Creature creature : creatures){
-            if (creature.position().equals(position)){
-                return creature;
-            }
-        }
-        return null;
-    }
-
-    public void addCreature(Creature creature){
-        creatures.add(creature);
+        return EntityManager.getInstance().creatureAt(position);
     }
 
     public void populateSomeCreatures(){
@@ -68,49 +57,41 @@ public class World {
         goblin.addEnemyFaction(human);
         player = CreatureFactory.buildPlayer(this, new Point(40, 19));
         player.setFaction(human);
-        addCreature(player);
+        EntityManager.getInstance().setPlayer(player);
+        EntityManager.getInstance().addCreature(player);
 
-        Creature gobLeader = CreatureFactory.buildGoblinLeader(this, new Point(60, 52));
+        Creature gobLeader = CreatureFactory.buildGoblinLeader(this, new Point(30, 32));
         gobLeader.setFaction(goblin);
-        addCreature(gobLeader);
-        gobLeader.setAi(new GroupLeadAI(gobLeader));
+        gobLeader.setAi(new GroupFollowAI(gobLeader));
         List<Creature> group = new ArrayList<Creature>();
         List<Creature> gobGroup = new ArrayList<Creature>();
+        gobGroup.add(gobLeader);
 
         for (int i = 0; i < 14; i++) {
             Creature villy = CreatureFactory.buildSoldier(this, new Point(30 + i, 21));
-            addCreature(villy);
             villy.setFaction(human);
             villy.setLeader(player);
             group.add(villy);
             villy.setAi(new GroupFollowAI(villy));
-            Creature gobby = CreatureFactory.buildGoblin(this, new Point(60 + i, 53));
+            Creature gobby = CreatureFactory.buildGoblin(this, new Point(30 + i, 31));
             gobby.setFaction(goblin);
             gobby.setAi(new GroupFollowAI(gobby));
-            addCreature(gobby);
+            gobGroup.add(gobby);
         }
         Group grp = new Group(group, player);
         player.setGroup(grp);
+        EntityManager.getInstance().addGroup(grp);
 
         Group gobGrp = new Group(gobGroup, gobLeader);
-        gobLeader.setGroup(gobGrp);
-    }
-
-    public List<Creature> getCreatures() {
-        return creatures;
+        EntityManager.getInstance().addGroup(gobGrp);
     }
 
     public void update() {
-        for (Creature creature: getCreatures()){
-            creature.update();
-        }
+        EntityManager.getInstance().update();
         for (Creature dead : toRemove){
-            creatures.remove(dead);
+            EntityManager.getInstance().remove(dead);
         }
         toRemove.clear();
-        for (Creature creature : getCreatures()){
-            creature.reset();
-        }
     }
 
     public Creature getPlayer() {
@@ -118,13 +99,7 @@ public class World {
     }
 
     public List<Creature> getCreaturesInRange(Point p1, Point p2) {
-        List<Creature> retList = new ArrayList<Creature>();
-        for (Creature c: getCreatures()){
-            if (c.position().withinRect(p1, p2)){
-                retList.add(c);
-            }
-        }
-        return retList;
+        return EntityManager.getInstance().getCreaturesInRange(p1, p2);
     }
 
     public void creatureDead(Creature creature){

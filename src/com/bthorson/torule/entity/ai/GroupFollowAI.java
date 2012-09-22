@@ -24,7 +24,7 @@ public class GroupFollowAI extends CreatureAI {
     private Stack<Point> path;
 
 
-    public GroupFollowAI(Creature self) {
+    public GroupFollowAI(AiControllable self) {
         super(self);
     }
 

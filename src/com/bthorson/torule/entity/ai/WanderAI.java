@@ -2,12 +2,8 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
-import com.bthorson.torule.entity.NearestComparator;
 import com.bthorson.torule.geom.Point;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -17,7 +13,7 @@ import java.util.Random;
  */
 public class WanderAI extends CreatureAI {
 
-    public WanderAI(Creature self){
+    public WanderAI(AiControllable self){
         super(self);
     }
     @Override

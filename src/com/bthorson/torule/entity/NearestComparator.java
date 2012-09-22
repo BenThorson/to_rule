@@ -14,18 +14,18 @@ import java.util.Comparator;
  */
 public class NearestComparator implements Comparator<Creature> {
 
-    private Creature thisCreature;
+    private Point point;
 
-    public NearestComparator(Creature thisCreature){
-        this.thisCreature = thisCreature;
+    public NearestComparator(Point point){
+        this.point = point;
     }
 
     @Override
     public int compare(Creature o1, Creature o2) {
-        int diff = PointUtil.getDiagDist(thisCreature.position(), o1.position()) -
-                PointUtil.getDiagDist(thisCreature.position(), o2.position());
+        int diff = PointUtil.getDiagDist(point, o1.position()) -
+                PointUtil.getDiagDist(point, o2.position());
         if (diff == 0) {
-            return PointUtil.diagMoves(thisCreature.position(), o1.position()) - PointUtil.diagMoves(thisCreature.position(), o2.position());
+            return PointUtil.diagMoves(point, o1.position()) - PointUtil.diagMoves(point, o2.position());
         } else {
             return diff;
         }

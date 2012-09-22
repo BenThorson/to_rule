@@ -16,7 +16,7 @@ import java.util.Stack;
 public class AggroAI extends SeekAI {
 
 
-    public AggroAI(Creature self, Creature target){
+    public AggroAI(AiControllable self, Creature target){
         super(self, target);
     }
 
@@ -24,9 +24,6 @@ public class AggroAI extends SeekAI {
     public void interact(Entity entity) {
         if (entity == target){
             self.attack((Creature)entity);
-            if(((Creature) entity).dead()){
-                self.setAi(new WanderAI(self));
-            }
         }
         //To change body of implemented methods use File | Settings | File Templates.
     }

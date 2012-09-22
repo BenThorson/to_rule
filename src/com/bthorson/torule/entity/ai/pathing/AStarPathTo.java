@@ -21,7 +21,7 @@ public class AStarPathTo implements PathTo {
     public Stack<Point> buildPath(World world, Point start, Point target) {
 //        System.out.printf("Starting to build a path from x:%d,y:%d to x:%d,y:%d\n",start.x(), start.y(), target.x(), target.y());
         List<Node> closedList = new ArrayList<Node>();
-        PriorityQueue<Node> openList = new PriorityQueue<Node>(PointUtil.getDiagDist(start, target) * PointUtil.getDiagDist(start, target),
+        PriorityQueue<Node> openList = new PriorityQueue<Node>(PointUtil.getDiagDist(start, target) * PointUtil.getDiagDist(start, target) + 1,
                 new NodeCompare());
 
         openList.add(new Node(start));
