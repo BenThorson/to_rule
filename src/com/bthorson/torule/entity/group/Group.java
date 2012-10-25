@@ -86,6 +86,8 @@ public class Group implements AiControllable{
 
     }
 
+    public void test(){}
+
     public boolean move(Point point){
 
         if (!inFormation() || members.size() == 0){
