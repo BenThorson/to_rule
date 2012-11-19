@@ -20,7 +20,7 @@ public enum Tile {
     GRASS_3(',', AsciiPanel.brightGreen, true, false, 4),
     GRASS_4('`', AsciiPanel.brightGreen, true, false, 4),
     TREE((char)5, AsciiPanel.brightGreen, false, true, 1000),
-    ROAD('~', Color.gray, true, false, 2),
+    ROAD((char)43, new Color(250,250,250), true, false, 2),
     WALL_NW((char)201, Color.gray, false, true, 1000),
     WALL_NE((char)187, Color.gray, false, true, 1000),
     WALL_SE((char)188, Color.gray, false, true, 1000),
@@ -28,7 +28,8 @@ public enum Tile {
     WALL_VERT((char)186, Color.gray, false, true, 1000),
     WALL_HORIZ((char)205, Color.gray, false, true, 1000),
     BOUNDS('x', AsciiPanel.brightBlack, false, true, 1000),
-    GROUND((char)219, new Color(0x444444), true, false, 2);
+    DOOR((char)19, Color.YELLOW, true, true, 2),
+    FLOOR((char)219, new Color(0x444444), true, false, 2);
 
 
 

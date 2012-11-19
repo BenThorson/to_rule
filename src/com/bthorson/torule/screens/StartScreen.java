@@ -30,8 +30,12 @@ public class StartScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
-        if (startMenu.respondToUserInput(key) == 0){
-            return new PlayScreen(new World());
+        switch (startMenu.respondToUserInput(key)){
+            case 0:
+                return new PlayScreen(new World());
+            case 1:
+                System.exit(0);
+                break;
         }
         return this;
     }

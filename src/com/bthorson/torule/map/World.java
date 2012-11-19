@@ -2,9 +2,12 @@ package com.bthorson.torule.map;
 
 import com.bthorson.torule.entity.*;
 import com.bthorson.torule.entity.ai.GroupFollowAI;
+import com.bthorson.torule.entity.ai.PlayerAI;
 import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Point;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,35 +58,35 @@ public class World {
         Faction goblin = new Faction("Goblin");
         human.addEnemyFaction(goblin);
         goblin.addEnemyFaction(human);
-        player = CreatureFactory.buildPlayer(this, new Point(40, 19));
+        player = CreatureFactory.buildPlayer(this, new Point(50, 50));
         player.setFaction(human);
         EntityManager.getInstance().setPlayer(player);
         EntityManager.getInstance().addCreature(player);
 
-        Creature gobLeader = CreatureFactory.buildGoblinLeader(this, new Point(30, 32));
-        gobLeader.setFaction(goblin);
-        gobLeader.setAi(new GroupFollowAI(gobLeader));
-        List<Creature> group = new ArrayList<Creature>();
-        List<Creature> gobGroup = new ArrayList<Creature>();
-        gobGroup.add(gobLeader);
-
-        for (int i = 0; i < 14; i++) {
-            Creature villy = CreatureFactory.buildSoldier(this, new Point(30 + i, 21));
-            villy.setFaction(human);
-            villy.setLeader(player);
-            group.add(villy);
-            villy.setAi(new GroupFollowAI(villy));
-            Creature gobby = CreatureFactory.buildGoblin(this, new Point(30 + i, 31));
-            gobby.setFaction(goblin);
-            gobby.setAi(new GroupFollowAI(gobby));
-            gobGroup.add(gobby);
-        }
-        Group grp = new Group(group, player);
-        player.setGroup(grp);
-        EntityManager.getInstance().addGroup(grp);
-
-        Group gobGrp = new Group(gobGroup, gobLeader);
-        EntityManager.getInstance().addGroup(gobGrp);
+//        Creature gobLeader = CreatureFactory.buildGoblinLeader(this, new Point(30, 32));
+//        gobLeader.setFaction(goblin);
+//        gobLeader.setAi(new GroupFollowAI(gobLeader));
+//        List<Creature> group = new ArrayList<Creature>();
+//        List<Creature> gobGroup = new ArrayList<Creature>();
+//        gobGroup.add(gobLeader);
+//
+//        for (int i = 0; i < 14; i++) {
+//            Creature villy = CreatureFactory.buildSoldier(this, new Point(30 + i, 21));
+//            villy.setFaction(human);
+//            villy.setLeader(player);
+//            group.add(villy);
+//            villy.setAi(new GroupFollowAI(villy));
+//            Creature gobby = CreatureFactory.buildGoblin(this, new Point(30 + i, 31));
+//            gobby.setFaction(goblin);
+//            gobby.setAi(new GroupFollowAI(gobby));
+//            gobGroup.add(gobby);
+//        }
+//        Group grp = new Group(group, player);
+//        player.setGroup(grp);
+//        EntityManager.getInstance().addGroup(grp);
+//
+//        Group gobGrp = new Group(gobGroup, gobLeader);
+//        EntityManager.getInstance().addGroup(gobGrp);
     }
 
     public void update() {
@@ -129,5 +132,21 @@ public class World {
 
     public Point bottomRight() {
         return new Point(width(), height());
+    }
+
+    public void serialize(PrintWriter writer){
+        writer.println("World file metadata:  Dimension width:" + regions.length + " height: " + regions[0].length);
+        for (int x = 0; x < regions.length; x++){
+            for (int y = 0; y < regions[0].length; y++){
+                writer.println("R x:" + x + " y:" + y + ";");
+                regions[x][y].serialize(writer);
+            }
+        }
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        World world = new World();
+        PrintWriter writer = new PrintWriter("testWorld.wo");
+        world.serialize(writer);
     }
 }
