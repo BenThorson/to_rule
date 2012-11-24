@@ -10,6 +10,7 @@ import java.util.Set;
  * Time: 4:39 PM
  */
 public class Faction {
+    public static final Faction TEST = new Faction("test");
 
     private Set<Faction> enemies;
     private Set<Faction> allies;

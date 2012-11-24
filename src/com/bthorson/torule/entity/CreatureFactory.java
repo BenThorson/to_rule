@@ -17,16 +17,19 @@ public class CreatureFactory {
 
     public static Creature buildSoldier(World world, Point pos){
         Creature creature = new Creature(world, pos, CreatureImage.H_SWORDMAN.num(), 30, 80);
-        creature.setAi(new WanderAI(creature));
+        creature.setAi(new WanderAI(creature, World.NW_CORNER, world.seCorner()));
         creature.setName("Swordsman");
+        EntityManager.getInstance().addCreature(creature);
         return creature;
 
     }
 
     public static Creature buildVillager(World world, Point pos){
         Creature creature = new Creature(world, pos, CreatureImage.H_PEASANT.num(), 30, 40);
-        creature.setAi(new WanderAI(creature));
+        creature.setAi(new WanderAI(creature, World.NW_CORNER, world.seCorner()));
         creature.setName("villie");
+        creature.setFaction(Faction.TEST);
+        EntityManager.getInstance().addCreature(creature);
         return creature;
     }
 
@@ -35,19 +38,20 @@ public class CreatureFactory {
         creature.setAi(new PlayerAI(creature));
         creature.setExplored(new ExploredMap());
         creature.setName("player");
+        EntityManager.getInstance().addCreature(creature);
         return creature;
     }
 
     public static Creature buildGoblin(World world, Point pos){
         Creature creature = new Creature(world, pos, CreatureImage.G_SWORDMAN.num(), 30, 40);
-        creature.setAi(new WanderAI(creature));
+        creature.setAi(new WanderAI(creature, World.NW_CORNER, world.seCorner()));
         creature.setName("gobbo");
         return creature;
     }
 
     public static Creature buildGoblinLeader(World world, Point pos) {
         Creature creature = new Creature(world, pos, CreatureImage.G_KNIGHT.num(), 30, 60);
-        creature.setAi(new WanderAI(creature));
+        creature.setAi(new WanderAI(creature, World.NW_CORNER, world.seCorner()));
         creature.setName("Gobbo Leader");
         return creature;
     }

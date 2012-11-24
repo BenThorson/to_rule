@@ -3,7 +3,6 @@ package com.bthorson.torule.entity.ai.pathing;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
-import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 
 import java.util.ArrayList;

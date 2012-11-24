@@ -4,6 +4,7 @@ import com.bthorson.torule.entity.ai.CreatureAI;
 import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.World;
 
 /**
  * User: ben
@@ -17,7 +18,7 @@ public class GroupAI {
 
     public GroupAI(Group self) {
         this.self = self;
-        underlyingAI = new WanderAI(self);
+        underlyingAI = new WanderAI(self,World.NW_CORNER, World.getInstance().seCorner());
     }
 
     public void execute() {

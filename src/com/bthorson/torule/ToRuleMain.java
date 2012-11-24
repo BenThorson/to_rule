@@ -2,12 +2,10 @@ package com.bthorson.torule;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
-import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.screens.Screen;
 import com.bthorson.torule.screens.StartScreen;
 
 import javax.swing.JFrame;
-import java.awt.Color;
 import java.awt.event.*;
 
 /**

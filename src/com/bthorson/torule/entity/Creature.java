@@ -192,7 +192,7 @@ public class Creature extends Entity implements AiControllable {
 
     public List<Creature> getVisibleCreatures() {
         Point vis = new Point(visionRadius, visionRadius);
-        List<Creature> inApproxRange = getWorld().getCreaturesInRange(position().subtract(vis), position().add(vis));
+        List<Creature> inApproxRange = EntityManager.getInstance().getCreaturesInRange(position().subtract(vis), position().add(vis));
         List<Creature> visible = new ArrayList<Creature>();
         for (Creature c : inApproxRange){
             if (this != c && canSee(c.position())){

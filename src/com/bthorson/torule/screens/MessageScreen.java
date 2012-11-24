@@ -8,7 +8,6 @@ import com.bthorson.torule.map.World;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.security.PublicKey;
 import java.util.List;
 
 /**

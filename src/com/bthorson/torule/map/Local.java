@@ -1,10 +1,8 @@
 package com.bthorson.torule.map;
 
-import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.geom.Point;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: ben
@@ -15,6 +13,10 @@ public class Local {
 
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
+
+    public static Point seBound = new Point(WIDTH,HEIGHT);
+
+
 
     private int worldX;
     private int worldY;
@@ -52,4 +54,6 @@ public class Local {
     public Tile[][] getTiles() {
         return tiles;
     }
+
+
 }

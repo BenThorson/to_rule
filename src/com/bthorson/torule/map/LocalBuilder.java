@@ -1,7 +1,5 @@
 package com.bthorson.torule.map;
 
-import com.bthorson.torule.geom.Direction;
-
 import java.util.Random;
 
 /**

@@ -5,6 +5,7 @@ import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
 import com.bthorson.torule.entity.ai.pathing.PathTo;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.World;
 
 import java.util.Stack;
 
@@ -32,7 +33,7 @@ public class SeekAI extends CreatureAI{
     public CreatureAI execute() {
         target = getTarget();
         if (target == null || target.dead()){
-            WanderAI ai = new WanderAI(self);
+            WanderAI ai = new WanderAI(self, World.NW_CORNER, World.getInstance().seCorner());
             return ai;
         }
 

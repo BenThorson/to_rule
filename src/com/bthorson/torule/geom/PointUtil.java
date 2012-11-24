@@ -2,6 +2,8 @@ package com.bthorson.torule.geom;
 
 import com.bthorson.torule.entity.Creature;
 
+import java.util.Random;
+
 /**
  * User: ben
  * Date: 9/13/12
@@ -21,5 +23,10 @@ public class PointUtil {
         int xDiags = Math.abs(p1.x() - p2.x());
         int yDiags = Math.abs(p2.x() - p2.y());
         return xDiags + yDiags;
+    }
+
+    public static Point randomPoint(Point nwCorner, Point seBound) {
+        Random random = new Random();
+        return new Point(random.nextInt(seBound.x() - nwCorner.x()), random.nextInt(seBound.y() - nwCorner.y())).add(nwCorner);
     }
 }

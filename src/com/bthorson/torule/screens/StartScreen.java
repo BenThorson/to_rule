@@ -32,7 +32,8 @@ public class StartScreen implements Screen {
     public Screen respondToUserInput(KeyEvent key) {
         switch (startMenu.respondToUserInput(key)){
             case 0:
-                return new PlayScreen(new World());
+                World.getInstance().loadWorld(new Point(1000,1000));
+                return new PlayScreen(World.getInstance());
             case 1:
                 System.exit(0);
                 break;

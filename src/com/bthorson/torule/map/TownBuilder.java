@@ -1,6 +1,9 @@
 package com.bthorson.torule.map;
 
+import com.bthorson.torule.entity.CreatureFactory;
 import com.bthorson.torule.geom.Direction;
+import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
 
 /**
  * Created with IntelliJ IDEA.
@@ -78,6 +81,20 @@ public class TownBuilder {
             fillRect(startX, startY - width / 2, endX - startX, width, Tile.ROAD);
         } else {
             fillRect(startX - width / 2, startY, width, endY - startY, Tile.ROAD);
+        }
+        return this;
+    }
+
+    public TownBuilder makeTownsmen(int numberOfTownsmen){
+        for (int i = 0; i < numberOfTownsmen; i++){
+            Point candidate = PointUtil.randomPoint(World.NW_CORNER, Local.seBound);
+            if (!World.getInstance().isOccupied(candidate)){
+                CreatureFactory.buildVillager(World.getInstance(), candidate);
+
+            } else {
+                i--;
+            }
+
         }
         return this;
     }

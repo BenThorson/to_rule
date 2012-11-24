@@ -3,6 +3,7 @@ package com.bthorson.torule.entity.ai;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.World;
 
 import java.util.Random;
 
@@ -13,9 +14,14 @@ import java.util.Random;
  */
 public class WanderAI extends CreatureAI {
 
-    public WanderAI(AiControllable self){
+    private Point nwBound;
+    private Point seBound;
+    public WanderAI(AiControllable self, Point nwBound, Point seBound){
         super(self);
+        this.nwBound = nwBound;
+        this.seBound = seBound;
     }
+
     @Override
     public CreatureAI execute() {
 
@@ -36,16 +42,20 @@ public class WanderAI extends CreatureAI {
             case 5:
                 break;
             case 6:
-                self.move(new Point(1, 0));
+                if(self.position().add(new Point(1,0)).withinRect(nwBound, seBound))
+                    self.move(new Point(1, 0));
                 break;
             case 7:
-                self.move(new Point(-1, 0));
+                if(self.position().add(new Point(1,0)).withinRect(nwBound, seBound))
+                    self.move(new Point(-1, 0));
                 break;
             case 8:
-                self.move(new Point(0, 1));
+                if(self.position().add(new Point(1,0)).withinRect(nwBound, seBound))
+                    self.move(new Point(0, 1));
                 break;
             case 9:
-                self.move(new Point(0, -1));
+                if(self.position().add(new Point(1,0)).withinRect(nwBound, seBound))
+                    self.move(new Point(0, -1));
                 break;
         }
         return this;

@@ -1,9 +1,7 @@
 package com.bthorson.torule.map;
 
 import com.bthorson.torule.entity.*;
-import com.bthorson.torule.entity.ai.GroupFollowAI;
-import com.bthorson.torule.entity.ai.PlayerAI;
-import com.bthorson.torule.entity.group.Group;
+import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 
 import java.io.FileNotFoundException;
@@ -18,22 +16,193 @@ import java.util.List;
  */
 public class World {
 
+    public static final Point NW_CORNER = new Point(0,0);
+    private Point seCorner;
+
+
     private Region[][] regions;
 
     List<Entity> items = new ArrayList<Entity>();
     List<Creature> toRemove = new ArrayList<Creature>();
     private Creature player;
 
-    public World(){
-        regions = new Region[1][1];
-        for (int x = 0; x < 1; x++){
-            for (int y = 0; y < 1; y++){
+    private List<Point> cities;
+
+    private static World instance;
+
+    private World(){}
+
+    public static World getInstance(){
+        if (instance == null){
+            instance = new World();
+        }
+        return instance;
+    }
+
+    public void loadWorld(Point worldSize){
+        regions = new Region[worldSize.x()/1000][worldSize.y()/1000];
+        for (int x = 0; x < worldSize.x()/1000; x++){
+            for (int y = 0; y < worldSize.y()/1000; y++){
                 regions[x][y] = new Region(x,y);
             }
         }
+        this.seCorner = worldSize;
+
+        initWorld();
         populateSomeCreatures();
     }
 
+    private void initWorld() {
+        cities = new ArrayList<Point>();
+        cities.add(new Point(0, 0));
+        cities.add(new Point(2, 1));
+
+
+        for (Point city : cities) {
+            buildTown(getLocal(city));
+        }
+
+        connectCities(cities.get(0), cities.get(1));
+
+    }
+
+    private void connectCities(Point point, Point point1) {
+        Point cursor = new Point(point);
+        Direction cursorDirection = null;
+        Direction lastDirection = null;
+        while (!cursor.equals(point1)) {
+            lastDirection = cursorDirection;
+
+            if (cursor.x() > point1.x()) {
+                cursorDirection = Direction.WEST;
+            } else if (cursor.x() < point1.x()) {
+                cursorDirection = Direction.EAST;
+            } else if (cursor.y() > point1.y()) {
+                cursorDirection = Direction.NORTH;
+            } else if (cursor.y() < point1.y()) {
+                cursorDirection = Direction.SOUTH;
+            }
+
+            buildConnectingRoad(lastDirection, cursorDirection, cursor);
+            cursor = cursor.add(cursorDirection.point());
+        }
+        lastDirection = cursorDirection;
+        cursorDirection = null;
+        buildConnectingRoad(lastDirection, cursorDirection, cursor);
+    }
+
+    private void buildConnectingRoad(Direction lastDirection, Direction cursorDirection, Point cursor) {
+        Local local = getLocal(cursor);
+        TownBuilder builder = new TownBuilder(local);
+        builder.buildRoad(4, Local.WIDTH / 2 - 2, Local.HEIGHT / 2, Local.WIDTH / 2 + 2, Local.HEIGHT);
+
+        if (lastDirection != null){
+            switch (lastDirection) {
+                case NORTH:
+                    builder.buildRoad(4, Local.WIDTH / 2, Local.HEIGHT / 2, Local.WIDTH / 2, Local.HEIGHT);
+                    break;
+                case SOUTH:
+                    builder.buildRoad(4, Local.WIDTH / 2, 0, Local.WIDTH / 2, Local.HEIGHT / 2);
+                    break;
+                case EAST:
+                    builder.buildRoad(4, 0, Local.HEIGHT / 2, Local.WIDTH / 2, Local.HEIGHT / 2);
+                    break;
+                case WEST:
+                    builder.buildRoad(4, Local.WIDTH / 2, Local.HEIGHT / 2, Local.WIDTH, Local.HEIGHT / 2);
+                    break;
+
+            }
+        }
+
+        if (cursorDirection != null){
+            switch (cursorDirection) {
+                case NORTH:
+                    builder.buildRoad(4, Local.WIDTH / 2, 0, Local.WIDTH / 2, Local.HEIGHT / 2);
+                    break;
+                case SOUTH:
+                    builder.buildRoad(4, Local.WIDTH / 2, Local.HEIGHT / 2, Local.WIDTH / 2, Local.HEIGHT);
+                    break;
+                case EAST:
+                    builder.buildRoad(4, Local.WIDTH / 2, Local.HEIGHT / 2, Local.WIDTH, Local.HEIGHT / 2);
+                    break;
+                case WEST:
+                    builder.buildRoad(4, 0, Local.HEIGHT / 2, Local.WIDTH / 2, Local.HEIGHT / 2);
+                    break;
+
+            }
+        }
+
+
+    }
+
+    private Local getLocal(Point LocalGridPosition) {
+        return regions[LocalGridPosition.x()/10][LocalGridPosition.y()/10].getLocal(LocalGridPosition.x() % 10, LocalGridPosition.y() % 10);
+    }
+
+
+    private void buildTown(Local local) {
+        new TownBuilder(local)
+                .buildTownSquare(26)
+                .buildRoad(4, 0, Local.HEIGHT / 2, Local.WIDTH, Local.HEIGHT / 2)
+                .buildRoad(4, Local.WIDTH / 2, 0, Local.WIDTH / 2, Local.HEIGHT)
+                .buildRoad(3, 84, 50, 84, 70)
+                .buildRoad(3, 16, 16, 16, 85)
+                .buildRoad(3, 8, 16, 86, 16)
+                .buildRoad(3, 16, 83, 50, 83)
+                .buildRoad(3, 84, 16, 84, 50)
+                .buildWall(0, 0, 99, 99)
+
+                .buildBuilding(8, 18, 6, 6, Direction.EAST)
+                .buildBuilding(8, 25, 6, 6, Direction.EAST)
+                .buildBuilding(8, 34, 6, 6, Direction.EAST)
+                .buildBuilding(8, 41, 6, 6, Direction.EAST)
+                .buildBuilding(8, 52, 6, 6, Direction.EAST)
+                .buildBuilding(8, 59, 6, 6, Direction.EAST)
+                .buildBuilding(8, 68, 6, 6, Direction.EAST)
+                .buildBuilding(8, 75, 6, 6, Direction.EAST)
+
+
+                .buildBuilding(18, 18, 6, 6, Direction.WEST)
+                .buildBuilding(18, 25, 6, 6, Direction.WEST)
+                .buildBuilding(18, 34, 6, 6, Direction.WEST)
+                .buildBuilding(18, 41, 6, 6, Direction.WEST)
+                .buildBuilding(18, 52, 6, 6, Direction.WEST)
+                .buildBuilding(18, 59, 6, 6, Direction.WEST)
+                .buildBuilding(18, 68, 6, 6, Direction.WEST)
+                .buildBuilding(18, 75, 6, 6, Direction.WEST)
+
+                .buildBuilding(8, 8, 6, 6, Direction.SOUTH)
+                .buildBuilding(18, 8, 6, 6, Direction.SOUTH)
+                .buildBuilding(25, 8, 6, 6, Direction.SOUTH)
+                .buildBuilding(34, 8, 6, 6, Direction.SOUTH)
+                .buildBuilding(41, 8, 6, 6, Direction.SOUTH)
+
+                .buildBuilding(25, 18, 6, 6, Direction.NORTH)
+                .buildBuilding(34, 18, 6, 6, Direction.NORTH)
+                .buildBuilding(41, 18, 6, 6, Direction.NORTH)
+
+                .buildBuilding(25, 75, 6, 6, Direction.SOUTH)
+                .buildBuilding(34, 75, 6, 6, Direction.SOUTH)
+                .buildBuilding(41, 75, 6, 6, Direction.SOUTH)
+
+                .buildBuilding(8, 85, 6, 6, Direction.NORTH)
+                .buildBuilding(18, 85, 6, 6, Direction.NORTH)
+                .buildBuilding(25, 85, 6, 6, Direction.NORTH)
+                .buildBuilding(34, 85, 6, 6, Direction.NORTH)
+                .buildBuilding(41, 85, 6, 6, Direction.NORTH)
+
+
+                .buildBuilding(28, 38, 8, 8, Direction.EAST)
+                .buildBuilding(28, 53, 8, 8, Direction.EAST)
+                .buildBuilding(38, 28, 8, 8, Direction.SOUTH)
+                .buildBuilding(53, 28, 8, 8, Direction.SOUTH)
+                .buildBuilding(63, 38, 8, 8, Direction.WEST)
+                .buildBuilding(63, 53, 8, 8, Direction.WEST)
+                .buildBuilding(38, 63, 8, 8, Direction.NORTH)
+                .buildBuilding(53, 63, 8, 8, Direction.NORTH)
+                .buildBuilding(70, 70, 28, 28, Direction.NORTH)
+                .makeTownsmen(20);
+    }
 
 
     public int width() {
@@ -148,5 +317,13 @@ public class World {
         World world = new World();
         PrintWriter writer = new PrintWriter("testWorld.wo");
         world.serialize(writer);
+    }
+
+    public boolean isOccupied(Point candidate) {
+        return !tile(candidate).passable() || creature(candidate) != null;
+    }
+
+    public Point seCorner() {
+        return seCorner;
     }
 }
