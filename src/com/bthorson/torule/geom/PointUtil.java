@@ -25,6 +25,11 @@ public class PointUtil {
         return xDiags + yDiags;
     }
 
+    public static int manhattanDist(Point p1, Point p2){
+        Point diff = p1.absoluteDifference(p2);
+        return diff.x() + diff.y();
+    }
+
     public static Point randomPoint(Point nwCorner, Point seBound) {
         Random random = new Random();
         return new Point(random.nextInt(seBound.x() - nwCorner.x()), random.nextInt(seBound.y() - nwCorner.y())).add(nwCorner);

@@ -14,23 +14,16 @@ public class Local {
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
 
+    private Point nwBoundWorldCoord;
+    private Point seBoundWorldBound;
     public static Point seBound = new Point(WIDTH,HEIGHT);
-
-
-
-    private int worldX;
-    private int worldY;
-    private int regionX;
-    private int regionY;
 
     private Tile[][] tiles;
 
 
-    public Local(int worldX, int worldY, int regionX, int regionY, Tile[][] tiles) {
-        this.worldX = worldX;
-        this.worldY = worldY;
-        this.regionX = regionX;
-        this.regionY = regionY;
+    public Local(Point nwBound, Tile[][] tiles) {
+        nwBoundWorldCoord = nwBound;
+        seBoundWorldBound = nwBoundWorldCoord.add(seBound);
         this.tiles = tiles;
     }
 
@@ -55,5 +48,19 @@ public class Local {
         return tiles;
     }
 
+    public Point getNwBoundWorldCoord() {
+        return nwBoundWorldCoord;
+    }
 
+    public void setNwBoundWorldCoord(Point nwBoundWorldCoord) {
+        this.nwBoundWorldCoord = nwBoundWorldCoord;
+    }
+
+    public Point getSeBoundWorldBound() {
+        return seBoundWorldBound;
+    }
+
+    public void setSeBoundWorldBound(Point seBoundWorldBound) {
+        this.seBoundWorldBound = seBoundWorldBound;
+    }
 }

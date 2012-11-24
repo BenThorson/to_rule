@@ -3,6 +3,7 @@ package com.bthorson.torule.screens;
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
+import com.bthorson.torule.worldgen.WorldGenParams;
 
 import java.awt.event.KeyEvent;
 
@@ -32,7 +33,10 @@ public class StartScreen implements Screen {
     public Screen respondToUserInput(KeyEvent key) {
         switch (startMenu.respondToUserInput(key)){
             case 0:
-                World.getInstance().loadWorld(new Point(1000,1000));
+                WorldGenParams params = new WorldGenParams();
+                params.setWorldSize(new Point(1000,1000));
+                params.setNumCities(5);
+                World.getInstance().loadWorld(params);
                 return new PlayScreen(World.getInstance());
             case 1:
                 System.exit(0);

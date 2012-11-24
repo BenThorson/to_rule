@@ -3,11 +3,23 @@ package com.bthorson.torule.map;
 import com.bthorson.torule.entity.*;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
+import com.bthorson.torule.town.BuildingType;
+import com.bthorson.torule.town.Town;
+import com.bthorson.torule.town.TownBuilder;
+import com.bthorson.torule.worldgen.WorldGenParams;
+import org.jgrapht.UndirectedGraph;
+import org.jgrapht.alg.KruskalMinimumSpanningTree;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleWeightedGraph;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: ben
@@ -26,7 +38,7 @@ public class World {
     List<Creature> toRemove = new ArrayList<Creature>();
     private Creature player;
 
-    private List<Point> cities;
+    private List<Town> towns = new ArrayList<Town>();
 
     private static World instance;
 
@@ -39,30 +51,59 @@ public class World {
         return instance;
     }
 
-    public void loadWorld(Point worldSize){
-        regions = new Region[worldSize.x()/1000][worldSize.y()/1000];
-        for (int x = 0; x < worldSize.x()/1000; x++){
-            for (int y = 0; y < worldSize.y()/1000; y++){
+    public void loadWorld(WorldGenParams params){
+
+        regions = new Region[params.getWorldSize().x()/1000][params.getWorldSize().y()/1000];
+        for (int x = 0; x < params.getWorldSize().x()/1000; x++){
+            for (int y = 0; y < params.getWorldSize().y()/1000; y++){
                 regions[x][y] = new Region(x,y);
             }
         }
-        this.seCorner = worldSize;
+        this.seCorner = params.getWorldSize();
 
-        initWorld();
+        initWorld(params);
         populateSomeCreatures();
     }
 
-    private void initWorld() {
-        cities = new ArrayList<Point>();
-        cities.add(new Point(0, 0));
-        cities.add(new Point(2, 1));
-
-
-        for (Point city : cities) {
-            buildTown(getLocal(city));
+    private void initWorld(WorldGenParams params) {
+        Set<Point> townPoints = new HashSet<Point>();
+        for (; townPoints.size() < params.getNumCities();){
+            townPoints.add(PointUtil.randomPoint(World.NW_CORNER, seCorner.divide(new Point(100,100))));
         }
 
-        connectCities(cities.get(0), cities.get(1));
+
+
+        for (Point city : townPoints) {
+            towns.add(TownBuilder.buildPredefinedTown(getLocal(city)));
+        }
+
+        getMSTPath(townPoints);
+    }
+
+    private void getMSTPath(Set<Point> townPoints) {
+        SimpleWeightedGraph<Point, DefaultWeightedEdge> g = new SimpleWeightedGraph<Point, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+        for (Point p : townPoints){
+            g.addVertex(p);
+        }
+        for (Point p : townPoints){
+
+            for (Point p2 : townPoints){
+                if (p.equals(p2)){
+                    continue;
+                }
+                DefaultWeightedEdge edge = g.addEdge(p, p2);
+                if (edge != null){
+                    g.setEdgeWeight(edge, (double)PointUtil.manhattanDist(p, p2));
+                }
+            }
+        }
+
+        KruskalMinimumSpanningTree<Point, DefaultWeightedEdge> mstAlg = new KruskalMinimumSpanningTree<Point, DefaultWeightedEdge>(g);
+        Set<DefaultWeightedEdge> edges = mstAlg.getEdgeSet();
+        for (DefaultWeightedEdge edge : edges){
+            connectCities(g.getEdgeSource(edge), g.getEdgeTarget(edge));
+        }
+
 
     }
 
@@ -138,72 +179,6 @@ public class World {
     private Local getLocal(Point LocalGridPosition) {
         return regions[LocalGridPosition.x()/10][LocalGridPosition.y()/10].getLocal(LocalGridPosition.x() % 10, LocalGridPosition.y() % 10);
     }
-
-
-    private void buildTown(Local local) {
-        new TownBuilder(local)
-                .buildTownSquare(26)
-                .buildRoad(4, 0, Local.HEIGHT / 2, Local.WIDTH, Local.HEIGHT / 2)
-                .buildRoad(4, Local.WIDTH / 2, 0, Local.WIDTH / 2, Local.HEIGHT)
-                .buildRoad(3, 84, 50, 84, 70)
-                .buildRoad(3, 16, 16, 16, 85)
-                .buildRoad(3, 8, 16, 86, 16)
-                .buildRoad(3, 16, 83, 50, 83)
-                .buildRoad(3, 84, 16, 84, 50)
-                .buildWall(0, 0, 99, 99)
-
-                .buildBuilding(8, 18, 6, 6, Direction.EAST)
-                .buildBuilding(8, 25, 6, 6, Direction.EAST)
-                .buildBuilding(8, 34, 6, 6, Direction.EAST)
-                .buildBuilding(8, 41, 6, 6, Direction.EAST)
-                .buildBuilding(8, 52, 6, 6, Direction.EAST)
-                .buildBuilding(8, 59, 6, 6, Direction.EAST)
-                .buildBuilding(8, 68, 6, 6, Direction.EAST)
-                .buildBuilding(8, 75, 6, 6, Direction.EAST)
-
-
-                .buildBuilding(18, 18, 6, 6, Direction.WEST)
-                .buildBuilding(18, 25, 6, 6, Direction.WEST)
-                .buildBuilding(18, 34, 6, 6, Direction.WEST)
-                .buildBuilding(18, 41, 6, 6, Direction.WEST)
-                .buildBuilding(18, 52, 6, 6, Direction.WEST)
-                .buildBuilding(18, 59, 6, 6, Direction.WEST)
-                .buildBuilding(18, 68, 6, 6, Direction.WEST)
-                .buildBuilding(18, 75, 6, 6, Direction.WEST)
-
-                .buildBuilding(8, 8, 6, 6, Direction.SOUTH)
-                .buildBuilding(18, 8, 6, 6, Direction.SOUTH)
-                .buildBuilding(25, 8, 6, 6, Direction.SOUTH)
-                .buildBuilding(34, 8, 6, 6, Direction.SOUTH)
-                .buildBuilding(41, 8, 6, 6, Direction.SOUTH)
-
-                .buildBuilding(25, 18, 6, 6, Direction.NORTH)
-                .buildBuilding(34, 18, 6, 6, Direction.NORTH)
-                .buildBuilding(41, 18, 6, 6, Direction.NORTH)
-
-                .buildBuilding(25, 75, 6, 6, Direction.SOUTH)
-                .buildBuilding(34, 75, 6, 6, Direction.SOUTH)
-                .buildBuilding(41, 75, 6, 6, Direction.SOUTH)
-
-                .buildBuilding(8, 85, 6, 6, Direction.NORTH)
-                .buildBuilding(18, 85, 6, 6, Direction.NORTH)
-                .buildBuilding(25, 85, 6, 6, Direction.NORTH)
-                .buildBuilding(34, 85, 6, 6, Direction.NORTH)
-                .buildBuilding(41, 85, 6, 6, Direction.NORTH)
-
-
-                .buildBuilding(28, 38, 8, 8, Direction.EAST)
-                .buildBuilding(28, 53, 8, 8, Direction.EAST)
-                .buildBuilding(38, 28, 8, 8, Direction.SOUTH)
-                .buildBuilding(53, 28, 8, 8, Direction.SOUTH)
-                .buildBuilding(63, 38, 8, 8, Direction.WEST)
-                .buildBuilding(63, 53, 8, 8, Direction.WEST)
-                .buildBuilding(38, 63, 8, 8, Direction.NORTH)
-                .buildBuilding(53, 63, 8, 8, Direction.NORTH)
-                .buildBuilding(70, 70, 28, 28, Direction.NORTH)
-                .makeTownsmen(20);
-    }
-
 
     public int width() {
         return 1000;

@@ -1,5 +1,7 @@
 package com.bthorson.torule.map;
 
+import com.bthorson.torule.geom.Point;
+
 import java.util.Random;
 
 /**
@@ -28,8 +30,8 @@ public class LocalBuilder {
         return this;
     }
 
-    public Local build(int wX, int wY, int rX, int rY){
-        return new Local(wX, wY, rX, rY, tiles);
+    public Local build(Point nwBound){
+        return new Local(nwBound, tiles);
     }
 
 }

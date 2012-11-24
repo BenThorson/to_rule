@@ -1,5 +1,7 @@
 package com.bthorson.torule.worldgen;
 
+import com.bthorson.torule.geom.Point;
+
 /**
  * Created with IntelliJ IDEA.
  * User: benthorson
@@ -10,7 +12,7 @@ package com.bthorson.torule.worldgen;
 public class WorldGenParams {
 
     private int numCities;
-    private int worldSize;
+    private Point worldSize;
 
 
     public int getNumCities() {
@@ -21,11 +23,11 @@ public class WorldGenParams {
         this.numCities = numCities;
     }
 
-    public int getWorldSize() {
+    public Point getWorldSize() {
         return worldSize;
     }
 
-    public void setWorldSize(int worldSize) {
+    public void setWorldSize(Point worldSize) {
         this.worldSize = worldSize;
     }
 }
