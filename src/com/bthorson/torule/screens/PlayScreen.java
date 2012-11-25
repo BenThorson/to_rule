@@ -52,6 +52,12 @@ public class PlayScreen implements Screen{
 
         statusScreen.displayOutput(terminal);
         messageScreen.displayOutput(terminal);
+        if (showMouse){
+            Creature c = World.getInstance().creature(mousePos.add(offset));
+            if (c != null){
+                System.out.println(c.getName());
+            }
+        }
         terminal.highlight(mousePos, Color.GREEN, showMouse);
 
     }
@@ -83,7 +89,6 @@ public class PlayScreen implements Screen{
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
-        System.out.println(key.paramString());
         showMouse = false;
         if (player.dead()){
             return new DeadScreen(this);
@@ -103,7 +108,7 @@ public class PlayScreen implements Screen{
             case KeyEvent.VK_NUMPAD9: player.doMove(Direction.NORTHEAST.point()); break;
             case KeyEvent.VK_NUMPAD1: player.doMove(Direction.SOUTHWEST.point()); break;
             case KeyEvent.VK_NUMPAD3: player.doMove(Direction.SOUTHEAST.point()); break;
-            case KeyEvent.VK_PERIOD: player.getGroup().rotateTest();
+            case KeyEvent.VK_PERIOD: player.getGroup().rotateTest(); break;
             default:
                 player.doMove(new Point(0,0));
                 break;
@@ -118,7 +123,7 @@ public class PlayScreen implements Screen{
     public Screen respondToMouseInput(Point mousePos) {
         this.mousePos = mousePos;
         showMouse = true;
-//        System.out.printf("%d, %d", mousePos.x(), mousePos.y());
+       System.out.printf("%d, %d\n", mousePos.x(), mousePos.y());
         return this;
     }
 }

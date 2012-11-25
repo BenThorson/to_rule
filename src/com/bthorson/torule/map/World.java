@@ -14,6 +14,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
+import javax.swing.text.Position;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class World {
     List<Entity> items = new ArrayList<Entity>();
     List<Creature> toRemove = new ArrayList<Creature>();
     private Creature player;
+
+    private List<Point> openDoors = new ArrayList<Point>();
 
     private List<Town> towns = new ArrayList<Town>();
 
@@ -239,6 +242,15 @@ public class World {
             EntityManager.getInstance().remove(dead);
         }
         toRemove.clear();
+        List<Point> updated = new ArrayList<Point>();
+        for (Point openDoor : openDoors){
+            if (!isOccupied(openDoor)){
+                closeDoor(openDoor);
+            } else {
+                updated.add(openDoor);
+            }
+        }
+        openDoors = updated;
     }
 
     public Creature getPlayer() {
@@ -300,5 +312,18 @@ public class World {
 
     public Point seCorner() {
         return seCorner;
+    }
+
+    public void openDoor(Point position){
+        Local local = getLocal(position.divide(new Point(100,100)));
+        Point offset = position.subtract(local.getNwBoundWorldCoord());
+        local.getTiles()[offset.x()][offset.y()] = Tile.OPEN_DOOR;
+        openDoors.add(position);
+    }
+
+    private void closeDoor(Point position){
+        Local local = getLocal(position.divide(new Point(100,100)));
+        Point offset = position.subtract(local.getNwBoundWorldCoord());
+        local.getTiles()[offset.x()][offset.y()] = Tile.DOOR;
     }
 }

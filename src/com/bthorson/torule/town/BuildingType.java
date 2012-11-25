@@ -9,7 +9,11 @@ public enum BuildingType {
 
     HOUSE,
     FARM,
-    SHOP,
+    WEAPON_SHOP,
+    ARMOR_SHOP,
+    INN,
+    FOOD_SHOP,
+    GENERAL_SHOP,
     KEEP,
     BARRACKS,
 

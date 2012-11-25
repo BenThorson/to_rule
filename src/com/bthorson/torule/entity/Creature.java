@@ -8,6 +8,7 @@ import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Line;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.ExploredMap;
 
@@ -47,12 +48,15 @@ public class Creature extends Entity implements AiControllable {
     
     private ExploredMap explored;
 
+    private String name;
+
     public Creature(World world, Point position, int glyph, int visionRadius, int hitpoints) {
         super(world, position, glyph, Color.WHITE);
         this.visionRadius = visionRadius;
         this.maxHitpoints = hitpoints;
         this.hitpoints = hitpoints;
         this.heading = Direction.SOUTH;
+        name = NameGenerator.getInstance().genName();
     }
 
     public void setGroup(Group group){
@@ -76,10 +80,17 @@ public class Creature extends Entity implements AiControllable {
             return false;
         }
 
+
         Point moveTo = position().add(delta);
+
         if (!moveTo.withinRect(getWorld().topLeft(), getWorld().bottomRight())){
             return false;
         }
+
+        if (World.getInstance().tile(moveTo).equals(Tile.DOOR)){
+            World.getInstance().openDoor(moveTo);
+        }
+
         heading = Direction.directionOf(delta) != null ? Direction.directionOf(delta) : heading;
 
         Creature other = getWorld().creature(moveTo);
@@ -251,5 +262,13 @@ public class Creature extends Entity implements AiControllable {
 
     public Group getGroup() {
         return group;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

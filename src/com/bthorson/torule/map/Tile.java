@@ -28,7 +28,8 @@ public enum Tile {
     WALL_VERT((char)186, Color.gray, false, true, 1000),
     WALL_HORIZ((char)205, Color.gray, false, true, 1000),
     BOUNDS('x', AsciiPanel.brightBlack, false, true, 1000),
-    DOOR((char)19, Color.YELLOW, true, true, 2),
+    DOOR((char)197, new Color(0x994444), true, true, 2),
+    OPEN_DOOR((char)197, new Color(0x994444), true, false, 2),
     FLOOR((char)219, new Color(0x444444), true, false, 2);
 
 

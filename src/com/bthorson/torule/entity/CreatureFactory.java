@@ -27,7 +27,6 @@ public class CreatureFactory {
     public static Creature buildVillager(World world, Point pos){
         Creature creature = new Creature(world, pos, CreatureImage.H_PEASANT.num(), 30, 40);
         creature.setAi(new WanderAI(creature, World.NW_CORNER, world.seCorner()));
-        creature.setName("villie");
         creature.setFaction(Faction.TEST);
         EntityManager.getInstance().addCreature(creature);
         return creature;

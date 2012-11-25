@@ -161,14 +161,14 @@ public class TownBuilder {
                 .buildBuilding(41, 85, 6, 6, Direction.NORTH, BuildingType.HOUSE)
 
 
-                .buildBuilding(28, 38, 8, 8, Direction.EAST, BuildingType.SHOP)
-                .buildBuilding(28, 53, 8, 8, Direction.EAST, BuildingType.SHOP)
-                .buildBuilding(38, 28, 8, 8, Direction.SOUTH, BuildingType.SHOP)
-                .buildBuilding(53, 28, 8, 8, Direction.SOUTH, BuildingType.SHOP)
-                .buildBuilding(63, 38, 8, 8, Direction.WEST, BuildingType.SHOP)
-                .buildBuilding(63, 53, 8, 8, Direction.WEST, BuildingType.SHOP)
-                .buildBuilding(38, 63, 8, 8, Direction.NORTH, BuildingType.SHOP)
-                .buildBuilding(53, 63, 8, 8, Direction.NORTH, BuildingType.SHOP)
+                .buildBuilding(28, 38, 8, 8, Direction.EAST, BuildingType.WEAPON_SHOP)
+                .buildBuilding(28, 53, 8, 8, Direction.EAST, BuildingType.FOOD_SHOP)
+                .buildBuilding(38, 28, 8, 8, Direction.SOUTH, BuildingType.ARMOR_SHOP)
+                .buildBuilding(53, 28, 8, 8, Direction.SOUTH, BuildingType.INN)
+                .buildBuilding(63, 38, 8, 8, Direction.WEST, BuildingType.GENERAL_SHOP)
+                .buildBuilding(63, 53, 8, 8, Direction.WEST, BuildingType.GENERAL_SHOP)
+                .buildBuilding(38, 63, 8, 8, Direction.NORTH, BuildingType.GENERAL_SHOP)
+                .buildBuilding(53, 63, 8, 8, Direction.NORTH, BuildingType.GENERAL_SHOP)
                 .buildBuilding(70, 70, 28, 28, Direction.NORTH, BuildingType.KEEP)
                 .makeTownsmen(20).build();
     }
