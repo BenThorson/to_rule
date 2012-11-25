@@ -115,9 +115,12 @@ public class AsciiPanel extends JPanel {
     private Point mousePosition = new Point(0,0);
     private boolean mousePositionShow = false;
     private int[][] entities;
-    private char[][] chars;
+    private char[][] backgroundChars;
     private Color[][] backgroundColors;
     private Color[][] foregroundColors;
+
+    private char[][] popupChars;
+
     private Color mouseColor = Color.YELLOW;
 
     /**
@@ -203,9 +206,11 @@ public class AsciiPanel extends JPanel {
         defaultBackgroundColor = black;
         defaultForegroundColor = white;
 
-        chars = new char[width][height];
+        backgroundChars = new char[width][height];
         backgroundColors = new Color[width][height];
         foregroundColors = new Color[width][height];
+
+        popupChars = new char[width][height];
 
         glyphs = new HashMap<ForeGroundBackGround, BufferedImage[]>();
 
@@ -239,11 +244,15 @@ public class AsciiPanel extends JPanel {
                 if (!glyphs.containsKey(bgfg)){
                     loadGlyphs(fg, bg);
                 }
-                g2d.drawImage(glyphs.get(bgfg)[chars[x][y]], translate.x(), translate.y(), null);
+                g2d.drawImage(glyphs.get(bgfg)[backgroundChars[x][y]], translate.x(), translate.y(), null);
                 if (entities[x][y] != 0){
                     g.drawImage(humanoids[entities[x][y]], translate.x(), translate.y(), null);
                     entities[x][y] = 0;
                 }
+                if (popupChars[x][y] != 0){
+                    g2d.drawImage(glyphs.get(bgfg)[popupChars[x][y]], translate.x(), translate.y(), null);
+                }
+                popupChars[x][y] = 0;
 
             }
         }
@@ -459,7 +468,7 @@ public class AsciiPanel extends JPanel {
         if (foreground == null) foreground = defaultForegroundColor;
         if (background == null) background = defaultBackgroundColor;
 
-        chars[position.x()][position.y()] = character;
+        backgroundChars[position.x()][position.y()] = character;
         foregroundColors[position.x()][position.y()] = foreground;
         backgroundColors[position.x()][position.y()] = background;
         cursor= position.add(new Point(1,0));
@@ -480,6 +489,55 @@ public class AsciiPanel extends JPanel {
         return this;
     }
 
+    public AsciiPanel writePopup(char character, Point position, Color fg, Color bg){
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
+
+        if (!position.withinRect(this.screenTL, screenBR)) {
+            throw new IllegalArgumentException(String.format("WritePosition %d %d not within range of %d %d and %d %d",
+                    screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
+        };
+        if (fg == null) fg = defaultForegroundColor;
+        if (bg == null) bg = defaultBackgroundColor;
+
+        popupChars[position.x()][position.y()] = character;
+        foregroundColors[position.x()][position.y()] = fg;
+        backgroundColors[position.x()][position.y()] = bg;
+        cursor= position.add(new Point(1,0));
+        return this;
+    }
+
+    /**
+     * Write a string to the specified position with the specified foreground and background colors.
+     * This updates the cursor's position but not the default foreground or background colors.
+     * @param string     the string to write
+     * @param foreground the foreground color or null to use the default
+     * @param background the background color or null to use the default
+     * @return this for convenient chaining of method calls
+     */
+    public AsciiPanel writePopup(String string, Point position, Color foreground, Color background) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (position.x() + string.length() > screenBR.x())
+            throw new IllegalArgumentException("String too big to fit on terminal.  " );
+
+        if (!position.withinRect(this.screenTL, screenBR)) {
+            throw new IllegalArgumentException(String.format("Write start position %d %d not within range of %d %d and %d %d",
+                    position.x(), position.y(), screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
+        };
+
+        if (foreground == null)
+            foreground = defaultForegroundColor;
+
+        if (background == null)
+            background = defaultBackgroundColor;
+
+        for (int i = 0; i < string.length(); i++) {
+            writePopup(string.charAt(i), position.add(new Point(i,0)), foreground, background);
+        }
+        return this;
+    }
 
     public AsciiPanel writeTile(Tile tile, Point viewPort) {
         return write(tile.glyph(), viewPort, tile.color(), tile.color());
@@ -638,13 +696,13 @@ public class AsciiPanel extends JPanel {
     		if (current.withinRect(screenTL, screenBR))
     			continue;
     		
-    		data.character = chars[x0][y0];
+    		data.character = backgroundChars[x0][y0];
     		data.foregroundColor = foregroundColors[x0][y0];
     		data.backgroundColor = backgroundColors[x0][y0];
     		
     		transformer.transformTile(x0,y0, data);
     		
-    		chars[x0][y0] = data.character;
+    		backgroundChars[x0][y0] = data.character;
     		foregroundColors[x0][y0] = data.foregroundColor;
     		backgroundColors[x0][y0] = data.backgroundColor;
     	}
