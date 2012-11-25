@@ -4,7 +4,7 @@ import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**

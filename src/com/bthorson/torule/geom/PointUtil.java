@@ -1,8 +1,5 @@
 package com.bthorson.torule.geom;
 
-import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.map.MapConstants;
-
 import java.util.Random;
 
 /**

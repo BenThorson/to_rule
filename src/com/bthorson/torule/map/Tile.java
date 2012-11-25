@@ -3,7 +3,7 @@ package com.bthorson.torule.map;
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Entity;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Random;
 
 /**

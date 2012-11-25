@@ -14,12 +14,12 @@ public class LocalBuilder {
     private Tile[][] tiles;
 
     public LocalBuilder() {
-        tiles = new Tile[Local.WIDTH][Local.HEIGHT];
+        tiles = new Tile[MapConstants.LOCAL_SIZE_X][MapConstants.LOCAL_SIZE_Y];
     }
 
     public LocalBuilder makeGrassland() {
-        for (int x = 0; x < Local.WIDTH; x++) {
-            for (int y = 0; y < Local.HEIGHT; y++) {
+        for (int x = 0; x < MapConstants.LOCAL_SIZE_X; x++) {
+            for (int y = 0; y < MapConstants.LOCAL_SIZE_Y; y++) {
                 if (new Random().nextInt(50) > 48){
                     tiles[x][y] = Tile.getGrass();
                 } else {

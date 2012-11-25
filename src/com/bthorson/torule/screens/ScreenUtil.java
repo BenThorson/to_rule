@@ -3,7 +3,7 @@ package com.bthorson.torule.screens;
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * User: ben

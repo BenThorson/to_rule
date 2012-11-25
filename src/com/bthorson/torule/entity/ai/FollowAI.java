@@ -1,7 +1,6 @@
 package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.Entity;
 
 /**
  * User: ben

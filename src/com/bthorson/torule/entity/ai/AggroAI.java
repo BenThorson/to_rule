@@ -2,11 +2,6 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
-import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
-import com.bthorson.torule.entity.ai.pathing.PathTo;
-import com.bthorson.torule.geom.Point;
-
-import java.util.Stack;
 
 /**
  * User: ben

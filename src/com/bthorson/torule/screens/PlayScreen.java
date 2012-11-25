@@ -7,9 +7,8 @@ import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 /**
  * User: ben
@@ -18,7 +17,7 @@ import java.awt.event.MouseEvent;
  */
 public class PlayScreen implements Screen {
 
-    private World world;
+    private World world = World.getInstance();
     private Creature player;
     private StatusScreen statusScreen;
     private MessageScreen messageScreen;
@@ -28,8 +27,7 @@ public class PlayScreen implements Screen {
     private Point mousePos = new Point(0,0);
     private boolean  showMouse;
 
-    public PlayScreen(World world) {
-        this.world = world;
+    public PlayScreen() {
         this.player = world.getPlayer();
         this.statusScreen = new StatusScreen(world, xBorder);
         this.messageScreen = new MessageScreen(world, yBorder);

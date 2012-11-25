@@ -3,7 +3,7 @@ package com.bthorson.torule.entity;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
-import java.awt.Color;
+import java.awt.*;
 
 
 /**

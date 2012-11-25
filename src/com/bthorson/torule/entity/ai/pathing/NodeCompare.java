@@ -1,8 +1,5 @@
 package com.bthorson.torule.entity.ai.pathing;
 
-import com.bthorson.torule.geom.Point;
-import com.bthorson.torule.geom.PointUtil;
-
 import java.util.Comparator;
 
 /**

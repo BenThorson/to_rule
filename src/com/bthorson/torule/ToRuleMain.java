@@ -5,8 +5,11 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.screens.Screen;
 import com.bthorson.torule.screens.StartScreen;
 
-import javax.swing.JFrame;
-import java.awt.event.*;
+import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * User: ben

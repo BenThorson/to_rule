@@ -4,17 +4,13 @@ import com.bthorson.torule.entity.*;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
-import com.bthorson.torule.town.BuildingType;
 import com.bthorson.torule.town.Town;
 import com.bthorson.torule.town.TownBuilder;
 import com.bthorson.torule.worldgen.WorldGenParams;
-import org.jgrapht.UndirectedGraph;
 import org.jgrapht.alg.KruskalMinimumSpanningTree;
-import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
-import javax.swing.text.Position;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -77,7 +73,7 @@ public class World {
         this.seCorner = params.getWorldSize();
 
         initWorld(params);
-        populateSomeCreatures();
+        createPlayer(params.getPlayerName());
     }
 
     private void initWorld(WorldGenParams params) {
@@ -213,40 +209,16 @@ public class World {
         return EntityManager.getInstance().creatureAt(position);
     }
 
-    public void populateSomeCreatures(){
+    public void createPlayer(String playerName){
         Faction human = new Faction("Human");
         Faction goblin = new Faction("Goblin");
         human.addEnemyFaction(goblin);
         goblin.addEnemyFaction(human);
         player = CreatureFactory.buildPlayer(this, new Point(50, 50));
         player.setFaction(human);
+        player.setName(playerName);
         EntityManager.getInstance().setPlayer(player);
         EntityManager.getInstance().addCreature(player);
-
-//        Creature gobLeader = CreatureFactory.buildGoblinLeader(this, new Point(30, 32));
-//        gobLeader.setFaction(goblin);
-//        gobLeader.setAi(new GroupFollowAI(gobLeader));
-//        List<Creature> group = new ArrayList<Creature>();
-//        List<Creature> gobGroup = new ArrayList<Creature>();
-//        gobGroup.add(gobLeader);
-//
-//        for (int i = 0; i < 14; i++) {
-//            Creature villy = CreatureFactory.buildSoldier(this, new Point(30 + i, 21));
-//            villy.setFaction(human);
-//            villy.setLeader(player);
-//            group.add(villy);
-//            villy.setAi(new GroupFollowAI(villy));
-//            Creature gobby = CreatureFactory.buildGoblin(this, new Point(30 + i, 31));
-//            gobby.setFaction(goblin);
-//            gobby.setAi(new GroupFollowAI(gobby));
-//            gobGroup.add(gobby);
-//        }
-//        Group grp = new Group(group, player);
-//        player.setGroup(grp);
-//        EntityManager.getInstance().addGroup(grp);
-//
-//        Group gobGrp = new Group(gobGroup, gobLeader);
-//        EntityManager.getInstance().addGroup(gobGrp);
     }
 
     public void update() {

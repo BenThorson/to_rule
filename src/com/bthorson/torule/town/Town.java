@@ -1,7 +1,6 @@
 package com.bthorson.torule.town;
 
 import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.bthorson.torule.screens;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * User: ben

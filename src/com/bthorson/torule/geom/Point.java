@@ -1,7 +1,5 @@
 package com.bthorson.torule.geom;
 
-import com.bthorson.torule.entity.Creature;
-
 /**
  * User: ben
  * Date: 9/7/12

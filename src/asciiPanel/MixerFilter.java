@@ -1,6 +1,6 @@
 package asciiPanel;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.RGBImageFilter;
 
 public class MixerFilter extends RGBImageFilter

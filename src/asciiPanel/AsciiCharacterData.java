@@ -1,6 +1,6 @@
 package asciiPanel;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class AsciiCharacterData {
 	public char character;

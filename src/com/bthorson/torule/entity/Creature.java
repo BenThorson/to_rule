@@ -12,7 +12,7 @@ import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.ExploredMap;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

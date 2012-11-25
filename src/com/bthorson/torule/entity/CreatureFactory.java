@@ -6,8 +6,6 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.ExploredMap;
 
-import javax.swing.text.Position;
-
 /**
  * User: ben
  * Date: 9/7/12

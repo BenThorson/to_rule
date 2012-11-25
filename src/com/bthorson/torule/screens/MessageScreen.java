@@ -6,7 +6,7 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
 

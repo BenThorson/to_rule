@@ -5,6 +5,7 @@ import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.Local;
+import com.bthorson.torule.map.MapConstants;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 
@@ -25,10 +26,10 @@ public class TownBuilder {
     }
 
     public TownBuilder buildTownSquare(int size) {
-        int startX = Local.WIDTH / 2 - (int) Math.floor((double) size / 2.0);
-        int starty = Local.HEIGHT / 2 - (int) Math.floor((double) size / 2.0);
-        int endX = Local.WIDTH / 2 + (int) Math.ceil((double) size / 2.0);
-        int endY = Local.HEIGHT / 2 + (int) Math.ceil((double) size / 2.0);
+        int startX = MapConstants.LOCAL_SIZE_X / 2 - (int) Math.floor((double) size / 2.0);
+        int starty = MapConstants.LOCAL_SIZE_Y / 2 - (int) Math.floor((double) size / 2.0);
+        int endX = MapConstants.LOCAL_SIZE_X / 2 + (int) Math.ceil((double) size / 2.0);
+        int endY = MapConstants.LOCAL_SIZE_Y / 2 + (int) Math.ceil((double) size / 2.0);
 
         fillRect(startX, starty, endX - startX, endY - starty, Tile.ROAD);
 
@@ -112,8 +113,8 @@ public class TownBuilder {
     public static Town buildPredefinedTown(Local local) {
         return new TownBuilder(local)
                 .buildTownSquare(26)
-                .buildRoad(4, 0, Local.HEIGHT / 2, Local.WIDTH, Local.HEIGHT / 2)
-                .buildRoad(4, Local.WIDTH / 2, 0, Local.WIDTH / 2, Local.HEIGHT)
+                .buildRoad(4, 0, MapConstants.LOCAL_SIZE_Y / 2, MapConstants.LOCAL_SIZE_X, MapConstants.LOCAL_SIZE_Y / 2)
+                .buildRoad(4, MapConstants.LOCAL_SIZE_X / 2, 0, MapConstants.LOCAL_SIZE_X / 2, MapConstants.LOCAL_SIZE_Y)
                 .buildRoad(3, 84, 50, 84, 70)
                 .buildRoad(3, 16, 16, 16, 85)
                 .buildRoad(3, 8, 16, 86, 16)

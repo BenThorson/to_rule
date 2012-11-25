@@ -4,7 +4,6 @@ import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 /**
  * User: ben

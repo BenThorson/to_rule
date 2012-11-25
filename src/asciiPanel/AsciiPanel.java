@@ -5,7 +5,7 @@ import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.screens.ColorUtil;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;

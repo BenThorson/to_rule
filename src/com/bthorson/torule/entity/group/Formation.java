@@ -4,7 +4,6 @@ import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.geom.Point;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: ben
