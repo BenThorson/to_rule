@@ -33,7 +33,8 @@ public class MessageScreen implements Screen{
         String border = ScreenUtil.solidLine(SCREEN_WIDTH, Tile.WALL_HORIZ.glyph());
         terminal.write(border, new Point(0, yOffset), Color.WHITE, Color.BLUE);
 
-        for (int i = 0; i < msg.size(); i++){
+        int size = Math.min(3, msg.size());
+        for (int i = 0; i < size; i++){
             terminal.write(msg.get(i).getMessage(), new Point(0, yOffset+ 1 +i));
         }
         msg.clear();

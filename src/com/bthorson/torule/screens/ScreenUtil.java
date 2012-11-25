@@ -12,7 +12,7 @@ import java.awt.Color;
  */
 public class ScreenUtil {
 
-    public static void makeRect(AsciiPanel terminal, int x, int y, int w, int h, Color foreground, Color background){
+    public static void makeRect(AsciiPanel terminal, int x, int y, int w, int h, Color foreground, Color background, boolean isPopup){
         char tl = (char)201;
         char tr = (char)187;
         char bl = (char)200;
@@ -35,13 +35,22 @@ public class ScreenUtil {
         bottomLine.append(br);
         vertLines.append(vertical);
 
-        terminal.write(topLine.toString(), new Point(x, y), foreground, background);
-        for (int i = 1; i < h; i++ ){
-            terminal.write(vertLines.toString(), new Point(x,y + i), foreground, background);
+        if (isPopup){
+            terminal.writePopup(topLine.toString(), new Point(x, y), foreground, background);
+            for (int i = 1; i < h; i++ ){
+                terminal.writePopup(vertLines.toString(), new Point(x,y + i), foreground, background);
+            }
+            terminal.writePopup(bottomLine.toString(), new Point(x, y + h), foreground, background);
+
         }
-        terminal.write(bottomLine.toString(), new Point(x, y + h), foreground, background);
+        else {
+            terminal.write(topLine.toString(), new Point(x, y), foreground, background);
+            for (int i = 1; i < h; i++ ){
+                terminal.write(vertLines.toString(), new Point(x,y + i), foreground, background);
+            }
+            terminal.write(bottomLine.toString(), new Point(x, y + h), foreground, background);
 
-
+        }
     }
 
     public static String blankString(int length) {

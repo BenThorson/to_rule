@@ -62,6 +62,8 @@ public class PlayScreen implements Screen{
 
     }
 
+
+
     private void displayTiles(AsciiPanel terminal, Point offset) {
         for (int x = 0; x < xBorder; x++){
             for (int y = 0; y < yBorder; y++){

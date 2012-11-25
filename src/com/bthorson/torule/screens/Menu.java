@@ -49,14 +49,14 @@ public class Menu  {
 
     public void displayOutput(AsciiPanel terminal, int x, int y) {
         Point pos = new Point(x,y);
-        ScreenUtil.makeRect(terminal, x, y, width, height, foreground, background);
-        terminal.write(title, pos.add(new Point(1,1)), foreground, background);
-        terminal.write(makeDivider(), pos.add(new Point(0,2)), foreground, background);
+        ScreenUtil.makeRect(terminal, x, y, width, height, foreground, background, true);
+        terminal.writePopup(title, pos.add(new Point(1,1)), foreground, background);
+        terminal.writePopup(makeDivider(), pos.add(new Point(0,2)), foreground, background);
         for (int i = 0; i < choices.length; i++){
             if (i == currentChoice){
-                terminal.write(choices[i], pos.add(new Point(1, i + 3)),foreground, AsciiPanel.red);
+                terminal.writePopup(choices[i], pos.add(new Point(1, i + 3)),foreground, AsciiPanel.red);
             } else {
-                terminal.write(choices[i], pos.add(new Point(1, i + 3)), foreground, background);
+                terminal.writePopup(choices[i], pos.add(new Point(1, i + 3)), foreground, background);
             }
         }
     }
