@@ -5,6 +5,9 @@ import com.bthorson.torule.geom.Point;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * User: ben
@@ -13,7 +16,10 @@ import java.awt.event.KeyEvent;
  */
 public class Menu  {
 
+    private static int MAX_WIDTH = 48;
+
     private String title;
+    private List<String> splitDetails = new ArrayList<String>();
     private int width;
     private int height;
     private String[] choices;
@@ -22,7 +28,7 @@ public class Menu  {
     private Color foreground;
     private Color background;
 
-    public Menu(String title, String[] choices, Color foreground, Color background) {
+    public Menu(String title, String additionalDetails, String[] choices, Color foreground, Color background) {
         this.title = title;
         this.choices = choices;
         this.foreground = foreground;
@@ -30,33 +36,72 @@ public class Menu  {
 
         currentChoice = 0;
 
-        height = choices.length + 3;
-        width = getMaxChoiceLength() + 2;
+        init(additionalDetails);
     }
 
-    private int getMaxChoiceLength() {
+    private void init(String additionalDetails) {
+        splitDetails(additionalDetails);
+
+        if (splitDetails.size() > 0){
+            height = choices.length + splitDetails.size() + 4;
+        } else {
+            height = choices.length + 3;
+        }
+        width = Math.max(Math.max(longestStringLengthInList(Arrays.asList(choices)), longestStringLengthInList(splitDetails)), title.length()) + 2;
+
+    }
+
+    private void splitDetails(String additionalDetails) {
+
+        if (additionalDetails == null){
+            return;
+        }
+        String[] words = additionalDetails.split(" ");
+        StringBuilder sb = new StringBuilder();
+        int counter = 0;
+        for (String word : words){
+            if (word.length() + counter + 1 < MAX_WIDTH){
+                sb.append(word).append(" ");
+                counter += word.length() + 1;
+            } else {
+                splitDetails.add(sb.toString());
+                sb = new StringBuilder(word).append(" ");
+                counter = word.length() + 1;
+            }
+        }
+        if (sb.length() > 0){
+            splitDetails.add(sb.toString());
+        }
+    }
+
+    private int longestStringLengthInList(List<String> strings){
         int max = 0;
-        for (String choice : choices){
+        for (String choice : strings){
             if (choice.length() > max){
                 max = choice.length();
             }
         }
-        if (title.length() > max){
-            max = title.length();
-        }
         return max;
     }
 
+
     public void displayOutput(AsciiPanel terminal, int x, int y) {
         Point pos = new Point(x,y);
+        int row = 1;
         ScreenUtil.makeRect(terminal, x, y, width, height, foreground, background, true);
-        terminal.writePopup(title, pos.add(new Point(1,1)), foreground, background);
-        terminal.writePopup(makeDivider(), pos.add(new Point(0,2)), foreground, background);
+        terminal.writePopup(title, pos.add(new Point(1,row++)), foreground, background);
+        terminal.writePopup(makeDivider(), pos.add(new Point(0,row++)), foreground, background);
+        if (splitDetails.size() > 0){
+            for (String detail : splitDetails){
+                terminal.writePopup(detail, pos.add(new Point(1, row++)), foreground, background);
+            }
+            terminal.writePopup(makeDivider(), pos.add(new Point(0, row++)), foreground, background);
+        }
         for (int i = 0; i < choices.length; i++){
             if (i == currentChoice){
-                terminal.writePopup(choices[i], pos.add(new Point(1, i + 3)),foreground, AsciiPanel.red);
+                terminal.writePopup(choices[i], pos.add(new Point(1, row++)),foreground, AsciiPanel.red);
             } else {
-                terminal.writePopup(choices[i], pos.add(new Point(1, i + 3)), foreground, background);
+                terminal.writePopup(choices[i], pos.add(new Point(1, row++)), foreground, background);
             }
         }
     }

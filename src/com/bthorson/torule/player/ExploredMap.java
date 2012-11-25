@@ -1,6 +1,7 @@
 package com.bthorson.torule.player;
 
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.World;
 
 /**
  * User: ben
@@ -12,7 +13,7 @@ public class ExploredMap {
     private boolean[][] explored;
 
     public ExploredMap(){
-        this.explored = new boolean[1000][1000];
+        this.explored = new boolean[World.getInstance().width()][World.getInstance().height()];
     }
 
     public void explore(Point point){

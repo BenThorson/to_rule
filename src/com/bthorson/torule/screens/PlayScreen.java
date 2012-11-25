@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
  * Date: 9/7/12
  * Time: 12:07 PM
  */
-public class PlayScreen implements Screen{
+public class PlayScreen implements Screen {
 
     private World world;
     private Creature player;
@@ -96,8 +96,9 @@ public class PlayScreen implements Screen{
             return new DeadScreen(this);
         }
         switch (key.getKeyCode()){
-            case KeyEvent.VK_ESCAPE: return new StartScreen();
-            case KeyEvent.VK_ENTER: return new StartScreen();
+            case KeyEvent.VK_Q:
+                World.destroy();
+                return new StartScreen();
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_NUMPAD4: player.doMove(Direction.WEST.point()); break;
             case KeyEvent.VK_RIGHT:
@@ -111,6 +112,7 @@ public class PlayScreen implements Screen{
             case KeyEvent.VK_NUMPAD1: player.doMove(Direction.SOUTHWEST.point()); break;
             case KeyEvent.VK_NUMPAD3: player.doMove(Direction.SOUTHEAST.point()); break;
             case KeyEvent.VK_PERIOD: player.getGroup().rotateTest(); break;
+            case KeyEvent.VK_T: return new ConversationScreen(this, player.position().subtract(getOffset()));
             default:
                 player.doMove(new Point(0,0));
                 break;
@@ -125,7 +127,9 @@ public class PlayScreen implements Screen{
     public Screen respondToMouseInput(Point mousePos) {
         this.mousePos = mousePos;
         showMouse = true;
-       System.out.printf("%d, %d\n", mousePos.x(), mousePos.y());
+        System.out.printf("%d, %d\n", mousePos.x(), mousePos.y());
         return this;
     }
+
+
 }

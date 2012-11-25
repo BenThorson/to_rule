@@ -11,8 +11,8 @@ import java.io.PrintWriter;
  */
 public class Local {
 
-    public static final int WIDTH = 100;
-    public static final int HEIGHT = 100;
+    private static final int WIDTH = MapConstants.LOCAL_SIZE_X;
+    private static final int HEIGHT = MapConstants.LOCAL_SIZE_Y;
 
     private Point nwBoundWorldCoord;
     private Point seBoundWorldBound;

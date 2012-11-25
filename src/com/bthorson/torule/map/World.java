@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.bthorson.torule.map.MapConstants.*;
+
 /**
  * User: ben
  * Date: 9/7/12
@@ -45,6 +47,9 @@ public class World {
 
     private static World instance;
 
+    private int width;
+    private int height;
+
     private World(){}
 
     public static World getInstance(){
@@ -54,11 +59,18 @@ public class World {
         return instance;
     }
 
+
+    public static void destroy() {
+        instance = null;
+    }
+
     public void loadWorld(WorldGenParams params){
 
-        regions = new Region[params.getWorldSize().x()/1000][params.getWorldSize().y()/1000];
-        for (int x = 0; x < params.getWorldSize().x()/1000; x++){
-            for (int y = 0; y < params.getWorldSize().y()/1000; y++){
+        width = params.getWorldSize().x();
+        height = params.getWorldSize().y();
+        regions = new Region[params.getWorldSize().x()/REGION_SIZE_X][params.getWorldSize().y()/REGION_SIZE_Y];
+        for (int x = 0; x < params.getWorldSize().x()/REGION_SIZE_X; x++){
+            for (int y = 0; y < params.getWorldSize().y()/REGION_SIZE_Y; y++){
                 regions[x][y] = new Region(x,y);
             }
         }
@@ -71,7 +83,7 @@ public class World {
     private void initWorld(WorldGenParams params) {
         Set<Point> townPoints = new HashSet<Point>();
         for (; townPoints.size() < params.getNumCities();){
-            townPoints.add(PointUtil.randomPoint(World.NW_CORNER, seCorner.divide(new Point(100,100))));
+            townPoints.add(PointUtil.randomPoint(World.NW_CORNER, seCorner.divide(LOCAL_SIZE_POINT)));
         }
 
 
@@ -138,21 +150,21 @@ public class World {
     private void buildConnectingRoad(Direction lastDirection, Direction cursorDirection, Point cursor) {
         Local local = getLocal(cursor);
         TownBuilder builder = new TownBuilder(local);
-        builder.buildRoad(4, Local.WIDTH / 2 - 2, Local.HEIGHT / 2, Local.WIDTH / 2 + 2, Local.HEIGHT);
+        builder.buildRoad(4, LOCAL_SIZE_X / 2 - 2, LOCAL_SIZE_Y / 2, LOCAL_SIZE_X / 2 + 2, LOCAL_SIZE_Y);
 
         if (lastDirection != null){
             switch (lastDirection) {
                 case NORTH:
-                    builder.buildRoad(4, Local.WIDTH / 2, Local.HEIGHT / 2, Local.WIDTH / 2, Local.HEIGHT);
+                    builder.buildRoad(4, LOCAL_SIZE_X / 2, LOCAL_SIZE_Y / 2, LOCAL_SIZE_X / 2, LOCAL_SIZE_Y);
                     break;
                 case SOUTH:
-                    builder.buildRoad(4, Local.WIDTH / 2, 0, Local.WIDTH / 2, Local.HEIGHT / 2);
+                    builder.buildRoad(4, LOCAL_SIZE_X / 2, 0, LOCAL_SIZE_X / 2, LOCAL_SIZE_Y / 2);
                     break;
                 case EAST:
-                    builder.buildRoad(4, 0, Local.HEIGHT / 2, Local.WIDTH / 2, Local.HEIGHT / 2);
+                    builder.buildRoad(4, 0, LOCAL_SIZE_Y / 2, LOCAL_SIZE_X / 2, LOCAL_SIZE_Y / 2);
                     break;
                 case WEST:
-                    builder.buildRoad(4, Local.WIDTH / 2, Local.HEIGHT / 2, Local.WIDTH, Local.HEIGHT / 2);
+                    builder.buildRoad(4, LOCAL_SIZE_X / 2, LOCAL_SIZE_Y / 2, LOCAL_SIZE_X, LOCAL_SIZE_Y / 2);
                     break;
 
             }
@@ -161,16 +173,16 @@ public class World {
         if (cursorDirection != null){
             switch (cursorDirection) {
                 case NORTH:
-                    builder.buildRoad(4, Local.WIDTH / 2, 0, Local.WIDTH / 2, Local.HEIGHT / 2);
+                    builder.buildRoad(4, LOCAL_SIZE_X / 2, 0, LOCAL_SIZE_X / 2, LOCAL_SIZE_Y / 2);
                     break;
                 case SOUTH:
-                    builder.buildRoad(4, Local.WIDTH / 2, Local.HEIGHT / 2, Local.WIDTH / 2, Local.HEIGHT);
+                    builder.buildRoad(4, LOCAL_SIZE_X / 2, LOCAL_SIZE_Y / 2, LOCAL_SIZE_X / 2, LOCAL_SIZE_Y);
                     break;
                 case EAST:
-                    builder.buildRoad(4, Local.WIDTH / 2, Local.HEIGHT / 2, Local.WIDTH, Local.HEIGHT / 2);
+                    builder.buildRoad(4, LOCAL_SIZE_X / 2, LOCAL_SIZE_Y / 2, LOCAL_SIZE_X, LOCAL_SIZE_Y / 2);
                     break;
                 case WEST:
-                    builder.buildRoad(4, 0, Local.HEIGHT / 2, Local.WIDTH / 2, Local.HEIGHT / 2);
+                    builder.buildRoad(4, 0, LOCAL_SIZE_Y / 2, LOCAL_SIZE_X / 2, LOCAL_SIZE_Y / 2);
                     break;
 
             }
@@ -180,20 +192,21 @@ public class World {
     }
 
     private Local getLocal(Point LocalGridPosition) {
-        return regions[LocalGridPosition.x()/10][LocalGridPosition.y()/10].getLocal(LocalGridPosition.x() % 10, LocalGridPosition.y() % 10);
+        return regions[LocalGridPosition.x()/REGION_X_IN_LOCALS][LocalGridPosition.y()/REGION_Y_IN_LOCALS]
+                .getLocal(LocalGridPosition.x() % REGION_X_IN_LOCALS, LocalGridPosition.y() % REGION_Y_IN_LOCALS);
     }
 
     public int width() {
-        return 1000;
+        return width;
     }
 
     public int height() {
-        return 1000;
+        return height;
     }
 
 
     public Tile tile(Point tilePoint){
-        return regions[tilePoint.x()/1000][tilePoint.y()/1000].tile(tilePoint.x() % 1000, tilePoint.y() % 1000);
+        return regions[tilePoint.x()/REGION_SIZE_X][tilePoint.y()/REGION_SIZE_Y].tile(tilePoint.x() % REGION_SIZE_X, tilePoint.y() % REGION_SIZE_Y);
     }
 
     public Creature creature(Point position){
@@ -315,14 +328,14 @@ public class World {
     }
 
     public void openDoor(Point position){
-        Local local = getLocal(position.divide(new Point(100,100)));
+        Local local = getLocal(position.divide(LOCAL_SIZE_POINT));
         Point offset = position.subtract(local.getNwBoundWorldCoord());
         local.getTiles()[offset.x()][offset.y()] = Tile.OPEN_DOOR;
         openDoors.add(position);
     }
 
     private void closeDoor(Point position){
-        Local local = getLocal(position.divide(new Point(100,100)));
+        Local local = getLocal(position.divide(LOCAL_SIZE_POINT));
         Point offset = position.subtract(local.getNwBoundWorldCoord());
         local.getTiles()[offset.x()][offset.y()] = Tile.DOOR;
     }

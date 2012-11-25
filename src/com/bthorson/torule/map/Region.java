@@ -1,11 +1,10 @@
 package com.bthorson.torule.map;
 
-import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+
+import static com.bthorson.torule.map.MapConstants.*;
 
 /**
  * User: ben
@@ -14,25 +13,26 @@ import java.util.List;
  */
 public class Region {
 
-    private Local[][] locals = new Local[10][10];
+    private Local[][] locals = new Local[REGION_X_IN_LOCALS][REGION_Y_IN_LOCALS];
 
     public Region(int worldX, int worldY) {
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y < 10; y++) {
-                locals[x][y] = new LocalBuilder().makeGrassland().build(new Point(worldX * 1000 + x * 100, worldY * 1000 + y * 100));
+        for (int x = 0; x < REGION_X_IN_LOCALS; x++) {
+            for (int y = 0; y < REGION_Y_IN_LOCALS; y++) {
+                locals[x][y] = new LocalBuilder().makeGrassland().build(new Point(worldX * REGION_SIZE_X + x * LOCAL_SIZE_X,
+                                                                                  worldY * REGION_SIZE_Y + y * LOCAL_SIZE_Y));
             }
         }
     }
 
     public Tile tile(int x, int y) {
-        return locals[x / 100][y / 100].tile(x % 100, y % 100);
+        return locals[x / LOCAL_SIZE_X][y / LOCAL_SIZE_Y].tile(x % LOCAL_SIZE_X, y % LOCAL_SIZE_Y);
 
     }
 
     public void serialize(PrintWriter writer) {
         writer.println("\tRegion metadata:  Dimension width:" + locals.length + " height: " + locals[0].length);
-        for (int x = 0; x < locals.length; x++) {
-            for (int y = 0; y < locals[0].length; y++) {
+        for (int x = 0; x < REGION_X_IN_LOCALS; x++) {
+            for (int y = 0; y < REGION_Y_IN_LOCALS; y++) {
                 writer.println("\tL x:" + x + " y:" + y + ";");
                 locals[x][y].serialize(writer);
             }

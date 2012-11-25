@@ -17,7 +17,7 @@ public class StartScreen implements Screen {
     Menu startMenu;
 
     public StartScreen(){
-        startMenu = new Menu("Welcome to my game!", new String[]{"Start new game",
+        startMenu = new Menu("Welcome to my game!", null, new String[]{"Start new game",
                                                                  "Load saved game",
                                                                  "Exit to OS"}, AsciiPanel.yellow, AsciiPanel.black);
     }
@@ -38,7 +38,7 @@ public class StartScreen implements Screen {
                 params.setNumCities(5);
                 World.getInstance().loadWorld(params);
                 return new PlayScreen(World.getInstance());
-            case 1:
+            case 2:
                 System.exit(0);
                 break;
         }

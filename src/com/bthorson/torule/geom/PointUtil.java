@@ -1,6 +1,7 @@
 package com.bthorson.torule.geom;
 
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.map.MapConstants;
 
 import java.util.Random;
 
@@ -34,4 +35,5 @@ public class PointUtil {
         Random random = new Random();
         return new Point(random.nextInt(seBound.x() - nwCorner.x()), random.nextInt(seBound.y() - nwCorner.y())).add(nwCorner);
     }
+
 }

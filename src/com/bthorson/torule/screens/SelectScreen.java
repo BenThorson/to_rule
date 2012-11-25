@@ -19,7 +19,7 @@ public class SelectScreen implements Screen{
 
     private Point cursor;
 
-    public SelectScreen(ControlCallbackScreen controlParentScreen, Screen displayParent, Point cursor){
+    public SelectScreen(Screen displayParent, Point cursor, ControlCallbackScreen controlParentScreen){
 
         this.controlParentScreen = controlParentScreen;
         this.displayParent = displayParent;
