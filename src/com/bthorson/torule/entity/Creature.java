@@ -49,14 +49,16 @@ public class Creature extends Entity implements AiControllable {
     private ExploredMap explored;
 
     private String name;
+    private Profession profession;
 
-    public Creature(World world, Point position, int glyph, int visionRadius, int hitpoints) {
-        super(world, position, glyph, Color.WHITE);
+    public Creature(Point position, int glyph, int visionRadius, int hitpoints, Profession profession) {
+        super(position, glyph, Color.WHITE);
         this.visionRadius = visionRadius;
         this.maxHitpoints = hitpoints;
         this.hitpoints = hitpoints;
         this.heading = Direction.SOUTH;
         name = NameGenerator.getInstance().genName();
+        this.profession = profession;
     }
 
     public void setGroup(Group group){
@@ -270,5 +272,9 @@ public class Creature extends Entity implements AiControllable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Profession getProfession() {
+        return profession;
     }
 }

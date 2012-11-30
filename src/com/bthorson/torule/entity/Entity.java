@@ -21,7 +21,7 @@ public class Entity {
         return idGen++;
     }
 
-    private World world;
+    private World world = World.getInstance();
     public World getWorld() {
         return world;
     }
@@ -41,9 +41,8 @@ public class Entity {
         return color;
     }
 
-    public Entity(World world, Point pos, int glyph, Color color) {
+    public Entity(Point pos, int glyph, Color color) {
         this.id = getId();
-        this.world = world;
         this.position = pos;
         this.glyph = glyph;
         this.color = color;

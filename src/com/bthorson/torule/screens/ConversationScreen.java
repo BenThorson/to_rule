@@ -2,9 +2,13 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.conversation.SampleConversation;
+import com.bthorson.torule.entity.conversation.model.ConversationNode;
+import com.bthorson.torule.entity.conversation.model.ConversationTextAndOptions;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**
@@ -18,6 +22,8 @@ public class ConversationScreen implements ControlCallbackScreen {
     private boolean attemptedSelection;
     private PlayScreen previous;
     private Menu convoDialog;
+    private SampleConversation conversation;
+    private Creature conversant;
 
     public ConversationScreen(PlayScreen playScreen, Point position) {
         this.previous = playScreen;
@@ -27,9 +33,11 @@ public class ConversationScreen implements ControlCallbackScreen {
     @Override
     public void positionSelected(Point point) {
         attemptedSelection = true;
-        Creature conversant = World.getInstance().creature(point.add(previous.getOffset()));
+        conversant = World.getInstance().creature(point.add(previous.getOffset()));
         if (conversant != null){
-            convoDialog = new Menu(conversant.getName(), "Hello", new String[]{"Hi"}, AsciiPanel.yellow, AsciiPanel.black );
+            conversation = new SampleConversation(conversant);
+            ConversationTextAndOptions convoTexts = conversation.startConversation(World.getInstance().getPlayer());
+            convoDialog = new Menu(conversant.getName(), convoTexts.getText(), convoTexts.getOptions(), AsciiPanel.yellow, AsciiPanel.black );
         }
     }
 
@@ -45,12 +53,15 @@ public class ConversationScreen implements ControlCallbackScreen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        int response = -1;
         if (convoDialog == null){
             return attemptedSelection ? previous : selectScreen;
-        } else {
-            switch (convoDialog.respondToUserInput(key)){
-                case 0:
-                    return previous;
+        } else if ((response = convoDialog.respondToUserInput(key)) != -1) {
+            ConversationTextAndOptions convs = conversation.continueConversation(World.getInstance().getPlayer(), response);
+            if (convs != null){
+                convoDialog = new Menu(conversant.getName(), convs.getText(), convs.getOptions(), AsciiPanel.yellow, AsciiPanel.black );
+            } else {
+                return previous;
             }
         }
         return this;

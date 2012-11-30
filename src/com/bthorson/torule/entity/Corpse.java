@@ -11,7 +11,7 @@ import com.bthorson.torule.map.World;
  * To change this template use File | Settings | File Templates.
  */
 public class Corpse extends Entity {
-    public Corpse(World world, Creature creature) {
-        super(world,  creature.position(), creature.glyph(), creature.color());
+    public Corpse(Creature creature) {
+        super(creature.position(), creature.glyph(), creature.color());
     }
 }

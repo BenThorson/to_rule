@@ -1,6 +1,8 @@
 package com.bthorson.torule.town;
 
+import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.CreatureFactory;
+import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
@@ -55,7 +57,14 @@ public class TownBuilder {
     public TownBuilder buildBuilding(int x, int y, int w, int h, Direction doorDir, BuildingType buildingType) {
         buildWall(x,y,w,h);
         fillRect(x + 1, y + 1, w - 1, h - 1, Tile.FLOOR);
-        town.registerBuilding(new Building(new Point(x,y), new Point(x,y), buildingType));
+
+        Building b = new Building(toBuildOn.getNwBoundWorldCoord().add(new Point(x, y)), toBuildOn.getNwBoundWorldCoord().add(new Point(x + w, y + h)),
+                                  buildingType);
+        if (BuildingType.isShop(buildingType)){
+            Creature shopOwner = CreatureFactory.buildMerchant(b.getNwCorner().add(new Point(1,1)), b);
+            b.setOwner(shopOwner);
+        }
+        town.registerBuilding(b);
         switch (doorDir) {
             case NORTH:
                 toBuildOn.getTiles()[x + w / 2][y] = Tile.DOOR;
@@ -70,6 +79,7 @@ public class TownBuilder {
                 toBuildOn.getTiles()[x + w][y + h / 2] = Tile.DOOR;
                 break;
         }
+
         return this;
     }
 
@@ -96,8 +106,8 @@ public class TownBuilder {
         for (int i = 0; i < numberOfTownsmen; i++){
             Point candidate = PointUtil.randomPoint(toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound());
             if (!World.getInstance().isOccupied(candidate)){
-                CreatureFactory.buildVillager(World.getInstance(), candidate);
-
+                Creature villager = CreatureFactory.buildVillager(candidate);
+                villager.setAi(new WanderAI(villager, toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound()));
             } else {
                 i--;
             }

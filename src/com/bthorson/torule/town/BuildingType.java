@@ -1,5 +1,7 @@
 package com.bthorson.torule.town;
 
+import java.util.Arrays;
+
 /**
  * User: Ben Thorson
  * Date: 11/24/12
@@ -15,6 +17,10 @@ public enum BuildingType {
     FOOD_SHOP,
     GENERAL_SHOP,
     KEEP,
-    BARRACKS,
+    BARRACKS;
+
+    public static boolean isShop(BuildingType bType){
+        return Arrays.asList(WEAPON_SHOP, ARMOR_SHOP, INN, FOOD_SHOP, GENERAL_SHOP).contains(bType);
+    }
 
 }

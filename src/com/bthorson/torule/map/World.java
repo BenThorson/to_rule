@@ -1,6 +1,7 @@
 package com.bthorson.torule.map;
 
 import com.bthorson.torule.entity.*;
+import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
@@ -214,11 +215,14 @@ public class World {
         Faction goblin = new Faction("Goblin");
         human.addEnemyFaction(goblin);
         goblin.addEnemyFaction(human);
-        player = CreatureFactory.buildPlayer(this, new Point(50, 50));
+        player = CreatureFactory.buildPlayer(new Point(50, 50));
         player.setFaction(human);
         player.setName(playerName);
         EntityManager.getInstance().setPlayer(player);
         EntityManager.getInstance().addCreature(player);
+        Creature test = CreatureFactory.buildVillager(new Point(50,51));
+        test.setAi(new WanderAI(test, new Point(49,49), new Point(51,51)));
+
     }
 
     public void update() {
@@ -249,7 +253,7 @@ public class World {
     public void creatureDead(Creature creature){
 
         toRemove.add(creature);
-        items.add(new Corpse(this, creature));
+        items.add(new Corpse(creature));
     }
 
     public Entity item(Point itemPos) {

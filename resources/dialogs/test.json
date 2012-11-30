@@ -1,0 +1,106 @@
+{
+    "professions":[
+        {
+            "profession":"villager",
+            "introduction":{
+                "id":"intro.1",
+                "text":"Hello, can I help you?",
+                "responses":[
+                    {
+                        "id":"recruit.1",
+                        "text":"Join my army!",
+                        "check":"determineRecruitmentChance",
+                        "responses":[
+                            {
+                                "id":"recruit.1.response.yes",
+                                "text":"Ok lets go!",
+                                "action":"joinArmy"
+                            },
+                            {
+                                "id":"recruit.1.response.yesButCost",
+                                "text":"I will join for %d gold.",
+                                "check":"determineJoinArmyForFee"
+                            },
+                            {
+                                "id":"recruit.1.response.no",
+                                "text":"No, because %s"
+                            }
+
+                        ]
+                    },
+                    {
+                        "id":"townInfo.1",
+                        "text":"Can you tell me about this place?",
+                        "responses":[
+                            {
+                                "id":"townInfo.1.response",
+                                "text":"This place sure is a great place to live!"
+                            }
+                        ]
+                    },
+                    {
+                        "id":"needWork.1",
+                        "text":"I am looking for work.",
+                        "responses":[
+                            {
+                                "id":"needWork.1.response",
+                                "text":"Talk to the mayor."
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "profession":"Merchant",
+            "introduction":{
+                "id":"intro.1",
+                "text":"Welcome To My Store!",
+                "responses":[
+                    {
+                        "id":"buy.1",
+                        "text":"Can I purchase some of your goods?",
+                        "responses":[
+                            {
+                                "id":"buy.1.yes",
+                                "text":"Please do!",
+                                "newScreen":"InventoryBuyScreen"
+                            }
+                        ]
+                    },
+                    {
+                        "id":"sell.1",
+                        "text":"Can I sell you some goods?",
+                        "responses":[
+                            {
+                                "id":"sell.1.yes",
+                                "text":"Lets see what you have",
+                                "newScreen":"InventorySellScreen"
+                            }
+                        ]
+                    },
+                    {
+                        "id":"townInfo.1",
+                        "text":"Can you tell me about this place?",
+                        "responses":[
+                            {
+                                "id":"townInfo.1.response",
+                                "text":"This place sure is a great place to live!"
+                            }
+                        ]
+                    },
+                    {
+                        "id":"needWork.1",
+                        "text":"I am looking for work.",
+                        "responses":[
+                            {
+                                "id":"needWork.1.response",
+                                "text":"Talk to the mayor."
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

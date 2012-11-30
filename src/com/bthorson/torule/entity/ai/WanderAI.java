@@ -2,6 +2,7 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 
 import java.util.Random;
@@ -41,20 +42,20 @@ public class WanderAI extends CreatureAI {
             case 5:
                 break;
             case 6:
-                if(self.position().add(new Point(1,0)).withinRect(nwBound, seBound))
-                    self.move(new Point(1, 0));
+                if(self.position().add(Direction.NORTH.point()).withinRect(nwBound, seBound))
+                    self.move(Direction.NORTH.point());
                 break;
             case 7:
-                if(self.position().add(new Point(1,0)).withinRect(nwBound, seBound))
-                    self.move(new Point(-1, 0));
+                if(self.position().add(Direction.SOUTH.point()).withinRect(nwBound, seBound))
+                    self.move(Direction.SOUTH.point());
                 break;
             case 8:
-                if(self.position().add(new Point(1,0)).withinRect(nwBound, seBound))
-                    self.move(new Point(0, 1));
+                if(self.position().add(Direction.EAST.point()).withinRect(nwBound, seBound))
+                    self.move(Direction.EAST.point());
                 break;
             case 9:
-                if(self.position().add(new Point(1,0)).withinRect(nwBound, seBound))
-                    self.move(new Point(0, -1));
+                if(self.position().add(Direction.WEST.point()).withinRect(nwBound, seBound))
+                    self.move(Direction.WEST.point());
                 break;
         }
         return this;

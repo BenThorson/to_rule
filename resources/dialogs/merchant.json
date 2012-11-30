@@ -1,0 +1,4 @@
+{
+    "greeting":"Hello traveller.  I am %s.  Welcome to my %s shop.  How can I help you?",
+    "response":["buy", "sell", "other"]
+}
