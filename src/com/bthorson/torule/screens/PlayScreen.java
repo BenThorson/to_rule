@@ -28,7 +28,7 @@ public class PlayScreen implements Screen {
     private boolean  showMouse;
 
     public PlayScreen() {
-        this.player = world.getPlayer();
+        this.player = world.getPlayer().getCreature();
         this.statusScreen = new StatusScreen(world, xBorder);
         this.messageScreen = new MessageScreen(world, yBorder);
     }

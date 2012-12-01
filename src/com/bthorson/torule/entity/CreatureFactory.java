@@ -5,6 +5,7 @@ import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.ExploredMap;
+import com.bthorson.torule.player.Player;
 import com.bthorson.torule.town.Building;
 
 /**
@@ -39,13 +40,15 @@ public class CreatureFactory {
         return creature;
     }
 
-    public static Creature buildPlayer(Point pos){
+    public static Player buildPlayer(Point pos){
         Creature creature = new Creature(pos, CreatureImage.H_KNIGHT.num(), 30, 80, Profession.LEADER);
         creature.setAi(new PlayerAI(creature));
         creature.setExplored(new ExploredMap());
         creature.setName("player");
         EntityManager.getInstance().addCreature(creature);
-        return creature;
+        Player player = new Player(creature);
+
+        return player;
     }
 
     public static Creature buildGoblin(Point pos){

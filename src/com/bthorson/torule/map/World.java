@@ -5,6 +5,7 @@ import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
+import com.bthorson.torule.player.Player;
 import com.bthorson.torule.town.Town;
 import com.bthorson.torule.town.TownBuilder;
 import com.bthorson.torule.worldgen.WorldGenParams;
@@ -36,7 +37,7 @@ public class World {
 
     List<Entity> items = new ArrayList<Entity>();
     List<Creature> toRemove = new ArrayList<Creature>();
-    private Creature player;
+    private Player player;
 
     private List<Point> openDoors = new ArrayList<Point>();
 
@@ -216,10 +217,10 @@ public class World {
         human.addEnemyFaction(goblin);
         goblin.addEnemyFaction(human);
         player = CreatureFactory.buildPlayer(new Point(50, 50));
-        player.setFaction(human);
-        player.setName(playerName);
-        EntityManager.getInstance().setPlayer(player);
-        EntityManager.getInstance().addCreature(player);
+        player.getCreature().setFaction(human);
+        player.getCreature().setName(playerName);
+        EntityManager.getInstance().setPlayer(player.getCreature());
+        EntityManager.getInstance().addCreature(player.getCreature());
         Creature test = CreatureFactory.buildVillager(new Point(50,51));
         test.setAi(new WanderAI(test, new Point(49,49), new Point(51,51)));
 
@@ -242,7 +243,7 @@ public class World {
         openDoors = updated;
     }
 
-    public Creature getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 

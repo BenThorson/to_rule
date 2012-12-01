@@ -36,7 +36,7 @@ public class ConversationScreen implements ControlCallbackScreen {
         conversant = World.getInstance().creature(point.add(previous.getOffset()));
         if (conversant != null){
             conversation = new SampleConversation(conversant);
-            ConversationTextAndOptions convoTexts = conversation.startConversation(World.getInstance().getPlayer());
+            ConversationTextAndOptions convoTexts = conversation.startConversation();
             convoDialog = new Menu(conversant.getName(), convoTexts.getText(), convoTexts.getOptions(), AsciiPanel.yellow, AsciiPanel.black );
         }
     }
@@ -57,7 +57,7 @@ public class ConversationScreen implements ControlCallbackScreen {
         if (convoDialog == null){
             return attemptedSelection ? previous : selectScreen;
         } else if ((response = convoDialog.respondToUserInput(key)) != -1) {
-            ConversationTextAndOptions convs = conversation.continueConversation(World.getInstance().getPlayer(), response);
+            ConversationTextAndOptions convs = conversation.continueConversation(response);
             if (convs != null){
                 convoDialog = new Menu(conversant.getName(), convs.getText(), convs.getOptions(), AsciiPanel.yellow, AsciiPanel.black );
             } else {

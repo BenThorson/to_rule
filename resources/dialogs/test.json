@@ -9,12 +9,12 @@
                     {
                         "id":"recruit.1",
                         "text":"Join my army!",
-                        "check":"determineRecruitmentChance",
+                        "check":"checkRecruit",
                         "responses":[
                             {
                                 "id":"recruit.1.response.yes",
                                 "text":"Ok lets go!",
-                                "action":"joinArmy"
+                                "action":"joinPlayer"
                             },
                             {
                                 "id":"recruit.1.response.yesButCost",

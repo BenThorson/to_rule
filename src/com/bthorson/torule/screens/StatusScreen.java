@@ -29,7 +29,7 @@ public class StatusScreen implements Screen {
         for (int i = 0; i < SCREEN_HEIGHT; i++){
             terminal.write(Tile.WALL_VERT.glyph(), new Point(xOffset, i), Color.WHITE, Color.blue);
         }
-        terminal.write(String.format("%d/%d HP", world.getPlayer().getHitpoints(), world.getPlayer().getMaxHitpoints()), new Point(xOffset + 1, 0), Color.WHITE, Color.BLACK);
+        terminal.write(String.format("%d/%d HP", world.getPlayer().getCreature().getHitpoints(), world.getPlayer().getCreature().getMaxHitpoints()), new Point(xOffset + 1, 0), Color.WHITE, Color.BLACK);
     }
 
     @Override

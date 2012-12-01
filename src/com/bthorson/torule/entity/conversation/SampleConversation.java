@@ -1,6 +1,9 @@
 package com.bthorson.torule.entity.conversation;
 
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.conversation.actions.ActionMap;
+import com.bthorson.torule.entity.conversation.actions.ConversationAction;
+import com.bthorson.torule.entity.conversation.determiners.DetermineMap;
 import com.bthorson.torule.entity.conversation.model.ConversationNode;
 import com.bthorson.torule.entity.conversation.model.ConversationScript;
 import com.bthorson.torule.entity.conversation.model.ConversationTextAndOptions;
@@ -25,7 +28,7 @@ public class SampleConversation {
         this.creature = creature;
         script = new ConversationTree().getDialogByProfession(creature.getProfession());
     }
-    public ConversationTextAndOptions startConversation(Creature player){
+    public ConversationTextAndOptions startConversation(){
         current = script.getIntroduction();
         List<String> responseText = buildResponseTextList();
 
@@ -41,24 +44,27 @@ public class SampleConversation {
         responseText.add("Ok bye!"); return responseText;
     }
 
-    public ConversationTextAndOptions continueConversation(Creature player, int optionSelected){
+    public ConversationTextAndOptions continueConversation(int optionSelected){
         if (current.getResponses() != null && optionSelected < current.getResponses().size()){
             ConversationNode node = current.getResponses().get(optionSelected);
-            if (node.getCheck() != null && node.getCheck().trim().length() != 0){
+
+            if (node.getCheck() == null || node.getCheck().trim().length() == 0){
                 current = node.getResponses().get(0);
-                List<String> responses = buildResponseTextList();
-                return new ConversationTextAndOptions(current.getText(), responses.toArray(new String[responses.size()]));
             } else {
-                //todo add decision logic
-                current = node.getResponses().get(0);
-                List<String> responses = buildResponseTextList();
-                return new ConversationTextAndOptions(current.getText(), responses.toArray(new String[responses.size()]));
+                int value = DetermineMap.INSTANCE.get(node.getCheck()).determine(creature);
+                current = node.getResponses().get(value);
             }
+            List<String> responses = buildResponseTextList();
+            ConversationAction action = ActionMap.INSTANCE.get(current.getAction());
+            if (action != null){
+                action.doAction(creature);
+            }
+            return new ConversationTextAndOptions(current.getText(), responses.toArray(new String[responses.size()]));
 
         } else {
             int newOpt = optionSelected - current.getResponses().size();
             if (newOpt == 0){
-                return startConversation(player);
+                return startConversation();
             } else {
                 return null;
             }

@@ -29,7 +29,7 @@ public class MessageScreen implements Screen{
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        List<Message> msg = world.getPlayer().getMessages();
+        List<Message> msg = world.getPlayer().getCreature().getMessages();
         String border = ScreenUtil.solidLine(SCREEN_WIDTH, Tile.WALL_HORIZ.glyph());
         terminal.write(border, new Point(0, yOffset), Color.WHITE, Color.BLUE);
 
