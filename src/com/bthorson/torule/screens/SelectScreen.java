@@ -29,7 +29,7 @@ public class SelectScreen implements Screen{
     @Override
     public void displayOutput(AsciiPanel terminal) {
         displayParent.displayOutput(terminal);
-        terminal.write((char)96, cursor, Color.YELLOW, Color.YELLOW);
+        terminal.highlight(cursor, Color.GREEN, true);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class SelectScreen implements Screen{
         switch (key.getKeyCode()){
             case KeyEvent.VK_ESCAPE:
                 return controlParentScreen;
-            case KeyEvent.VK_ENTER: 
+            case KeyEvent.VK_ENTER:
                 controlParentScreen.positionSelected(cursor);
                 return controlParentScreen;
             case KeyEvent.VK_LEFT:

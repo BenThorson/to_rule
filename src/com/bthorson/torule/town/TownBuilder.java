@@ -10,6 +10,7 @@ import com.bthorson.torule.map.Local;
 import com.bthorson.torule.map.MapConstants;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
+import com.sun.istack.internal.Builder;
 
 /**
  * Created with IntelliJ IDEA.
@@ -62,6 +63,8 @@ public class TownBuilder {
                                   buildingType);
         if (BuildingType.isShop(buildingType)){
             Creature shopOwner = CreatureFactory.buildMerchant(b.getNwCorner().add(new Point(1,1)), b);
+            BuildingInventoryFactory.INSTANCE.createItemsForShop(b, WealthLevel.POOR);
+            shopOwner.addProperty("shop", b);
             b.setOwner(shopOwner);
         }
         town.registerBuilding(b);
@@ -105,7 +108,7 @@ public class TownBuilder {
     public TownBuilder makeTownsmen(int numberOfTownsmen){
         for (int i = 0; i < numberOfTownsmen; i++){
             Point candidate = PointUtil.randomPoint(toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound());
-            if (!World.getInstance().isOccupied(candidate)){
+            if (!World.getInstance().isOccupied(candidate) && !candidate.equals(new Point(50,50))){
                 Creature villager = CreatureFactory.buildVillager(candidate);
                 villager.setAi(new WanderAI(villager, toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound()));
             } else {
@@ -120,7 +123,7 @@ public class TownBuilder {
         return town;
     }
 
-    public static Town buildPredefinedTown(Local local) {
+    public static Town buildPredefinedTown(Local local, Point localPoint) {
         return new TownBuilder(local)
                 .buildTownSquare(26)
                 .buildRoad(4, 0, MapConstants.LOCAL_SIZE_Y / 2, MapConstants.LOCAL_SIZE_X, MapConstants.LOCAL_SIZE_Y / 2)
@@ -151,7 +154,7 @@ public class TownBuilder {
                 .buildBuilding(18, 68, 6, 6, Direction.WEST, BuildingType.HOUSE)
                 .buildBuilding(18, 75, 6, 6, Direction.WEST, BuildingType.HOUSE)
 
-                .buildBuilding(8, 8, 6, 6, Direction.SOUTH , BuildingType.HOUSE)
+                .buildBuilding(8, 8, 6, 6, Direction.SOUTH, BuildingType.HOUSE)
                 .buildBuilding(18, 8, 6, 6, Direction.SOUTH, BuildingType.HOUSE)
                 .buildBuilding(25, 8, 6, 6, Direction.SOUTH, BuildingType.HOUSE)
                 .buildBuilding(34, 8, 6, 6, Direction.SOUTH, BuildingType.HOUSE)
@@ -165,7 +168,7 @@ public class TownBuilder {
                 .buildBuilding(34, 75, 6, 6, Direction.SOUTH, BuildingType.HOUSE)
                 .buildBuilding(41, 75, 6, 6, Direction.SOUTH, BuildingType.HOUSE)
 
-                .buildBuilding(8, 85, 6, 6, Direction.NORTH , BuildingType.HOUSE)
+                .buildBuilding(8, 85, 6, 6, Direction.NORTH, BuildingType.HOUSE)
                 .buildBuilding(18, 85, 6, 6, Direction.NORTH, BuildingType.HOUSE)
                 .buildBuilding(25, 85, 6, 6, Direction.NORTH, BuildingType.HOUSE)
                 .buildBuilding(34, 85, 6, 6, Direction.NORTH, BuildingType.HOUSE)
@@ -181,7 +184,14 @@ public class TownBuilder {
                 .buildBuilding(38, 63, 8, 8, Direction.NORTH, BuildingType.GENERAL_SHOP)
                 .buildBuilding(53, 63, 8, 8, Direction.NORTH, BuildingType.GENERAL_SHOP)
                 .buildBuilding(70, 70, 28, 28, Direction.NORTH, BuildingType.KEEP)
-                .makeTownsmen(20).build();
+                .makeTownsmen(20).regionalPosition(localPoint).build();
+
+
+    }
+
+    private TownBuilder regionalPosition(Point localPoint) {
+        town.setRegionalPosition(localPoint);
+        return this;
     }
 
 }

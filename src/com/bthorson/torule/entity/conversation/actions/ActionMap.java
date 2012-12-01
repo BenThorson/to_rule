@@ -20,6 +20,7 @@ public enum ActionMap {
     private ActionMap(){
         actions = new HashMap<String, ConversationAction>();
         actions.put("joinPlayer", new JoinPlayer());
+        actions.put("showInventory", new ShowInventoryAction());
     }
 
     public ConversationAction get(String key){

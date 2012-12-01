@@ -2,6 +2,10 @@ package com.bthorson.torule.town;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.item.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: Ben Thorson
@@ -16,6 +20,8 @@ public class Building {
     private BuildingType buildingType;
 
     private Creature owner;
+
+    private List<Item> inventory = new ArrayList<Item>();
 
     public Building(Point nwCorner, Point seCorner, BuildingType buildingType) {
         this.nwCorner = nwCorner;
@@ -41,5 +47,17 @@ public class Building {
 
     public void setOwner(Creature owner) {
         this.owner = owner;
+    }
+
+    public void addItem(Item item){
+        inventory.add(item);
+    }
+
+    public void removeItem(Item item){
+        inventory.remove(item);
+    }
+
+    public List<Item> getInventory() {
+        return new ArrayList<Item>(inventory);
     }
 }

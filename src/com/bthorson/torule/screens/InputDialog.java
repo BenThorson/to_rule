@@ -41,7 +41,7 @@ public class InputDialog {
         terminal.writePopup(title, pos.add(new com.bthorson.torule.geom.Point(1,row++)), foreground, background);
         terminal.writePopup(makeDivider(), pos.add(new Point(0,row++)), foreground, background);
         terminal.writePopup(input.toString(), pos.add(new Point(1, row)), foreground, background);
-        terminal.writePopup((char) 17, pos.add(new Point(1 + input.length(), row++)), Color.GREEN, Color.GREEN);
+        terminal.writePopup((char) 27, pos.add(new Point(1 + input.length(), row++)), Color.GREEN, Color.BLACK);
 
     }
 

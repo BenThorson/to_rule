@@ -1,6 +1,7 @@
 package com.bthorson.torule.town;
 
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.geom.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Town {
 
     private List<Building> buildings = new ArrayList<Building>();
     private List<Creature> citizens = new ArrayList<Creature>();
+    private Point regionalPosition;
 
     public Town(){}
 
@@ -26,4 +28,11 @@ public class Town {
     }
 
 
+    public void setRegionalPosition(Point regionalPosition) {
+        this.regionalPosition = regionalPosition;
+    }
+
+    public Point getRegionalPosition() {
+        return regionalPosition;
+    }
 }

@@ -6,10 +6,7 @@ import com.bthorson.torule.screens.Screen;
 import com.bthorson.torule.screens.StartScreen;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 /**
  * User: ben
@@ -20,6 +17,8 @@ public class ToRuleMain extends JFrame implements KeyListener {
 
     private AsciiPanel terminal;
     private Screen screen;
+    private Timer timer;
+    private boolean acceptInput;
 
     public ToRuleMain(){
         super();
@@ -30,6 +29,13 @@ public class ToRuleMain extends JFrame implements KeyListener {
         pack();
         screen = new StartScreen();
         addKeyListener(this);
+        timer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                acceptInput = true;
+            }
+        });
+        timer.start();
         addMouseMotionListener(new MouseAdapter() {
 
 
@@ -64,7 +70,11 @@ public class ToRuleMain extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        screen = screen.respondToUserInput(e);
+        if (acceptInput){
+            screen = screen.respondToUserInput(e);
+            timer.restart();
+            acceptInput = false;
+        }
         repaint();
     }
 

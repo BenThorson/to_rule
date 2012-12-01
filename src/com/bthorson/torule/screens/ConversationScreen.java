@@ -24,6 +24,7 @@ public class ConversationScreen implements ControlCallbackScreen {
     private Menu convoDialog;
     private SampleConversation conversation;
     private Creature conversant;
+    private Screen newScreen;
 
     public ConversationScreen(PlayScreen playScreen, Point position) {
         this.previous = playScreen;
@@ -53,12 +54,16 @@ public class ConversationScreen implements ControlCallbackScreen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        newScreen = null;
         int response = -1;
         if (convoDialog == null){
             return attemptedSelection ? previous : selectScreen;
         } else if ((response = convoDialog.respondToUserInput(key)) != -1) {
-            ConversationTextAndOptions convs = conversation.continueConversation(response);
+            ConversationTextAndOptions convs = conversation.continueConversation(this, response);
             if (convs != null){
+                if (newScreen != null){
+                    return newScreen;
+                }
                 convoDialog = new Menu(conversant.getName(), convs.getText(), convs.getOptions(), AsciiPanel.yellow, AsciiPanel.black );
             } else {
                 return previous;
@@ -70,5 +75,13 @@ public class ConversationScreen implements ControlCallbackScreen {
     @Override
     public Screen respondToMouseInput(Point key) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public Creature getConversant() {
+        return conversant;
+    }
+
+    public void setNewScreen(Screen newScreen) {
+        this.newScreen = newScreen;
     }
 }

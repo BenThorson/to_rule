@@ -14,7 +14,7 @@ import java.util.List;
  * Date: 9/7/12
  * Time: 11:05 AM
  */
-public class Menu  {
+public class Menu {
 
     private static int MAX_WIDTH = 48;
 

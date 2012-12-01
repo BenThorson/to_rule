@@ -7,6 +7,7 @@ import com.bthorson.torule.entity.conversation.determiners.DetermineMap;
 import com.bthorson.torule.entity.conversation.model.ConversationNode;
 import com.bthorson.torule.entity.conversation.model.ConversationScript;
 import com.bthorson.torule.entity.conversation.model.ConversationTextAndOptions;
+import com.bthorson.torule.screens.ConversationScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class SampleConversation {
         responseText.add("Ok bye!"); return responseText;
     }
 
-    public ConversationTextAndOptions continueConversation(int optionSelected){
+    public ConversationTextAndOptions continueConversation(ConversationScreen screen, int optionSelected){
         if (current.getResponses() != null && optionSelected < current.getResponses().size()){
             ConversationNode node = current.getResponses().get(optionSelected);
 
@@ -57,7 +58,7 @@ public class SampleConversation {
             List<String> responses = buildResponseTextList();
             ConversationAction action = ActionMap.INSTANCE.get(current.getAction());
             if (action != null){
-                action.doAction(creature);
+                action.doAction(screen, creature);
             }
             return new ConversationTextAndOptions(current.getText(), responses.toArray(new String[responses.size()]));
 

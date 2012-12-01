@@ -11,12 +11,11 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.ExploredMap;
+import com.bthorson.torule.town.Building;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 /**
  * User: ben
@@ -50,6 +49,8 @@ public class Creature extends Entity implements AiControllable {
 
     private String name;
     private Profession profession;
+
+    private Map<String, Building> properties = new HashMap<String, Building>();
 
     public Creature(Point position, int glyph, int visionRadius, int hitpoints, Profession profession) {
         super(position, glyph, Color.WHITE);
@@ -276,5 +277,13 @@ public class Creature extends Entity implements AiControllable {
 
     public Profession getProfession() {
         return profession;
+    }
+
+    public void addProperty(String key, Building building){
+        properties.put(key, building);
+    }
+
+    public Building getProperty(String key){
+       return properties.get(key);
     }
 }

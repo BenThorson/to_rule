@@ -29,6 +29,8 @@ import static com.bthorson.torule.map.MapConstants.*;
  */
 public class World {
 
+    private long turnCounter;
+
     public static final Point NW_CORNER = new Point(0,0);
     private Point seCorner;
 
@@ -87,7 +89,7 @@ public class World {
 
 
         for (Point city : townPoints) {
-            towns.add(TownBuilder.buildPredefinedTown(getLocal(city)));
+            towns.add(TownBuilder.buildPredefinedTown(getLocal(city), city));
         }
 
         getMSTPath(townPoints);
@@ -216,7 +218,9 @@ public class World {
         Faction goblin = new Faction("Goblin");
         human.addEnemyFaction(goblin);
         goblin.addEnemyFaction(human);
-        player = CreatureFactory.buildPlayer(new Point(50, 50));
+        Town town = towns.get(0);
+        Point placement = town.getRegionalPosition().multiply(new Point(MapConstants.LOCAL_SIZE_X, MapConstants.LOCAL_SIZE_Y));
+        player = CreatureFactory.buildPlayer(placement.add(new Point(50,50)));
         player.getCreature().setFaction(human);
         player.getCreature().setName(playerName);
         EntityManager.getInstance().setPlayer(player.getCreature());
@@ -227,6 +231,7 @@ public class World {
     }
 
     public void update() {
+        turnCounter++;
         EntityManager.getInstance().update();
         for (Creature dead : toRemove){
             EntityManager.getInstance().remove(dead);
@@ -315,5 +320,9 @@ public class World {
         Local local = getLocal(position.divide(LOCAL_SIZE_POINT));
         Point offset = position.subtract(local.getNwBoundWorldCoord());
         local.getTiles()[offset.x()][offset.y()] = Tile.DOOR;
+    }
+
+    public long getTurnCounter() {
+        return turnCounter;
     }
 }

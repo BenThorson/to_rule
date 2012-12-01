@@ -1,6 +1,7 @@
 package com.bthorson.torule.entity.conversation.actions;
 
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.screens.ConversationScreen;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,5 +12,5 @@ import com.bthorson.torule.entity.Creature;
  */
 public interface ConversationAction {
 
-    void doAction(Creature creature);
+    void doAction(ConversationScreen screen, Creature creature);
 }

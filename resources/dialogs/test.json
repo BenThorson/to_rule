@@ -60,11 +60,16 @@
                     {
                         "id":"buy.1",
                         "text":"Can I purchase some of your goods?",
+                        "check":"hasInventory",
                         "responses":[
                             {
                                 "id":"buy.1.yes",
                                 "text":"Please do!",
-                                "newScreen":"InventoryBuyScreen"
+                                "action":"showInventory"
+                            },
+                            {
+                                "id":"buy.1.no",
+                                "text":"Sorry I am out of stock."
                             }
                         ]
                     },

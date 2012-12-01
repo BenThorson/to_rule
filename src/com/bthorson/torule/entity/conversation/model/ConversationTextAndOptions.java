@@ -1,5 +1,6 @@
 package com.bthorson.torule.entity.conversation.model;
 
+import com.bthorson.torule.entity.conversation.actions.ConversationAction;
 import com.bthorson.torule.screens.Screen;
 
 /**
@@ -12,17 +13,17 @@ public class ConversationTextAndOptions {
     private String text;
     private String[] options;
 
-    private Screen newScreen;
+    private ConversationAction action;
 
     public ConversationTextAndOptions(String text, String[] options) {
         this.text = text;
         this.options = options;
     }
 
-    public ConversationTextAndOptions(String text, String[] options, Screen newScreen) {
+    public ConversationTextAndOptions(String text, String[] options, ConversationAction action) {
         this.text = text;
         this.options = options;
-        this.newScreen = newScreen;
+        this.action = action;
     }
 
     public String getText() {
@@ -31,5 +32,9 @@ public class ConversationTextAndOptions {
 
     public String[] getOptions() {
         return options;
+    }
+
+    public ConversationAction getAction() {
+        return action;
     }
 }

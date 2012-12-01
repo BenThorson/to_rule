@@ -1,0 +1,24 @@
+{
+    "inventory":[
+        {
+            "wealthLevel":"poor",
+            "inventory":[
+                {
+                    "type":"ARMOR",
+                    "refId":"cloth.chest.1",
+                    "quantity":20
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.chest.1",
+                    "quantity":20
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.chest.2",
+                    "quantity":5
+                }
+            ]
+        }
+    ]
+}
