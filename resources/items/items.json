@@ -1,0 +1,173 @@
+{
+    "items":[
+
+        {
+            "id":"cloth.chest.1",
+            "type":"ARMOR",
+            "slotType":"torso",
+            "name":"padded chest",
+            "price":25,
+            "weight":10,
+            "attributes":{
+                "armor class":2
+            }
+        },
+        {
+            "id":"leather.chest.1",
+            "type":"ARMOR",
+            "slotType":"torso",
+            "name":"leather chest",
+            "price":75,
+            "weight":15,
+            "attributes":{
+                "armor class":4
+            }
+        },
+        {
+            "id":"leather.chest.2",
+            "type":"ARMOR",
+            "slotType":"torso",
+            "name":"studded leather chest",
+            "price":125,
+            "weight":20,
+            "attributes":{
+                "armor class":6
+            }
+        },
+        {
+            "id":"metal.chest.1",
+            "type":"ARMOR",
+            "slotType":"torso",
+            "name":"chain chest",
+            "price":300,
+            "weight":40,
+            "attributes":{
+                "armor class":10
+            }
+        },
+        {
+            "id":"cloth.helm.1",
+            "type":"ARMOR",
+            "slotType":"torso",
+            "name":"padded cloth cap",
+            "price":25,
+            "weight":10,
+            "attributes":{
+                "armor class":2
+            }
+        },
+        {
+            "id":"leather.helm.1",
+            "type":"ARMOR",
+            "slotType":"head",
+            "name":"leather cap",
+            "price":75,
+            "weight":15,
+            "attributes":{
+                "armor class":4
+            }
+        },
+        {
+            "id":"leather.helm.2",
+            "type":"ARMOR",
+            "slotType":"head",
+            "name":"studded leather cap",
+            "price":125,
+            "weight":20,
+            "attributes":{
+                "armor class":6
+            }
+        },
+        {
+            "id":"metal.helm.1",
+            "type":"ARMOR",
+            "slotType":"head",
+            "name":"chain coif",
+            "price":300,
+            "weight":40,
+            "attributes":{
+                "armor class":10
+            }
+        },
+
+        {
+            "id":"wood.shield.1",
+            "type":"SHIELD",
+            "slotType":"shield",
+            "name":"wooden buckler",
+            "price":50,
+            "weight":10,
+            "attributes":{
+                "armor class":4,
+                "blockChance":3
+            }
+        },
+
+        {
+            "id":"iron.sword.1",
+            "type":"WEAPON",
+            "slotType":"weapon",
+            "name":"iron short sword",
+            "price":"100",
+            "weight":10,
+            "attributes":{
+                "damage":4
+            }
+        },
+        {
+            "id":"iron.sword.2",
+            "type":"WEAPON",
+            "slotType":"weapon",
+            "name":"iron sabre",
+            "price":"200",
+            "weight":12,
+            "attributes":{
+                "damage":5
+            }
+        },
+        {
+            "id":"iron.sword.3",
+            "type":"WEAPON",
+            "slotType":"weapon",
+            "name":"iron long sword",
+            "price":"300",
+            "weight":15,
+            "attributes":{
+                "damage":6
+            }
+        },
+        {
+            "id":"steel.sword.1",
+            "type":"WEAPON",
+            "slotType":"weapon",
+            "name":"steel short sword",
+            "price":"1000",
+            "weight":10,
+            "attributes":{
+                "damage":8
+            }
+        },
+        {
+            "id":"steel.sword.2",
+            "type":"WEAPON",
+            "slotType":"weapon",
+            "name":"steel sabre",
+            "price":"1500",
+            "weight":12,
+            "attributes":{
+                "damage":10
+            }
+        },
+        {
+            "id":"steel.sword.3",
+            "type":"WEAPON",
+            "slotType":"weapon",
+            "name":"steel long sword",
+            "price":"2000",
+            "weight":15,
+            "attributes":{
+                "damage":12
+            }
+        }
+    ]
+}

@@ -12,13 +12,16 @@ public class Item {
     private String name;
     private int price;
     private int weight;
-    private ItemType type;
+    private String type;
+    private String slotType;
     private Map<String, Integer> attributes;
 
-    public Item(String name, int price, int weight, Map<String, Integer> attributes) {
+    public Item(String name, int price, int weight, String type, String slotType, Map<String, Integer> attributes) {
         this.name = name;
         this.price = price;
         this.weight = weight;
+        this.type = type;
+        this.slotType = slotType;
         this.attributes = attributes;
     }
 
@@ -36,5 +39,13 @@ public class Item {
 
     public String getName() {
         return name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getSlotType() {
+        return slotType;
     }
 }

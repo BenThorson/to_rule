@@ -45,6 +45,10 @@ public class World {
 
     private List<Town> towns = new ArrayList<Town>();
 
+    private Faction aggressiveAnimalFaction = new Faction("aggressiveAnimal");
+    private Faction passiveAnimalFaction = new Faction("passiveAnimal");
+    private Faction goblinFaction = new Faction("goblin");
+
     private static World instance;
 
     private int width;
@@ -77,6 +81,7 @@ public class World {
         this.seCorner = params.getWorldSize();
 
         initWorld(params);
+        setupFactions();
         createPlayer(params.getPlayerName());
     }
 
@@ -85,8 +90,6 @@ public class World {
         for (; townPoints.size() < params.getNumCities();){
             townPoints.add(PointUtil.randomPoint(World.NW_CORNER, seCorner.divide(LOCAL_SIZE_POINT)));
         }
-
-
 
         for (Point city : townPoints) {
             towns.add(TownBuilder.buildPredefinedTown(getLocal(city), city));
@@ -191,6 +194,19 @@ public class World {
 
     }
 
+
+    private void setupFactions() {
+        for (Town town : towns){
+            aggressiveAnimalFaction.addEnemyFaction(town.getFaction());
+            town.getFaction().addEnemyFaction(aggressiveAnimalFaction);
+            town.getFaction().addEnemyFaction(goblinFaction);
+            goblinFaction.addEnemyFaction(town.getFaction());
+        }
+        aggressiveAnimalFaction.addEnemyFaction(goblinFaction);
+        goblinFaction.addEnemyFaction(aggressiveAnimalFaction);
+    }
+
+
     private Local getLocal(Point LocalGridPosition) {
         return regions[LocalGridPosition.x()/REGION_X_IN_LOCALS][LocalGridPosition.y()/REGION_Y_IN_LOCALS]
                 .getLocal(LocalGridPosition.x() % REGION_X_IN_LOCALS, LocalGridPosition.y() % REGION_Y_IN_LOCALS);
@@ -214,20 +230,12 @@ public class World {
     }
 
     public void createPlayer(String playerName){
-        Faction human = new Faction("Human");
-        Faction goblin = new Faction("Goblin");
-        human.addEnemyFaction(goblin);
-        goblin.addEnemyFaction(human);
         Town town = towns.get(0);
         Point placement = town.getRegionalPosition().multiply(new Point(MapConstants.LOCAL_SIZE_X, MapConstants.LOCAL_SIZE_Y));
-        player = CreatureFactory.buildPlayer(placement.add(new Point(50,50)));
-        player.getCreature().setFaction(human);
+        player = new Player(CreatureFactory.INSTANCE.createCreature("player", placement.add(new Point(50, 50))));
+        player.getCreature().setFaction(town.getFaction());
         player.getCreature().setName(playerName);
         EntityManager.getInstance().setPlayer(player.getCreature());
-        EntityManager.getInstance().addCreature(player.getCreature());
-        Creature test = CreatureFactory.buildVillager(new Point(50,51));
-        test.setAi(new WanderAI(test, new Point(49,49), new Point(51,51)));
-
     }
 
     public void update() {

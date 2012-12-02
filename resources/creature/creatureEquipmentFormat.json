@@ -1,0 +1,22 @@
+{
+    "creatures":[
+        {
+            "creature":"human",
+            "slots":[
+                    "weapon",
+                    "head",
+                    "torso",
+                    "shield"
+            ]
+        },
+        {
+            "creature":"goblin",
+            "slots":[
+                    "weapon",
+                    "head",
+                    "torso",
+                    "shield"
+            ]
+        }
+    ]
+}

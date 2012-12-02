@@ -1,6 +1,8 @@
 package com.bthorson.torule.player;
 
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.ai.PlayerAI;
+import com.bthorson.torule.geom.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ public class Player {
 
     private int fame;
 
-    private int gold;
+    private ExploredMap explored = new ExploredMap();
 
     private List<Creature> followers = new ArrayList<Creature>();
 
@@ -32,10 +34,22 @@ public class Player {
 
     public Player(Creature creature){
         this.creature = creature;
+        creature.setAi(new PlayerAI(creature));
     }
 
     public Creature getCreature(){
         return creature;
+    }
+
+    public boolean hasExplored(Point point){
+        if (explored == null){
+            return false;
+        }
+        return explored.hasExplored(point);
+    }
+
+    public void explore(Point point) {
+        explored.explore(point);
     }
 
 
@@ -43,10 +57,8 @@ public class Player {
         followers.add(creature);
     }
 
-    public void clear(){
-        creature = null;
-        fame = 0;
-        gold = 0;
-        followers = new ArrayList<Creature>();
+    public void removeFollower(Creature creature){
+        followers.remove(creature);
     }
+
 }

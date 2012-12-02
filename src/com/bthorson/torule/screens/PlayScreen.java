@@ -6,6 +6,7 @@ import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
+import com.bthorson.torule.player.Player;
 
 import java.awt.event.KeyEvent;
 
@@ -17,22 +18,22 @@ import java.awt.event.KeyEvent;
 public class PlayScreen implements Screen {
 
     private World world = World.getInstance();
-    private Creature player;
+    private Player player;
     private StatusScreen statusScreen;
     private MessageScreen messageScreen;
     private int xBorder = 45;
     private int yBorder = 30;
 
     public PlayScreen() {
-        this.player = world.getPlayer().getCreature();
+        this.player = world.getPlayer();
         this.statusScreen = new StatusScreen(world, xBorder);
         this.messageScreen = new MessageScreen(world, yBorder);
     }
 
     public Point getOffset() {
-        return new Point(Math.max(0, Math.min(player.position().x() - xBorder / 2,
+        return new Point(Math.max(0, Math.min(player.getCreature().position().x() - xBorder / 2,
                                     world.width() - xBorder)),
-                         Math.max(0, Math.min(player.position().y() - yBorder / 2,
+                         Math.max(0, Math.min(player.getCreature().position().y() - yBorder / 2,
                                     world.height() - yBorder)));
     }
 
@@ -42,7 +43,7 @@ public class PlayScreen implements Screen {
         Point offset = getOffset();
         displayTiles(terminal, offset);
 
-        terminal.writeHumanoid(player.glyph(), player.position().subtract(offset), world.tile(player.position()));
+        terminal.writeHumanoid(player.getCreature().glyph(), player.getCreature().position().subtract(offset), world.tile(player.getCreature().position()));
 
         statusScreen.displayOutput(terminal);
         messageScreen.displayOutput(terminal);
@@ -55,7 +56,7 @@ public class PlayScreen implements Screen {
             for (int y = 0; y < yBorder; y++){
                 Point viewPort = new Point(x,y);
                 Point worldPoint = viewPort.add(offset);
-                if (player.canSee(worldPoint)){
+                if (player.getCreature().canSee(worldPoint)){
                     player.explore(worldPoint);
                     terminal.writeTile(world.tile(worldPoint), viewPort);
 
@@ -77,7 +78,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
-        if (player.dead()){
+        if (player.getCreature().dead()){
             return new DeadScreen(this);
         }
         switch (key.getKeyCode()){
@@ -85,21 +86,21 @@ public class PlayScreen implements Screen {
                 World.destroy();
                 return new StartScreen();
             case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_NUMPAD4: player.move(Direction.WEST.point()); break;
+            case KeyEvent.VK_NUMPAD4: player.getCreature().move(Direction.WEST.point()); break;
             case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_NUMPAD6: player.move(Direction.EAST.point()); break;
+            case KeyEvent.VK_NUMPAD6: player.getCreature().move(Direction.EAST.point()); break;
             case KeyEvent.VK_UP:
-            case KeyEvent.VK_NUMPAD8: player.move(Direction.NORTH.point()); break;
+            case KeyEvent.VK_NUMPAD8: player.getCreature().move(Direction.NORTH.point()); break;
             case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_NUMPAD2: player.move(Direction.SOUTH.point()); break;
-            case KeyEvent.VK_NUMPAD7: player.move(Direction.NORTHWEST.point()); break;
-            case KeyEvent.VK_NUMPAD9: player.move(Direction.NORTHEAST.point()); break;
-            case KeyEvent.VK_NUMPAD1: player.move(Direction.SOUTHWEST.point()); break;
-            case KeyEvent.VK_NUMPAD3: player.move(Direction.SOUTHEAST.point()); break;
-//            case KeyEvent.VK_PERIOD: player.getGroup().rotateTest(); break;
-            case KeyEvent.VK_T: return new ConversationScreen(this, player.position().subtract(getOffset()));
+            case KeyEvent.VK_NUMPAD2: player.getCreature().move(Direction.SOUTH.point()); break;
+            case KeyEvent.VK_NUMPAD7: player.getCreature().move(Direction.NORTHWEST.point()); break;
+            case KeyEvent.VK_NUMPAD9: player.getCreature().move(Direction.NORTHEAST.point()); break;
+            case KeyEvent.VK_NUMPAD1: player.getCreature().move(Direction.SOUTHWEST.point()); break;
+            case KeyEvent.VK_NUMPAD3: player.getCreature().move(Direction.SOUTHEAST.point()); break;
+//            case KeyEvent.VK_PERIOD: player.getCreature().getGroup().rotateTest(); break;
+            case KeyEvent.VK_T: return new ConversationScreen(this, player.getCreature().position().subtract(getOffset()));
             default:
-                player.move(new Point(0,0));
+                player.getCreature().move(new Point(0, 0));
                 break;
         }
 

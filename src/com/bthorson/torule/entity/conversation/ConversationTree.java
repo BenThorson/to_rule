@@ -24,7 +24,7 @@ public class ConversationTree {
 
     private void load() {
         try {
-            String jsonStr = FileUtils.readFileToString(new File("resources/dialogs/test.json"));
+            String jsonStr = FileUtils.readFileToString(new File("resources/dialogs/conversation.json"));
             conversations = new Gson().fromJson(jsonStr, Conversations.class);
 
         } catch (IOException e) {

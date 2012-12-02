@@ -136,7 +136,6 @@ public class Menu {
         if (key.getKeyCode() == KeyEvent.VK_ENTER){
             return currentChoice;
         }
-        System.out.println(currentChoice);
         return -1;
     }
 

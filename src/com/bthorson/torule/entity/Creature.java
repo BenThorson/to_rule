@@ -8,9 +8,9 @@ import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Line;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
-import com.bthorson.torule.player.ExploredMap;
 import com.bthorson.torule.town.Building;
 
 import java.awt.*;
@@ -35,47 +35,100 @@ public class Creature extends Entity implements AiControllable {
 
     private Point target;
 
+    private static final int HP_REGEN_RESET = 10;
     private int hitpoints;
     private int maxHitpoints;
     private int hpRegenCount;
-    private static final int HP_REGEN_RESET = 10;
+    private int hpRegenRate = 1;
 
     private boolean dead = false;
-
     private List<Message> messages = new ArrayList<Message>();
+
     private Faction faction;
-    
-    private ExploredMap explored;
 
     private String name;
-    private Profession profession;
 
+    private int gold;
+
+    private Profession profession;
     private Map<String, Building> properties = new HashMap<String, Building>();
 
-    public Creature(Point position, int glyph, int visionRadius, int hitpoints, Profession profession) {
-        super(position, glyph, Color.WHITE);
-        this.visionRadius = visionRadius;
-        this.maxHitpoints = hitpoints;
-        this.hitpoints = hitpoints;
+    private List<Item> inventory = new ArrayList<Item>();
+    private Map<String, EquipmentSlot> equipmentSlots = new HashMap<String, EquipmentSlot>();
+
+    public Creature(CreatureBuilder builder) {
+        super(builder.position, builder.glyph, Color.WHITE);
+        this.visionRadius = builder.visionRadius;
+        this.maxHitpoints = builder.hitPoints;
+        this.hitpoints = builder.hitPoints;
         this.heading = Direction.SOUTH;
+        this.profession = builder.profession;
+        this.gold = builder.gold;
         name = NameGenerator.getInstance().genName();
-        this.profession = profession;
+        this.inventory = builder.inventory;
+        this.equipmentSlots = builder.equipmentSlots;
+    }
+
+    public static class CreatureBuilder{
+        private Point position;
+        private int glyph;
+        private int visionRadius = 30;
+        private int hitPoints;
+        private Profession profession;
+        private int gold = 0;
+        private Map<String, EquipmentSlot> equipmentSlots = new HashMap<String, EquipmentSlot>();
+        private List<Item> inventory = new ArrayList<Item>();
+
+        public CreatureBuilder position(Point position){
+            this.position = position;
+            return this;
+        }
+
+        public CreatureBuilder glyph(int glyph){
+            this.glyph = glyph;
+            return this;
+        }
+
+        public CreatureBuilder visionRadius(int visionRadius){
+            this.visionRadius = visionRadius;
+            return this;
+        }
+
+        public CreatureBuilder hitPoints(int hitPoints){
+            this.hitPoints = hitPoints;
+            return this;
+        }
+
+        public CreatureBuilder profession(Profession profession){
+            this.profession = profession;
+            return this;
+        }
+
+        public CreatureBuilder gold(int gold){
+            this.gold = gold;
+            return this;
+        }
+
+        public CreatureBuilder equipmentSlots(Map<String, EquipmentSlot> equipmentSlots){
+            this.equipmentSlots = equipmentSlots;
+            return this;
+        }
+
+        public CreatureBuilder inventory(List<Item> inventory){
+            this.inventory = inventory;
+            return this;
+        }
+
+        public Creature build(){
+            return new Creature(this);
+        }
+        
     }
 
     public void setGroup(Group group){
         this.group = group;
     }
 
-    public void setExplored(ExploredMap explored){
-        this.explored = explored;
-    }
-    
-    public boolean hasExplored(Point point){
-        if (explored == null){
-            return false;
-        }
-        return explored.hasExplored(point);    
-    }
 
     public boolean move(Point delta){
 
@@ -111,7 +164,7 @@ public class Creature extends Entity implements AiControllable {
     public void update() {
         hpRegenCount = ++hpRegenCount % HP_REGEN_RESET;
         if (hpRegenCount == 0){
-            adjustHitpoint(1);
+            adjustHitpoint(hpRegenRate);
         }
         ai = ai.execute();
     }
@@ -226,11 +279,6 @@ public class Creature extends Entity implements AiControllable {
 
     public Faction getFaction() {
         return faction;
-    }
-
-
-    public void explore(Point point) {
-        explored.explore(point);
     }
 
     public void setLeader(Creature leader) {

@@ -61,7 +61,12 @@ public class TownBuilder {
         Building b = new Building(toBuildOn.getNwBoundWorldCoord().add(new Point(x, y)), toBuildOn.getNwBoundWorldCoord().add(new Point(x + w, y + h)),
                                   buildingType);
         if (BuildingType.isShop(buildingType)){
-            Creature shopOwner = CreatureFactory.buildMerchant(b.getNwCorner().add(new Point(1,1)), b);
+            Creature shopOwner = CreatureFactory.INSTANCE.createCreature("merchant", b.getNwCorner().add(new Point(1, 1)));
+            town.registerCitizen(shopOwner);
+            shopOwner.setFaction(town.getFaction());
+            shopOwner.setAi(new WanderAI(shopOwner,
+                                         b.getNwCorner().add(Direction.SOUTHEAST.point()),
+                                         b.getSeCorner().add(Direction.NORTHWEST.point())));
             BuildingInventoryFactory.INSTANCE.createItemsForShop(b, WealthLevel.POOR);
             shopOwner.addOwnedProperty("shop", b);
             b.setOwner(shopOwner);
@@ -86,7 +91,6 @@ public class TownBuilder {
     }
 
     private void fillRect(int x, int y, int w, int h, Tile tileType) {
-        System.out.println("");
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
                 toBuildOn.getTiles()[x + i][y + j] = tileType;
@@ -108,7 +112,9 @@ public class TownBuilder {
         for (int i = 0; i < numberOfTownsmen; i++){
             Point candidate = PointUtil.randomPoint(toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound());
             if (!World.getInstance().isOccupied(candidate) && !candidate.equals(new Point(50,50))){
-                Creature villager = CreatureFactory.buildVillager(candidate);
+                Creature villager = CreatureFactory.INSTANCE.createCreature("villager", candidate);
+                villager.setFaction(town.getFaction());
+                town.registerCitizen(villager);
                 villager.setAi(new WanderAI(villager, toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound()));
             } else {
                 i--;

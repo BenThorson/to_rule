@@ -5,7 +5,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: Ben Thorson
@@ -16,7 +17,7 @@ public enum ItemFactory {
 
     INSTANCE;
 
-    private EnumMap<ItemType, JsonArray> catalog = new EnumMap<ItemType, JsonArray>(ItemType.class);
+    private Map<String, JsonObject> catalog = new HashMap<String, JsonObject>();
 
     private ItemFactory(){
         load();
@@ -24,28 +25,24 @@ public enum ItemFactory {
 
     private void load() {
         try {
-            String armor = FileUtils.readFileToString(new File("resources/items/armor.json"));
+            String armor = FileUtils.readFileToString(new File("resources/items/items.json"));
             JsonObject jo = new JsonParser().parse(armor).getAsJsonObject();
-            JsonArray armorItems = jo.get("items").getAsJsonArray();
-            catalog.put(ItemType.ARMOR, armorItems);
+            JsonArray items = jo.get("items").getAsJsonArray();
+            for (JsonElement item : items){
+                catalog.put(item.getAsJsonObject().get("id").getAsString(), item.getAsJsonObject());
+            }
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 
-    public Item createItemOfId(ItemType type, String itemId){
-        JsonArray array = catalog.get(type);
-        for (JsonElement element : array){
-            JsonObject obj = element.getAsJsonObject();
-            if(obj.get("id").getAsString().equalsIgnoreCase(itemId)){
-                Item item = new Gson().fromJson(obj, Item.class);
-                return item;
-            }
-        }
-        return null;
+    public Item createItemOfId(String itemId){
+        JsonObject obj = catalog.get(itemId);
+        Item item = new Gson().fromJson(obj, Item.class);
+        return item;
     }
 
     public static void main(String[] args) {
-        ItemFactory.INSTANCE.createItemOfId(ItemType.ARMOR, "cloth.chest.1");
+        ItemFactory.INSTANCE.createItemOfId("cloth.chest.1");
     }
 }

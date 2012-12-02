@@ -37,4 +37,9 @@ public class NameGenerator {
         Random rand = new Random();
         return names.get(rand.nextInt(names.size())) + " " + names.get(rand.nextInt(names.size()));
     }
+
+    public String genTownName(){
+        Random rand = new Random();
+        return names.get(rand.nextInt(names.size()));
+    }
 }
