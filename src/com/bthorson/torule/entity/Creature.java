@@ -65,7 +65,7 @@ public class Creature extends Entity implements AiControllable {
     public void setGroup(Group group){
         this.group = group;
     }
-    
+
     public void setExplored(ExploredMap explored){
         this.explored = explored;
     }
@@ -279,11 +279,15 @@ public class Creature extends Entity implements AiControllable {
         return profession;
     }
 
-    public void addProperty(String key, Building building){
+    public void addOwnedProperty(String key, Building building){
         properties.put(key, building);
     }
 
-    public Building getProperty(String key){
+    public void removeOwnedProperty(String key){
+        properties.remove(key);
+    }
+
+    public Building getOwnedProperties(String key){
        return properties.get(key);
     }
 }

@@ -3,12 +3,10 @@ package com.bthorson.torule.screens;
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.conversation.SampleConversation;
-import com.bthorson.torule.entity.conversation.model.ConversationNode;
 import com.bthorson.torule.entity.conversation.model.ConversationTextAndOptions;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**
@@ -57,7 +55,7 @@ public class ConversationScreen implements ControlCallbackScreen {
         newScreen = null;
         int response = -1;
         if (convoDialog == null){
-            return attemptedSelection ? previous : selectScreen;
+            return attemptedSelection ? previous : selectScreen.respondToUserInput(key);
         } else if ((response = convoDialog.respondToUserInput(key)) != -1) {
             ConversationTextAndOptions convs = conversation.continueConversation(this, response);
             if (convs != null){
@@ -73,8 +71,16 @@ public class ConversationScreen implements ControlCallbackScreen {
     }
 
     @Override
-    public Screen respondToMouseInput(Point key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Screen respondToMouseInput(Point translatedPoint) {
+        if (convoDialog == null){
+            return attemptedSelection ? previous : selectScreen.respondToMouseInput(translatedPoint);
+        }
+        return null;
+    }
+
+    @Override
+    public Screen respondToMouseClick(Point translatedPoint, int mouseButton) {
+        return attemptedSelection ? previous : selectScreen.respondToMouseClick(translatedPoint, mouseButton);
     }
 
     public Creature getConversant() {

@@ -10,7 +10,6 @@ import com.bthorson.torule.map.Local;
 import com.bthorson.torule.map.MapConstants;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
-import com.sun.istack.internal.Builder;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,7 +63,7 @@ public class TownBuilder {
         if (BuildingType.isShop(buildingType)){
             Creature shopOwner = CreatureFactory.buildMerchant(b.getNwCorner().add(new Point(1,1)), b);
             BuildingInventoryFactory.INSTANCE.createItemsForShop(b, WealthLevel.POOR);
-            shopOwner.addProperty("shop", b);
+            shopOwner.addOwnedProperty("shop", b);
             b.setOwner(shopOwner);
         }
         town.registerBuilding(b);

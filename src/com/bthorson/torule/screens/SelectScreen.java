@@ -6,6 +6,7 @@ import com.bthorson.torule.geom.Point;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * User: ben
@@ -18,6 +19,7 @@ public class SelectScreen implements Screen{
     private final Screen displayParent;
 
     private Point cursor;
+    private Point mousePos;
 
     public SelectScreen(Screen displayParent, Point cursor, ControlCallbackScreen controlParentScreen){
 
@@ -29,7 +31,7 @@ public class SelectScreen implements Screen{
     @Override
     public void displayOutput(AsciiPanel terminal) {
         displayParent.displayOutput(terminal);
-        terminal.highlight(cursor, Color.GREEN, true);
+        terminal.highlight(cursor, Color.GREEN);
     }
 
     @Override
@@ -38,8 +40,7 @@ public class SelectScreen implements Screen{
             case KeyEvent.VK_ESCAPE:
                 return controlParentScreen;
             case KeyEvent.VK_ENTER:
-                controlParentScreen.positionSelected(cursor);
-                return controlParentScreen;
+                return setPositionAndReturn();
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_NUMPAD4: cursor = cursor.add(Direction.WEST.point()); break;
             case KeyEvent.VK_RIGHT:
@@ -60,7 +61,22 @@ public class SelectScreen implements Screen{
     }
 
     @Override
-    public Screen respondToMouseInput(Point key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Screen respondToMouseInput(Point translatedPoint) {
+        cursor = translatedPoint;
+        return this;
+    }
+
+    @Override
+    public Screen respondToMouseClick(Point translatedPoint, int mouseButton) {
+        switch (mouseButton){
+            case MouseEvent.BUTTON1:
+                return setPositionAndReturn();
+        }
+        return this;
+    }
+
+    private Screen setPositionAndReturn() {
+        controlParentScreen.positionSelected(cursor);
+        return controlParentScreen;
     }
 }

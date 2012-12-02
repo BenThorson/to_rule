@@ -256,12 +256,14 @@ public class AsciiPanel extends JPanel {
 
             }
         }
-        if (mousePositionShow){
+        if (mousePosition != null){
             g2d = (Graphics2D)g2d.create();
             g2d.setColor(mouseColor);
             Point mouseTrans = mousePosition.multiply(charBr);
             g2d.drawRect(mouseTrans.x(), mouseTrans.y(), charBr.x(), charBr.y());
-        }        g2d.dispose();
+            mousePosition = null;
+        }
+        g2d.dispose();
     }
 
     private BufferedImage toCompatibleImage(BufferedImage image)
@@ -708,7 +710,7 @@ public class AsciiPanel extends JPanel {
     	}
     }
 
-    public void highlight(Point mousePos, Color color, boolean mousePositionShow) {
+    public void highlight(Point mousePos, Color color) {
         this.mousePosition = mousePos;
         this.mouseColor = color;
         this.mousePositionShow = mousePositionShow;

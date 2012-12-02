@@ -17,5 +17,6 @@ public interface Screen {
 
     public void displayOutput(AsciiPanel terminal);
     public Screen respondToUserInput(KeyEvent key);
-    public Screen respondToMouseInput(Point key);
+    public Screen respondToMouseInput(Point translatedPoint);
+    public Screen respondToMouseClick(Point translatedPoint, int mouseButton);
 }

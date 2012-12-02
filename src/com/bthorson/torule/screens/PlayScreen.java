@@ -7,7 +7,6 @@ import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**
@@ -23,9 +22,6 @@ public class PlayScreen implements Screen {
     private MessageScreen messageScreen;
     private int xBorder = 45;
     private int yBorder = 30;
-
-    private Point mousePos = new Point(0,0);
-    private boolean  showMouse;
 
     public PlayScreen() {
         this.player = world.getPlayer().getCreature();
@@ -50,14 +46,6 @@ public class PlayScreen implements Screen {
 
         statusScreen.displayOutput(terminal);
         messageScreen.displayOutput(terminal);
-        if (showMouse){
-            Creature c = World.getInstance().creature(mousePos.add(offset));
-            if (c != null){
-                System.out.println(c.getName());
-            }
-        }
-        terminal.highlight(mousePos, Color.GREEN, showMouse);
-
     }
 
 
@@ -89,7 +77,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
-        showMouse = false;
         if (player.dead()){
             return new DeadScreen(this);
         }
@@ -98,21 +85,21 @@ public class PlayScreen implements Screen {
                 World.destroy();
                 return new StartScreen();
             case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_NUMPAD4: player.doMove(Direction.WEST.point()); break;
+            case KeyEvent.VK_NUMPAD4: player.move(Direction.WEST.point()); break;
             case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_NUMPAD6: player.doMove(Direction.EAST.point()); break;
+            case KeyEvent.VK_NUMPAD6: player.move(Direction.EAST.point()); break;
             case KeyEvent.VK_UP:
-            case KeyEvent.VK_NUMPAD8: player.doMove(Direction.NORTH.point()); break;
+            case KeyEvent.VK_NUMPAD8: player.move(Direction.NORTH.point()); break;
             case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_NUMPAD2: player.doMove(Direction.SOUTH.point()); break;
-            case KeyEvent.VK_NUMPAD7: player.doMove(Direction.NORTHWEST.point()); break;
-            case KeyEvent.VK_NUMPAD9: player.doMove(Direction.NORTHEAST.point()); break;
-            case KeyEvent.VK_NUMPAD1: player.doMove(Direction.SOUTHWEST.point()); break;
-            case KeyEvent.VK_NUMPAD3: player.doMove(Direction.SOUTHEAST.point()); break;
-            case KeyEvent.VK_PERIOD: player.getGroup().rotateTest(); break;
+            case KeyEvent.VK_NUMPAD2: player.move(Direction.SOUTH.point()); break;
+            case KeyEvent.VK_NUMPAD7: player.move(Direction.NORTHWEST.point()); break;
+            case KeyEvent.VK_NUMPAD9: player.move(Direction.NORTHEAST.point()); break;
+            case KeyEvent.VK_NUMPAD1: player.move(Direction.SOUTHWEST.point()); break;
+            case KeyEvent.VK_NUMPAD3: player.move(Direction.SOUTHEAST.point()); break;
+//            case KeyEvent.VK_PERIOD: player.getGroup().rotateTest(); break;
             case KeyEvent.VK_T: return new ConversationScreen(this, player.position().subtract(getOffset()));
             default:
-                player.doMove(new Point(0,0));
+                player.move(new Point(0,0));
                 break;
         }
 
@@ -122,12 +109,12 @@ public class PlayScreen implements Screen {
     }
 
     @Override
-    public Screen respondToMouseInput(Point mousePos) {
-        this.mousePos = mousePos;
-        showMouse = true;
-        System.out.printf("%d, %d\n", mousePos.x(), mousePos.y());
-        return this;
+    public Screen respondToMouseInput(Point translatedPoint) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-
+    @Override
+    public Screen respondToMouseClick(Point translatedPoint, int mouseButton) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

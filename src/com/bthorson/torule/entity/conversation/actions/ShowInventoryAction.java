@@ -14,7 +14,7 @@ public class ShowInventoryAction implements ConversationAction {
 
     @Override
     public void doAction(ConversationScreen parent, Creature creature) {
-        Screen screen = new InventoryScreen(parent, creature.getProperty("shop"));
+        Screen screen = new InventoryScreen(parent, creature.getOwnedProperties("shop"));
         parent.setNewScreen(screen);
     }
 }

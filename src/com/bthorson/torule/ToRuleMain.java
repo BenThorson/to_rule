@@ -38,22 +38,30 @@ public class ToRuleMain extends JFrame implements KeyListener {
         timer.start();
         addMouseMotionListener(new MouseAdapter() {
 
-
             @Override
             public void mouseMoved(MouseEvent e) {
-                int adjY = e.getY() - 25;
-                Point point = new Point(e.getX(), adjY).divide(terminal.charBr());
+                Point point = translateMouse(e);
                 screen.respondToMouseInput(point);
-                screen.displayOutput(terminal);
                 repaint();
-//                System.out.printf("Mouse clicked %d %d\n",e.getX(), adjY);
-                int adjX = e.getX() / terminal.charBr().x();
-                adjY= adjY / terminal.charBr().y();
-//                System.out.printf("Tile is %d %d\n",adjX, adjY);
+            }
+        });
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Point point = translateMouse(e);
+                screen = screen.respondToMouseClick(point, e.getButton());
+                repaint();
             }
         });
         repaint();
 
+    }
+
+    private Point translateMouse(MouseEvent e) {
+        int adjY = e.getY() - 30;
+        int adjX = e.getX() - 8;
+        return new Point(adjX, adjY).divide(terminal.charBr());
     }
 
     @Override
@@ -79,7 +87,9 @@ public class ToRuleMain extends JFrame implements KeyListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+
+    }
 
     public static void main(String[] args) {
         ToRuleMain app = new ToRuleMain();
