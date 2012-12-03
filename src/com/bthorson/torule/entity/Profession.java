@@ -6,5 +6,5 @@ package com.bthorson.torule.entity;
  * Time: 10:15 AM
  */
 public enum Profession {
-    VILLAGER, MERCHANT, SOLDIER, MAYOR, LEADER, MERCENARY, PET
+    VILLAGER, MERCHANT, SOLDIER, MAYOR, LEADER, MERCENARY, PET, MOB
 }

@@ -4,6 +4,8 @@ import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.MapConstants;
+import com.bthorson.torule.map.World;
 
 import java.util.Random;
 
@@ -25,11 +27,14 @@ public class WanderAI extends CreatureAI {
     @Override
     public CreatureAI execute() {
 
-        Creature toAggro = getTarget();
-        if (toAggro != null){
-            AggroAI aggroAI = new AggroAI(self, toAggro);
-            aggroAI.execute();
-            return aggroAI;
+        if (self.position().divide(MapConstants.LOCAL_SIZE_POINT).equals(
+                World.getInstance().getPlayer().getCreature().position().divide(MapConstants.LOCAL_SIZE_POINT))){
+            Creature toAggro = getTarget();
+            if (toAggro != null){
+                AggroAI aggroAI = new AggroAI(self, toAggro);
+                aggroAI.execute();
+                return aggroAI;
+            }
         }
         int check = new Random().nextInt(10);
 

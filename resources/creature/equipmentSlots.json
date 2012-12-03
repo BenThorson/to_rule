@@ -19,7 +19,16 @@
             "slotName":"shield",
             "itemType":"SHIELD",
             "itemPurpose":"DEFENSE"
+        },
+        {
+            "slotName":"mouth",
+            "itemType":"NONE",
+            "itemPurpose":"OFFENSE"
+        },
+        {
+            "slotName":"claw",
+            "itemType":"NONE",
+            "itemPurpose":"OFFENSE"
         }
-
     ]
 }

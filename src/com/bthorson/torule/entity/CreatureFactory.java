@@ -81,6 +81,16 @@ public enum CreatureFactory {
             equipment.add(ItemFactory.INSTANCE.createItemOfId(itemId));
         }
 
+        Map<String, Integer> itemlessAttack = new HashMap<String, Integer>();
+        JsonElement element = template.get("itemlessAttack");
+        if (element != null){
+            JsonArray array = element.getAsJsonArray();
+            for (JsonElement e2 : array){
+                JsonObject obj = e2.getAsJsonObject();
+                itemlessAttack.put(obj.get("slotType").getAsString(), obj.get("value").getAsInt());
+            }
+        }
+
         Creature creature = new Creature.CreatureBuilder()
                 .position(pos)
                 .glyph(CreatureImage.valueOf(template.get("image").getAsString()).num())
@@ -89,6 +99,8 @@ public enum CreatureFactory {
                 .profession(Profession.valueOf(template.get("profession").getAsString()))
                 .equipmentSlots(map)
                 .inventory(equipment)
+                .itemlessAttackValues(itemlessAttack)
+                .corpseGlyph(CreatureImage.valueOf(template.get("corpseImage").getAsString()).num())
                 .build();
 
         EntityManager.getInstance().addCreature(creature);

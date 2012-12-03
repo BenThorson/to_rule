@@ -9,6 +9,8 @@ import java.util.Random;
  */
 public class PointUtil {
 
+    public static final Point POINT_ORIGIN = new Point(0,0);
+
     private PointUtil(){}
 
     public static int getDiagDist(Point p1, Point p2) {
@@ -33,4 +35,7 @@ public class PointUtil {
         return new Point(random.nextInt(seBound.x() - nwCorner.x()), random.nextInt(seBound.y() - nwCorner.y())).add(nwCorner);
     }
 
+    public static Point randomPoint(Point seBound) {
+        return randomPoint(PointUtil.POINT_ORIGIN, seBound);
+    }
 }

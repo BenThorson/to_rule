@@ -65,7 +65,7 @@
                             {
                                 "id":"buy.1.yes",
                                 "text":"Please do!",
-                                "action":"showInventory"
+                                "action":"playerBuy"
                             },
                             {
                                 "id":"buy.1.no",
@@ -80,7 +80,7 @@
                             {
                                 "id":"sell.1.yes",
                                 "text":"Lets see what you have",
-                                "newScreen":"InventorySellScreen"
+                                "action":"playerSell"
                             }
                         ]
                     },

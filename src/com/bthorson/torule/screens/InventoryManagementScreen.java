@@ -90,7 +90,7 @@ public class InventoryManagementScreen implements Screen {
         } else if (GIVE.equalsIgnoreCase(value)){
             //todo make give action
         } else if (DROP.equalsIgnoreCase(value)){
-            player.getCreature().removeItem(selectedItem);
+            player.getCreature().dropItem(selectedItem);
         }
     }
 

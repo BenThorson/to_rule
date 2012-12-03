@@ -19,10 +19,12 @@ import java.awt.event.KeyEvent;
 public class StatusScreen implements Screen {
 
     private final int xOffset;
+    private int height;
     private final int maxStringLength;
 
-    public StatusScreen(int xOffset) {
+    public StatusScreen(int xOffset, int height) {
         this.xOffset = xOffset;
+        this.height = height;
         maxStringLength = SCREEN_WIDTH - (xOffset + 2);
     }
 
@@ -30,14 +32,14 @@ public class StatusScreen implements Screen {
     public void displayOutput(AsciiPanel terminal) {
         Player player = World.getInstance().getPlayer();
         String blank = ScreenUtil.blankString(SCREEN_WIDTH - xOffset);
-        for (int i = 0; i < SCREEN_HEIGHT; i++){
+        for (int i = 0; i < height; i++){
             terminal.write(Tile.WALL_VERT.glyph(), new Point(xOffset, i), Color.WHITE, Color.blue);
         }
         int row = 0;
         terminal.writeText("Turn " + World.getInstance().getTurnCounter(), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
         terminal.writeText(String.format("%d/%d HP", player.getCreature().getHitpoints(),
-                                     player.getCreature().getMaxHitpoints()), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
-        terminal.writeText(String.format("%d gold",  player.getCreature().getGold()), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
+                                         player.getCreature().getMaxHitpoints()), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
+        terminal.writeText(String.format("%d gold", player.getCreature().getGold()), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
         row++;
         terminal.writeText("Equipped Items", new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
         for (String key : player.getCreature().getEquipmentSlots().keySet()){

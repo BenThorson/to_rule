@@ -23,6 +23,7 @@ public class Region {
                 locals[x][y] = new LocalBuilder(random.nextInt(5), random.nextInt(5), random.nextInt(5))
                         .makeGrassland().build(new Point(worldX * REGION_SIZE_X + x * LOCAL_SIZE_X,
                                                worldY * REGION_SIZE_Y + y * LOCAL_SIZE_Y));
+                locals[x][y].setType(LocalType.WILDERNESS);
             }
         }
     }

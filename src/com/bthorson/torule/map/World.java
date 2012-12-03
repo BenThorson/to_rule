@@ -31,7 +31,7 @@ public class World {
 
     private long turnCounter;
 
-    public static final Point NW_CORNER = new Point(0,0);
+    public static final Point NW_CORNER = PointUtil.POINT_ORIGIN;
     private Point seCorner;
 
 
@@ -79,14 +79,31 @@ public class World {
         this.seCorner = params.getWorldSize();
 
         initWorld(params);
+        placeHostileMobs();
         setupFactions();
         createPlayer(params.getPlayerName());
     }
 
     private void initWorld(WorldGenParams params) {
         Set<Point> townPoints = new HashSet<Point>();
-        for (; townPoints.size() < params.getNumCities();){
-            townPoints.add(PointUtil.randomPoint(World.NW_CORNER, seCorner.divide(LOCAL_SIZE_POINT)));
+
+        outer:
+        for (int i = 0; townPoints.size() < params.getNumCities() && i < 10000; i++) {
+
+            Point candidate = PointUtil.randomPoint(World.NW_CORNER, seCorner().divide(LOCAL_SIZE_POINT));
+
+            if (townPoints.isEmpty()) {
+                townPoints.add(candidate);
+                continue;
+            }
+
+            for (Point exist : townPoints) {
+                if (PointUtil.manhattanDist(exist, candidate) < 3) {
+                    break outer;
+                }
+            }
+            townPoints.add(candidate);
+
         }
 
         for (Point city : townPoints) {
@@ -192,6 +209,28 @@ public class World {
 
     }
 
+    private void placeHostileMobs(){
+        Point localAmounts = seCorner().divide(LOCAL_SIZE_POINT);
+        for (int x = 0; x < localAmounts.x(); x++){
+            for (int y = 0; y < localAmounts.y(); y++) {
+                Point local = new Point(x,y);
+                if (LocalType.WILDERNESS.equals(getLocal(local).getType())) {
+                    for (int i = 0; i < 20; i++){
+                        Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
+                        Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                        if (!isOccupied(candidate)){
+                            Creature wolf = CreatureFactory.INSTANCE.createCreature("wolf", candidate);
+                            wolf.setAi(new WanderAI(wolf, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT)));
+                            wolf.setFaction(aggressiveAnimalFaction);
+                        }  else {
+                            i--;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     private void setupFactions() {
         for (Town town : towns){
@@ -205,7 +244,7 @@ public class World {
     }
 
 
-    private Local getLocal(Point LocalGridPosition) {
+    public Local getLocal(Point LocalGridPosition) {
         return regions[LocalGridPosition.x()/REGION_X_IN_LOCALS][LocalGridPosition.y()/REGION_Y_IN_LOCALS]
                 .getLocal(LocalGridPosition.x() % REGION_X_IN_LOCALS, LocalGridPosition.y() % REGION_Y_IN_LOCALS);
     }
@@ -261,7 +300,7 @@ public class World {
     }
 
     public Point topLeft() {
-        return new Point(0,0);
+        return PointUtil.POINT_ORIGIN;
     }
 
     public Point bottomRight() {

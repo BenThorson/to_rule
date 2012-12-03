@@ -19,8 +19,11 @@
             ]
         },
         {
-            "creature":"animal",
-            "slots":[]
+            "creature":"mammalPredator",
+            "slots":[
+                    "mouth",
+                    "claw"
+            ]
         }
     ]
 }

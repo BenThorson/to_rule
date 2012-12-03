@@ -28,6 +28,9 @@
             "worthWeight":{
                 "damage":1
             }
+        },
+        {
+            "type":"NONE"
         }
 
     ]

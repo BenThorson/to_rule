@@ -1,6 +1,7 @@
 package com.bthorson.torule.entity;
 
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.World;
 
 import java.awt.*;
@@ -44,7 +45,7 @@ public class Entity {
 
     public Entity(){
         this.id = getId();
-        this.position = new Point(0,0);
+        this.position = PointUtil.POINT_ORIGIN;
         this.glyph = 0;
         this.color = Color.WHITE;
         this.name = "";

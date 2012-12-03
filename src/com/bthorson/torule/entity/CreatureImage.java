@@ -11,9 +11,15 @@ public enum CreatureImage {
     H_PEASANT(48),
     H_SWORDMAN(74),
     H_MERCHANT(55),
+    H_SKELETON(58),
     G_SWORDMAN(38),
     G_KNIGHT(36),
-    PUPPY(1 + 144);
+    G_SKELETON(10),
+    PUPPY(1 + getCritterOffset()),
+    DEAD_DOG(3 + getCritterOffset()),
+    WOLF(0x1EB + getCritterOffset()),
+    DEAD_WOLF(0x1EE + getCritterOffset());
+
 
     private int num;
 
@@ -23,5 +29,10 @@ public enum CreatureImage {
 
     public int num() {
         return num;
+    }
+
+    private static int getCritterOffset(){
+        return 0x90;
+
     }
 }

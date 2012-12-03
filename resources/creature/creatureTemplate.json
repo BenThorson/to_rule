@@ -7,11 +7,18 @@
             "hitPoints":50,
             "profession":"LEADER",
             "image":"H_KNIGHT",
+            "corpseImage":"H_SKELETON",
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1",
                 "iron.sword.1",
                 "wood.shield.1"
+            ],
+            "itemlessAttack":[
+                {
+                    "slotType":"hand",
+                    "value":1
+                }
             ]
         },
         {
@@ -21,9 +28,16 @@
             "profession":"VILLAGER",
             "hitPoints":20,
             "image":"H_PEASANT",
+            "corpseImage":"H_SKELETON",
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1"
+            ],
+            "itemlessAttack":[
+                {
+                    "slotType":"hand",
+                    "value":1
+                }
             ]
         },
         {
@@ -33,9 +47,16 @@
             "profession":"MERCHANT",
             "hitPoints":20,
             "image":"H_MERCHANT",
+            "corpseImage":"H_SKELETON",
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1"
+            ],
+            "itemlessAttack":[
+                {
+                    "slotType":"hand",
+                    "value":1
+                }
             ]
         },
         {
@@ -45,12 +66,19 @@
             "hitPoints":80,
             "profession":"SOLDIER",
             "image":"H_SWORDSMAN",
+            "corpseImage":"H_SKELETON",
             "startingEquipment":[
                 "leather.helm.2",
                 "leather.chest.2",
                 "iron.sword.3",
                 "wood.shield.1"
-            ]
+            ],
+            "itemlessAttack":[
+                {
+                    "slotType":"hand",
+                    "value":1
+                }
+             ]
         },
         {
             "templateName":"mayor",
@@ -59,9 +87,16 @@
             "profession":"MAYOR",
             "hitPoints":50,
             "image":"H_MERCHANT",
+            "corpseImage":"H_SKELETON",
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1"
+            ],
+            "itemlessAttack":[
+                {
+                    "slotType":"hand",
+                    "value":1
+                }
             ]
         },
         {
@@ -71,20 +106,58 @@
             "hitPoints":20,
             "profession":"MOB",
             "image":"G_SWORDSMAN",
+            "corpseImage":"G_SKELETON",
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1",
                 "iron.sword.1"
+            ],
+            "itemlessAttack":[
+                {
+                    "slotType":"hand",
+                    "value":1
+                }
             ]
         },
         {
             "templateName":"puppy",
-            "creatureType":"animal",
+            "creatureType":"mammalPredator",
             "startingGold":0,
             "hitPoints":10,
             "profession":"PET",
             "image":"PUPPY",
-            "startingEquipment":[]
+            "corpseImage":"DEAD_DOG",
+            "startingEquipment":[],
+            "itemlessAttack":[
+                {
+                    "slotType":"mouth",
+                    "value":1
+                },
+                {
+                    "slotType":"claw",
+                    "value":1
+                }
+            ]
+        },
+        {
+            "templateName":"wolf",
+            "creatureType":"mammalPredator",
+            "startingGold":0,
+            "hitPoints":20,
+            "profession":"MOB",
+            "image":"WOLF",
+            "corpseImage":"DEAD_WOLF",
+            "startingEquipment":[],
+            "itemlessAttack":[
+                {
+                    "slotType":"mouth",
+                    "value":4
+                },
+                {
+                    "slotType":"claw",
+                    "value":2
+                }
+            ]
         }
     ]
 }

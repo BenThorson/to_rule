@@ -25,11 +25,11 @@ public class Item extends Entity {
     private Creature ownedBy;
 
     public Item(){
-        super(new Point(0,0), 0x5B, AsciiPanel.brown, "");
+        super(PointUtil.POINT_ORIGIN, 0x5B, AsciiPanel.brown, "");
     }
 
     public Item(String name, int price, int weight, String type, String slotType, Map<String, Integer> attributes) {
-        super(new Point(0,0), 0x5B, AsciiPanel.brown, name);
+        super(PointUtil.POINT_ORIGIN, 0x5B, AsciiPanel.brown, name);
         this.price = price;
         this.weight = weight;
         this.type = type;

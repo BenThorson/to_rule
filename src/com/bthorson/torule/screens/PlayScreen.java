@@ -7,6 +7,7 @@ import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
 
@@ -28,7 +29,7 @@ public class PlayScreen implements Screen {
 
     public PlayScreen() {
         this.player = world.getPlayer();
-        this.statusScreen = new StatusScreen(xBorder);
+        this.statusScreen = new StatusScreen(xBorder, yBorder);
         this.messageScreen = new MessageScreen(world, yBorder);
     }
 
@@ -108,7 +109,7 @@ public class PlayScreen implements Screen {
 //            case KeyEvent.VK_PERIOD: player.getCreature().getGroup().rotateTest(); break;
             case KeyEvent.VK_T: return new ConversationScreen(this, player.getCreature().position().subtract(getOffset()));
             default:
-                player.getCreature().move(new Point(0, 0));
+                player.getCreature().move(PointUtil.POINT_ORIGIN);
                 break;
         }
 

@@ -28,6 +28,8 @@ public class Creature extends Entity implements AiControllable {
 
     private CreatureAI ai = null;
 
+    private int corpseGlyph;
+
     private Creature leader;
     private Group group;
 
@@ -55,6 +57,7 @@ public class Creature extends Entity implements AiControllable {
 
     private List<Item> inventory = new ArrayList<Item>();
     private Map<String, EquipmentSlot> equipmentSlots = new HashMap<String, EquipmentSlot>();
+    private Map<String, Integer> itemlessAttackVals = new HashMap<String, Integer>();
 
     public Creature(CreatureBuilder builder) {
         super(builder.position, builder.glyph, Color.WHITE, NameGenerator.getInstance().genName());
@@ -66,7 +69,9 @@ public class Creature extends Entity implements AiControllable {
         this.gold = builder.gold;
         this.inventory = builder.inventory;
         this.equipmentSlots = builder.equipmentSlots;
+        this.corpseGlyph = builder.corpseImage;
         assignOwnershipOfItems();
+
     }
 
     private void assignOwnershipOfItems() {
@@ -84,6 +89,8 @@ public class Creature extends Entity implements AiControllable {
         private int gold = 0;
         private Map<String, EquipmentSlot> equipmentSlots = new HashMap<String, EquipmentSlot>();
         private List<Item> inventory = new ArrayList<Item>();
+        private Map<String, Integer> itemlessAttackValues = new HashMap<String, Integer>();
+        private int corpseImage;
 
         public CreatureBuilder position(Point position){
             this.position = position;
@@ -125,9 +132,20 @@ public class Creature extends Entity implements AiControllable {
             return this;
         }
 
+        public CreatureBuilder itemlessAttackValues(Map<String, Integer> itemlessAttackValues){
+            this.itemlessAttackValues = itemlessAttackValues;
+            return this;
+        }
+
+        public CreatureBuilder corpseGlyph(int corpseGlyph){
+            this.corpseImage = corpseGlyph;
+            return this;
+        }
+
         public Creature build(){
             return new Creature(this);
         }
+
         
     }
 
@@ -230,7 +248,7 @@ public class Creature extends Entity implements AiControllable {
             hitpoints = 0;
             dead = true;
             ai = new DeadAi();
-            super.setGlyph(10);
+            super.setGlyph(corpseGlyph);
             EntityManager.getInstance().creatureDead(this);
         }
         if (hitpoints > maxHitpoints){
@@ -400,11 +418,29 @@ public class Creature extends Entity implements AiControllable {
         return price;
     }
 
-    public void removeItem(Item selectedItem) {
+    public void sellItem(Item selectedItem, int sellPrice) {
+        if (!inventory.contains(selectedItem)){
+            return;
+        }
+        selectedItem.setOwnedBy(null);
+        gold += sellPrice;
+        removeItem(selectedItem);
+    }
+
+
+    public void dropItem(Item selectedItem) {
+        removeItem(selectedItem);
+        EntityManager.getInstance().addFreeItem(selectedItem);
+    }
+
+    private void removeItem(Item selectedItem) {
         selectedItem.setOwnedBy(null);
         selectedItem.setPosition(position());
+        if(selectedItem.isEquipped()){
+            selectedItem.setEquipped(false);
+            equipmentSlots.get(selectedItem.getSlotType()).setItem(null);
+        }
         inventory.remove(selectedItem);
-        EntityManager.getInstance().addFreeItem(selectedItem);
     }
 
 
@@ -433,5 +469,9 @@ public class Creature extends Entity implements AiControllable {
             }
         }
         return toEquip;
+    }
+
+    public int getCorpseGlyph() {
+        return corpseGlyph;
     }
 }

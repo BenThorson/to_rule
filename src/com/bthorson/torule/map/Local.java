@@ -18,6 +18,8 @@ public class Local {
     private Point seBoundWorldBound;
     public static Point seBound = new Point(WIDTH,HEIGHT);
 
+    private LocalType type;
+
     private Tile[][] tiles;
 
 
@@ -62,5 +64,13 @@ public class Local {
 
     public void setSeBoundWorldBound(Point seBoundWorldBound) {
         this.seBoundWorldBound = seBoundWorldBound;
+    }
+
+    public LocalType getType() {
+        return type;
+    }
+
+    public void setType(LocalType type) {
+        this.type = type;
     }
 }

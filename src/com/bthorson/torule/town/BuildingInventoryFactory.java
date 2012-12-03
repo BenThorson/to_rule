@@ -1,6 +1,7 @@
 package com.bthorson.torule.town;
 
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.item.ItemFactory;
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
@@ -55,7 +56,7 @@ public enum BuildingInventoryFactory {
     }
 
     public static void main(String[] args) {
-        Building building = new Building(new Point(0,0), new Point(10,10), BuildingType.ARMOR_SHOP);
+        Building building = new Building(PointUtil.POINT_ORIGIN, new Point(10,10), BuildingType.ARMOR_SHOP);
         BuildingInventoryFactory.INSTANCE.createItemsForShop(building, WealthLevel.POOR);
     }
 }

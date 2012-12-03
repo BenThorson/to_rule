@@ -1,6 +1,7 @@
 package asciiPanel;
 
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.screens.ColorUtil;
 
@@ -103,7 +104,7 @@ public class AsciiPanel extends JPanel {
     public static Color brightWhite = new Color(255, 255, 255);
 
 
-    public final Point screenTL = new Point(0,0);
+    public final Point screenTL = PointUtil.POINT_ORIGIN;
     public final Point screenBR;
     private final Point charTL = screenTL;
     private final Point charBr = new Point(18,18);
@@ -117,7 +118,7 @@ public class AsciiPanel extends JPanel {
     private BufferedImage[] humanoids;
     private BufferedImage crittersSprite;
     private BufferedImage[] critters;
-    private Point mousePosition = new Point(0,0);
+    private Point mousePosition = PointUtil.POINT_ORIGIN;
     private int[][] entities;
     private char[][] backgroundChars;
     private char[][] textChars;
@@ -281,9 +282,9 @@ public class AsciiPanel extends JPanel {
             humanoids[i].getGraphics().drawImage(humanoidsSprite, 0,0, charBr.x(), charBr.y(), sx, sy, sx + charBr.x(), sy + charBr.y(), null);
             humanoids[i] = toCompatibleImage(humanoids[i]);
         }
-        for (int i = 0; i < 768; i++){
-            int sx = (i % 12) * charBr.x();
-            int sy = (i / 12) * charBr.y();
+        for (int i = 0; i < 736; i++){
+            int sx = (i % 32) * charBr.x();
+            int sy = (i / 32) * charBr.y();
             critters[i] = new BufferedImage(charBr.x(), charBr.y(), BufferedImage.TYPE_INT_ARGB);
             critters[i].getGraphics().drawImage(crittersSprite, 0,0, charBr.x(), charBr.y(), sx, sy, sx + charBr.x(), sy + charBr.y(), null);
             critters[i] = toCompatibleImage(critters[i]);

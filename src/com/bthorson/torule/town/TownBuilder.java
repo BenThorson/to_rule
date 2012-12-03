@@ -6,10 +6,7 @@ import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
-import com.bthorson.torule.map.Local;
-import com.bthorson.torule.map.MapConstants;
-import com.bthorson.torule.map.Tile;
-import com.bthorson.torule.map.World;
+import com.bthorson.torule.map.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,6 +22,7 @@ public class TownBuilder {
     public TownBuilder(Local toBuildOn) {
         this.toBuildOn = toBuildOn;
         this.town = new Town();
+        toBuildOn.setType(LocalType.TOWN);
     }
 
     public TownBuilder buildTownSquare(int size) {

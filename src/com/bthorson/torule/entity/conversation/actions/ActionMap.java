@@ -1,8 +1,5 @@
 package com.bthorson.torule.entity.conversation.actions;
 
-import com.bthorson.torule.entity.conversation.determiners.*;
-import com.bthorson.torule.entity.conversation.determiners.Determiner;
-
 import java.util.HashMap;
 
 /**
@@ -20,7 +17,8 @@ public enum ActionMap {
     private ActionMap(){
         actions = new HashMap<String, ConversationAction>();
         actions.put("joinPlayer", new JoinPlayer());
-        actions.put("showInventory", new ShowInventoryAction());
+        actions.put("playerBuy", new PlayerBuyAction());
+        actions.put("playerSell", new PlayerSellAction());
     }
 
     public ConversationAction get(String key){
