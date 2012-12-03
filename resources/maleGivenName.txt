@@ -331,7 +331,7 @@ Merdon
 Meridan
 Merkesh
 Mesah
-Mes'ard
+Mesard
 Mesophan
 Mesoton
 Mezo
@@ -341,7 +341,7 @@ Mickal
 Migorn
 Milo
 Miphates
-Mi'talrythin
+Mitalrythin
 Mitar
 Modric
 Modum
@@ -412,7 +412,7 @@ Quid
 Quiss
 Qupar
 Qysan	 	 
-Radag'mal
+Radagmal
 Randar
 Raysdan
 Rayth
@@ -467,7 +467,7 @@ Shardo
 Shillen
 Silco
 Sildo
-Sil'forrin
+Silforrin
 Silpal
 Sithik
 Soderman
