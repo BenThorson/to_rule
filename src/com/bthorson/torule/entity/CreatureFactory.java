@@ -92,6 +92,7 @@ public enum CreatureFactory {
                 .build();
 
         EntityManager.getInstance().addCreature(creature);
+        CreatureUtils.optimizeEquipedItems(creature);
         return creature;
 
     }

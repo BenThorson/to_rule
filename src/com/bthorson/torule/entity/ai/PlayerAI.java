@@ -26,9 +26,10 @@ public class PlayerAI extends CreatureAI {
             Creature other = (Creature)entity;
             if (shouldHostile(other)){
                 self.attack(other);
-            } else if (other.getLeader().equals(self)){
-                ((Creature)self).swapPlaces(other);
             }
+//            else if (other.getLeader().equals(self)){
+//                            ((Creature)self).swapPlaces(other);
+//                        }
         }
 
     }

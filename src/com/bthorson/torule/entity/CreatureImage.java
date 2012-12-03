@@ -12,7 +12,8 @@ public enum CreatureImage {
     H_SWORDMAN(74),
     H_MERCHANT(55),
     G_SWORDMAN(38),
-    G_KNIGHT(36);
+    G_KNIGHT(36),
+    PUPPY(1 + 144);
 
     private int num;
 

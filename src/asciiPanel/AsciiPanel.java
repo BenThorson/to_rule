@@ -112,6 +112,8 @@ public class AsciiPanel extends JPanel {
     private Map<ForeGroundBackGround, BufferedImage[]> glyphs;
     private BufferedImage humanoidsSprite;
     private BufferedImage[] humanoids;
+    private BufferedImage crittersSprite;
+    private BufferedImage[] critters;
     private Point mousePosition = new Point(0,0);
     private boolean mousePositionShow = false;
     private int[][] entities;
@@ -216,6 +218,7 @@ public class AsciiPanel extends JPanel {
 
         entities= new int[width][height];
         humanoids = new BufferedImage[144];
+        critters = new BufferedImage[768];
         loadCharacters();
 
         AsciiPanel.this.clear();
@@ -246,7 +249,11 @@ public class AsciiPanel extends JPanel {
                 }
                 g2d.drawImage(glyphs.get(bgfg)[backgroundChars[x][y]], translate.x(), translate.y(), null);
                 if (entities[x][y] != 0){
-                    g.drawImage(humanoids[entities[x][y]], translate.x(), translate.y(), null);
+                    if (entities[x][y] > humanoids.length){
+                        g.drawImage(critters[entities[x][y] - humanoids.length], translate.x(), translate.y(), null);
+                    } else {
+                        g.drawImage(humanoids[entities[x][y]], translate.x(), translate.y(), null);
+                    }
                     entities[x][y] = 0;
                 }
                 if (popupChars[x][y] != 0){
@@ -298,6 +305,7 @@ public class AsciiPanel extends JPanel {
     private void loadCharacters(){
         try {
             humanoidsSprite = ImageIO.read(AsciiPanel.class.getResource("humanoids2.png"));
+            crittersSprite = ImageIO.read(AsciiPanel.class.getResource("critters2.png"));
         } catch (IOException e) {
             System.err.println("loadCharacters() " + e.getMessage());
         }
@@ -307,6 +315,13 @@ public class AsciiPanel extends JPanel {
             humanoids[i] = new BufferedImage(charBr.x(), charBr.y(), BufferedImage.TYPE_INT_ARGB);
             humanoids[i].getGraphics().drawImage(humanoidsSprite, 0,0, charBr.x(), charBr.y(), sx, sy, sx + charBr.x(), sy + charBr.y(), null);
             humanoids[i] = toCompatibleImage(humanoids[i]);
+        }
+        for (int i = 0; i < 768; i++){
+            int sx = (i % 12) * charBr.x();
+            int sy = (i / 12) * charBr.y();
+            critters[i] = new BufferedImage(charBr.x(), charBr.y(), BufferedImage.TYPE_INT_ARGB);
+            critters[i].getGraphics().drawImage(crittersSprite, 0,0, charBr.x(), charBr.y(), sx, sy, sx + charBr.x(), sy + charBr.y(), null);
+            critters[i] = toCompatibleImage(critters[i]);
         }
 
     }
@@ -482,7 +497,7 @@ public class AsciiPanel extends JPanel {
         if (!position.withinRect(this.screenTL, screenBR)) {
             throw new IllegalArgumentException(String.format("WritePosition %d %d not within range of %d %d and %d %d",
                     screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
-        };
+        }
 
         entities[position.x()][position.y()] = catPosition;
         foregroundColors[position.x()][position.y()] = defaultForegroundColor;
@@ -622,7 +637,7 @@ public class AsciiPanel extends JPanel {
         if (!position.withinRect(this.screenTL, screenBR)) {
             throw new IllegalArgumentException(String.format("Write start position %d %d not within range of %d %d and %d %d",
                     position.x(), position.y(), screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
-        };
+        }
 
         if (foreground == null)
             foreground = defaultForegroundColor;

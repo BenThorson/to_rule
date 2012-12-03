@@ -9,6 +9,7 @@ import com.bthorson.torule.item.Item;
  */
 public class EquipmentSlot {
 
+    private String name;
     private String itemType;
     private String itemPurpose;
     private Item item;
@@ -35,5 +36,13 @@ public class EquipmentSlot {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

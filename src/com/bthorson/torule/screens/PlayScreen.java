@@ -26,7 +26,7 @@ public class PlayScreen implements Screen {
 
     public PlayScreen() {
         this.player = world.getPlayer();
-        this.statusScreen = new StatusScreen(world, xBorder);
+        this.statusScreen = new StatusScreen(xBorder);
         this.messageScreen = new MessageScreen(world, yBorder);
     }
 

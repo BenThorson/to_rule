@@ -17,6 +17,10 @@
                     "torso",
                     "shield"
             ]
+        },
+        {
+            "creature":"animal",
+            "slots":[]
         }
     ]
 }

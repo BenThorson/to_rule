@@ -52,7 +52,7 @@
             }
         },
         {
-            "profession":"Merchant",
+            "profession":"merchant",
             "introduction":{
                 "id":"intro.1",
                 "text":"Welcome To My Store!",
@@ -105,6 +105,13 @@
                         ]
                     }
                 ]
+            }
+        },
+        {
+            "profession":"pet",
+            "introduction":{
+                "id":"intro.1",
+                "text":"Bark Bark!"
             }
         }
     ]

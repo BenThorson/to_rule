@@ -338,4 +338,12 @@ public class Creature extends Entity implements AiControllable {
     public Building getOwnedProperties(String key){
        return properties.get(key);
     }
+
+    public List<Item> getInventory() {
+        return inventory;
+    }
+
+    public Map<String, EquipmentSlot> getEquipmentSlots() {
+        return equipmentSlots;
+    }
 }

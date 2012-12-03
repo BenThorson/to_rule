@@ -47,7 +47,8 @@ public class Menu {
         } else {
             height = choices.length + 3;
         }
-        width = Math.max(Math.max(longestStringLengthInList(Arrays.asList(choices)), longestStringLengthInList(splitDetails)), title.length()) + 2;
+        width = Math.max(Math.max(longestStringLengthInList(Arrays.asList(choices)),
+                                           longestStringLengthInList(splitDetails)), title.length()) + 2;
 
     }
 

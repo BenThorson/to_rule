@@ -124,6 +124,21 @@ public class TownBuilder {
         return this;
     }
 
+    public TownBuilder makePuppies(int numberOfTownsmen){
+        for (int i = 0; i < numberOfTownsmen; i++){
+            Point candidate = PointUtil.randomPoint(toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound());
+            if (!World.getInstance().isOccupied(candidate) && !candidate.equals(new Point(50,50))){
+                Creature puppy = CreatureFactory.INSTANCE.createCreature("puppy", candidate);
+                puppy.setFaction(town.getFaction());
+                puppy.setAi(new WanderAI(puppy, toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound()));
+            } else {
+                i--;
+            }
+
+        }
+        return this;
+    }
+
     public Town build(){
         return town;
     }
@@ -189,7 +204,7 @@ public class TownBuilder {
                 .buildBuilding(38, 63, 8, 8, Direction.NORTH, BuildingType.GENERAL_SHOP)
                 .buildBuilding(53, 63, 8, 8, Direction.NORTH, BuildingType.GENERAL_SHOP)
                 .buildBuilding(70, 70, 28, 28, Direction.NORTH, BuildingType.KEEP)
-                .makeTownsmen(20).regionalPosition(localPoint).build();
+                .makeTownsmen(20).makePuppies(10).regionalPosition(localPoint).build();
 
 
     }

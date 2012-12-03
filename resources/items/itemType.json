@@ -1,0 +1,34 @@
+{
+    "itemTypes":[
+        {
+            "type":"ARMOR",
+            "attributes":[
+                    "armor class"
+            ],
+            "worthWeight":{
+                "armor class":1
+            }
+        },
+        {
+            "type":"SHIELD",
+            "attributes":[
+                    "armor class",
+                    "block chance"
+            ],
+            "worthWeight":{
+                "block chance":1,
+                "armor class":1
+            }
+        },
+        {
+            "type":"WEAPON",
+            "attributes":[
+                    "damage"
+            ],
+            "worthWeight":{
+                "damage":1
+            }
+        }
+
+    ]
+}

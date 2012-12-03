@@ -76,6 +76,15 @@
                 "cloth.chest.1",
                 "iron.sword.1"
             ]
+        },
+        {
+            "templateName":"puppy",
+            "creatureType":"animal",
+            "startingGold":0,
+            "hitPoints":10,
+            "profession":"PET",
+            "image":"PUPPY",
+            "startingEquipment":[]
         }
     ]
 }

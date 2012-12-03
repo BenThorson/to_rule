@@ -9,7 +9,7 @@
             "price":25,
             "weight":10,
             "attributes":{
-                "armor class":2
+                "armor class":4
             }
         },
         {
@@ -20,18 +20,18 @@
             "price":75,
             "weight":15,
             "attributes":{
-                "armor class":4
+                "armor class":10
             }
         },
         {
             "id":"leather.chest.2",
             "type":"ARMOR",
             "slotType":"torso",
-            "name":"studded leather chest",
+            "name":"studded chest",
             "price":125,
             "weight":20,
             "attributes":{
-                "armor class":6
+                "armor class":15
             }
         },
         {
@@ -40,20 +40,20 @@
             "slotType":"torso",
             "name":"chain chest",
             "price":300,
-            "weight":40,
+            "weight":50,
             "attributes":{
-                "armor class":10
+                "armor class":30
             }
         },
         {
             "id":"cloth.helm.1",
             "type":"ARMOR",
-            "slotType":"torso",
-            "name":"padded cloth cap",
+            "slotType":"head",
+            "name":"padded cap",
             "price":25,
             "weight":10,
             "attributes":{
-                "armor class":2
+                "armor class":1
             }
         },
         {
@@ -71,7 +71,7 @@
             "id":"leather.helm.2",
             "type":"ARMOR",
             "slotType":"head",
-            "name":"studded leather cap",
+            "name":"studded cap",
             "price":125,
             "weight":20,
             "attributes":{
@@ -99,7 +99,7 @@
             "weight":10,
             "attributes":{
                 "armor class":4,
-                "blockChance":3
+                "block chance":3
             }
         },
 
