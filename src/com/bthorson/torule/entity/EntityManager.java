@@ -136,16 +136,21 @@ public class EntityManager {
         return creature.equals(player);
     }
 
-    public Entity item(Point itemPos) {
+    public List<Entity> item(Point itemPos) {
+        List<Entity> items = new ArrayList<Entity>();
         for (Entity item : freeItems){
             if (item.position().equals(itemPos)){
-                return item;
+                items.add(item);
             }
         }
-        return null;
+        return items;
     }
 
     public void addFreeItem(Entity item) {
         freeItems.add(item);
+    }
+
+    public void removeItem(Item item) {
+        freeItems.remove(item);
     }
 }

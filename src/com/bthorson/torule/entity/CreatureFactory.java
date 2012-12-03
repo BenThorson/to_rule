@@ -88,8 +88,14 @@ public enum CreatureFactory {
             }
         }
 
+        String name = NameGenerator.getInstance().genName();
+        if (template.has("name")){
+            name = template.get("name").getAsString();
+        }
+
         Creature creature = new Creature.CreatureBuilder()
                 .position(pos)
+                .name(name)
                 .templateName(templateName)
                 .glyph(CreatureImage.valueOf(template.get("image").getAsString()).num())
                 .hitPoints(template.get("hitPoints").getAsInt())

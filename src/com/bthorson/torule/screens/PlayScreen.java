@@ -8,10 +8,13 @@ import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
+import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: ben
@@ -63,8 +66,9 @@ public class PlayScreen implements Screen {
                     player.explore(worldPoint);
                     terminal.writeTile(world.tile(worldPoint), viewPort);
 
-                    Entity item = EntityManager.getInstance().item(worldPoint);
-                    if (item != null){
+                    List<Entity> items = EntityManager.getInstance().item(worldPoint);
+                    if (items.size() > 0){
+                        Entity item = items.get(0);
                         if (item instanceof Corpse){
                             terminal.writeHumanoid(item.glyph(), item.position().subtract(offset), world.tile(worldPoint));
                         } else {
@@ -105,18 +109,34 @@ public class PlayScreen implements Screen {
             case KeyEvent.VK_NUMPAD9: player.getCreature().move(Direction.NORTHEAST.point()); break;
             case KeyEvent.VK_NUMPAD1: player.getCreature().move(Direction.SOUTHWEST.point()); break;
             case KeyEvent.VK_NUMPAD3: player.getCreature().move(Direction.SOUTHEAST.point()); break;
+            case KeyEvent.VK_NUMPAD5: break;
             case KeyEvent.VK_I: return new InventoryManagementScreen(this);
 //            case KeyEvent.VK_PERIOD: player.getCreature().getGroup().rotateTest(); break;
             case KeyEvent.VK_T: return new ConversationScreen(this, player.getCreature().position().subtract(getOffset()));
-            case KeyEvent.VK_H: World.getInstance().skipTurns(500);
+            case KeyEvent.VK_H: World.getInstance().skipTurns(500); break;
+            case KeyEvent.VK_G:
+                List<Item> items = getItems(player.getCreature().position());
+                if (items.size() > 0){
+                    return new LootScreen(this, items);
+                }
             default:
-                player.getCreature().move(PointUtil.POINT_ORIGIN);
-                break;
+                return this;
         }
 
         world.update();
 
         return this;
+    }
+
+    private List<Item> getItems(Point position) {
+        List<Item> items = new ArrayList<Item>();
+        List<Entity> entities = EntityManager.getInstance().item(position);
+        for (Entity entity : entities){
+            if (entity instanceof Item){
+                items.add((Item)entity);
+            }
+        }
+        return items;
     }
 
     @Override

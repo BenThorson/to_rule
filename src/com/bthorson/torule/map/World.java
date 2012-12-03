@@ -5,6 +5,7 @@ import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
+import com.bthorson.torule.item.Item;
 import com.bthorson.torule.player.Player;
 import com.bthorson.torule.town.Town;
 import com.bthorson.torule.town.TownBuilder;
@@ -267,6 +268,10 @@ public class World {
 
     public Creature creature(Point position){
         return EntityManager.getInstance().creatureAt(position);
+    }
+
+    public List<Entity> items(Point position){
+        return EntityManager.getInstance().item(position);
     }
 
     public void createPlayer(String playerName){

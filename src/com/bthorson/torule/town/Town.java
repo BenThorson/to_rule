@@ -24,7 +24,7 @@ public class Town {
     private Local local;
 
     public Town(){
-        name = NameGenerator.getInstance().genName();
+        name = NameGenerator.getInstance().genTownName();
         faction = new Faction(name);
     }
 

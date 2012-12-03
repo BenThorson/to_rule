@@ -48,10 +48,11 @@ public class ItemDetailScreen {
         terminal.writePopupText("Item:    " + item.getName(), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
         terminal.writePopupText("Price:   " + item.getPrice(), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
         terminal.writePopupText("Weight:  " + item.getWeight(), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
-        for (String key : item.getAttributes().keySet()){
-            terminal.writePopupText(key + ":  " + item.getAttributes().get(key), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
+        if (item.getAttributes() != null) {
+            for (String key : item.getAttributes().keySet()){
+                terminal.writePopupText(key + ":  " + item.getAttributes().get(key), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
+            }
         }
-
     }
 
     public int respondToUserInput(KeyEvent key) {

@@ -13,6 +13,7 @@ import com.bthorson.torule.item.Item;
 import com.bthorson.torule.item.ItemType;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
+import com.bthorson.torule.screens.component.*;
 import com.bthorson.torule.town.Building;
 
 import java.awt.*;
@@ -65,7 +66,7 @@ public class Creature extends Entity implements AiControllable {
     private int constitution;
 
     public Creature(CreatureBuilder builder) {
-        super(builder.position, builder.glyph, Color.WHITE, NameGenerator.getInstance().genName());
+        super(builder.position, builder.glyph, Color.WHITE, builder.name);
         this.visionRadius = builder.visionRadius;
         this.maxHitpoints = builder.hitPoints;
         this.hitpoints = builder.hitPoints;
@@ -107,6 +108,7 @@ public class Creature extends Entity implements AiControllable {
         public int dexterity = 5;
         public int constitution = 5;
         private String templateName;
+        private String name;
 
         public CreatureBuilder position(Point position){
             this.position = position;
@@ -185,6 +187,11 @@ public class Creature extends Entity implements AiControllable {
 
         public CreatureBuilder templateName(String templateName) {
             this.templateName = templateName;
+            return this;
+        }
+
+        public CreatureBuilder name(String name) {
+            this.name = name;
             return this;
         }
     }
@@ -509,15 +516,28 @@ public class Creature extends Entity implements AiControllable {
         return gold;
     }
 
+
+    public void addItems(List<Item> items) {
+        for (Item item : items){
+            addItem(item);
+        }
+    }
+
+    public void addItem(Item selectedItem) {
+        selectedItem.setOwnedBy(this);
+        inventory.add(selectedItem);
+    }
+
     public int purchaseItem(Item selectedItem, int price) {
         if (gold < price){
             return 0;
         }
-        selectedItem.setOwnedBy(this);
-        inventory.add(selectedItem);
+        addItem(selectedItem);
         gold -= price;
         return price;
     }
+
+
 
     public void sellItem(Item selectedItem, int sellPrice) {
         if (!inventory.contains(selectedItem)){
