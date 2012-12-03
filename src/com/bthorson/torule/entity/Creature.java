@@ -58,6 +58,11 @@ public class Creature extends Entity implements AiControllable {
     private List<Item> inventory = new ArrayList<Item>();
     private Map<String, EquipmentSlot> equipmentSlots = new HashMap<String, EquipmentSlot>();
     private Map<String, Integer> itemlessAttackVals = new HashMap<String, Integer>();
+    private int innateArmor;
+    
+    private int strength;
+    private int dexterity;
+    private int constitution;
 
     public Creature(CreatureBuilder builder) {
         super(builder.position, builder.glyph, Color.WHITE, NameGenerator.getInstance().genName());
@@ -70,6 +75,12 @@ public class Creature extends Entity implements AiControllable {
         this.inventory = builder.inventory;
         this.equipmentSlots = builder.equipmentSlots;
         this.corpseGlyph = builder.corpseImage;
+        this.innateArmor = builder.innateArmor;
+        this.strength = builder.strength;
+        this.dexterity = builder.dexterity;
+        this.constitution = builder.constitution;
+        this.itemlessAttackVals = builder.itemlessAttackValues;
+        this.templateName = builder.templateName;
         assignOwnershipOfItems();
 
     }
@@ -91,6 +102,11 @@ public class Creature extends Entity implements AiControllable {
         private List<Item> inventory = new ArrayList<Item>();
         private Map<String, Integer> itemlessAttackValues = new HashMap<String, Integer>();
         private int corpseImage;
+        public int innateArmor = 1;
+        public int strength = 5;
+        public int dexterity = 5;
+        public int constitution = 5;
+        private String templateName;
 
         public CreatureBuilder position(Point position){
             this.position = position;
@@ -141,12 +157,36 @@ public class Creature extends Entity implements AiControllable {
             this.corpseImage = corpseGlyph;
             return this;
         }
+        
+        public CreatureBuilder innateArmor(int innateArmor){
+            this.innateArmor = innateArmor;
+            return this;
+        }
+        
+        public CreatureBuilder strength(int strength){
+            this.strength = strength;
+            return this;
+        }
+        
+        public CreatureBuilder dexterity(int dexterity){
+            this.dexterity = dexterity;
+            return this;
+        }
+        
+        public CreatureBuilder constitution(int constitution){
+            this.constitution = constitution;
+            return this;
+        }
 
         public Creature build(){
             return new Creature(this);
         }
 
-        
+
+        public CreatureBuilder templateName(String templateName) {
+            this.templateName = templateName;
+            return this;
+        }
     }
 
     public void setGroup(Group group){
@@ -236,6 +276,9 @@ public class Creature extends Entity implements AiControllable {
             int dmg = determineDmg(other);
             other.adjustHitpoint(-dmg);
             messages.add(new Message(this, String.format("You hit %s for %d damage", other.getName(), dmg)));
+            if (other.dead()){
+                messages.add(new Message(this, String.format("You killed %s!", other.getName())));
+            }
         }
     }
 
@@ -249,6 +292,7 @@ public class Creature extends Entity implements AiControllable {
             dead = true;
             ai = new DeadAi();
             super.setGlyph(corpseGlyph);
+            dropLoot();
             EntityManager.getInstance().creatureDead(this);
         }
         if (hitpoints > maxHitpoints){
@@ -256,17 +300,74 @@ public class Creature extends Entity implements AiControllable {
         }
     }
 
+    private void dropLoot() {
+        List<Item> lootItems = CreatureFactory.INSTANCE.getLootDropsForCreature(templateName);
+        for (Item item : lootItems){
+            item.setPosition(position);
+            EntityManager.getInstance().addFreeItem(item);
+        }
+    }
+
     private int determineDmg(Creature other) {
-        return new Random().nextInt(10);
+        int weaponDmg = 0;
+        for (EquipmentSlot slot : equipmentSlots.values()){
+            if (slot.getItemPurpose().equalsIgnoreCase("OFFENSE")){
+                if (slot.getItem() != null){
+                    weaponDmg += slot.getItem().getAttributes().get("damage");
+                }
+                else {
+                    weaponDmg += itemlessAttackVals.get(slot.getSlotName());
+                }
+            }
+        }
+        double rawValue = new Random().nextInt(weaponDmg - 1) + 1;
+
+        double multiplier = (double)strength * .1 + 1;
+        return other.mitigateDamage(rawValue * multiplier);
+    }
+
+    private int mitigateDamage(double initialDamage) {
+        int armorValue = innateArmor;
+        for (EquipmentSlot slot : equipmentSlots.values()){
+            if (slot.getItemPurpose().equalsIgnoreCase("DEFENSE")){
+                if (slot.getItem() != null){
+                    armorValue += slot.getItem().getAttributes().get("Armor Class");
+                }
+            }
+        }
+        double percentage = (double) armorValue / 50.0;
+        percentage = percentage > 1 ? 1 : percentage;
+        return (int)Math.round(initialDamage - initialDamage * percentage);
+
+
+
     }
 
     private boolean doesHit(Creature other) {
-        if(!(new Random().nextInt(10) > 7)) {
+        Random random = new Random();
+        if(!(random.nextInt(dexterity) < random.nextInt(other.dexterity))) {
             messages.add(new Message(this, String.format("You missed %s completely.", other.getName())));
             other.getMessages().add(new Message(this, String.format("%s missed you completely.", getName())));
             return false;
         }
+        if (other.blocks()){
+            messages.add(new Message(this, String.format("You hit %s but it was blocked.", other.getName())));
+            other.getMessages().add(new Message(this, String.format("You blocked %s's attack.", getName())));
+            return false;
+        }
         return true;
+    }
+
+    private boolean blocks() {
+        int blockChance = 0;
+        for (EquipmentSlot slot : equipmentSlots.values()){
+            if (slot.getItemType().equalsIgnoreCase("SHIELD")){
+                if (slot.getItem() != null){
+                    blockChance += slot.getItem().getAttributes().get("block chance");
+                }
+            }
+        }
+        return new Random().nextInt(10) < blockChance;
     }
 
     public int getHitpoints() {

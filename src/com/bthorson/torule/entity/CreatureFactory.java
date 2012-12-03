@@ -14,10 +14,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: ben
@@ -93,6 +90,7 @@ public enum CreatureFactory {
 
         Creature creature = new Creature.CreatureBuilder()
                 .position(pos)
+                .templateName(templateName)
                 .glyph(CreatureImage.valueOf(template.get("image").getAsString()).num())
                 .hitPoints(template.get("hitPoints").getAsInt())
                 .gold(template.get("startingGold").getAsInt())
@@ -101,11 +99,32 @@ public enum CreatureFactory {
                 .inventory(equipment)
                 .itemlessAttackValues(itemlessAttack)
                 .corpseGlyph(CreatureImage.valueOf(template.get("corpseImage").getAsString()).num())
+                .innateArmor(template.get("innateArmor").getAsInt())
                 .build();
 
         EntityManager.getInstance().addCreature(creature);
         creature.optimizeEquippedItems();
         return creature;
+
+    }
+
+    public List<Item> getLootDropsForCreature(String templateName){
+        JsonObject template = creatureTemplate.get(templateName);
+        JsonArray loots = template.get("loot").getAsJsonArray();
+        List<Item> toReturn = new ArrayList<Item>();
+        Random random = new Random();
+        for (JsonElement element : loots){
+            JsonObject objItem = element.getAsJsonObject();
+            if (random.nextInt(100) < objItem.get("chance").getAsInt()){
+                int quantity = objItem.get("quantity").getAsInt();
+                String itemId = objItem.get("item").getAsString();
+                int toAdd = 1 == quantity ? 1 : 1 + random.nextInt(quantity - 1);
+                for (int i = 0; i < toAdd; i++){
+                    toReturn.add(ItemFactory.INSTANCE.createItemOfId(itemId));
+                }
+            }
+        }
+        return toReturn;
 
     }
 

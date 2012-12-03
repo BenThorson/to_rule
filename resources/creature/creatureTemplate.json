@@ -8,18 +8,21 @@
             "profession":"LEADER",
             "image":"H_KNIGHT",
             "corpseImage":"H_SKELETON",
+            "innateArmor":"1",
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1",
-                "iron.sword.1",
+                "steel.sword.3",
                 "wood.shield.1"
             ],
             "itemlessAttack":[
                 {
-                    "slotType":"hand",
+                    "slotType":"weapon",
                     "value":1
                 }
-            ]
+            ],
+            "loot":[]
+
         },
         {
             "templateName":"villager",
@@ -29,16 +32,19 @@
             "hitPoints":20,
             "image":"H_PEASANT",
             "corpseImage":"H_SKELETON",
+            "innateArmor":"1",
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1"
             ],
             "itemlessAttack":[
                 {
-                    "slotType":"hand",
+                    "slotType":"weapon",
                     "value":1
                 }
-            ]
+            ],
+            "loot":[]
+
         },
         {
             "templateName":"merchant",
@@ -48,16 +54,19 @@
             "hitPoints":20,
             "image":"H_MERCHANT",
             "corpseImage":"H_SKELETON",
+            "innateArmor":"1",
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1"
             ],
             "itemlessAttack":[
                 {
-                    "slotType":"hand",
+                    "slotType":"weapon",
                     "value":1
                 }
-            ]
+            ],
+            "loot":[]
+
         },
         {
             "templateName":"city militia",
@@ -67,6 +76,7 @@
             "profession":"SOLDIER",
             "image":"H_SWORDSMAN",
             "corpseImage":"H_SKELETON",
+            "innateArmor":"1",
             "startingEquipment":[
                 "leather.helm.2",
                 "leather.chest.2",
@@ -75,10 +85,12 @@
             ],
             "itemlessAttack":[
                 {
-                    "slotType":"hand",
+                    "slotType":"weapon",
                     "value":1
                 }
-             ]
+            ],
+            "loot":[]
+
         },
         {
             "templateName":"mayor",
@@ -88,16 +100,19 @@
             "hitPoints":50,
             "image":"H_MERCHANT",
             "corpseImage":"H_SKELETON",
+            "innateArmor":"1",
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1"
             ],
             "itemlessAttack":[
                 {
-                    "slotType":"hand",
+                    "slotType":"weapon",
                     "value":1
                 }
-            ]
+            ],
+            "loot":[]
+
         },
         {
             "templateName":"goblin",
@@ -107,6 +122,7 @@
             "profession":"MOB",
             "image":"G_SWORDSMAN",
             "corpseImage":"G_SKELETON",
+            "innateArmor":"1",
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1",
@@ -114,13 +130,16 @@
             ],
             "itemlessAttack":[
                 {
-                    "slotType":"hand",
+                    "slotType":"weapon",
                     "value":1
                 }
-            ]
+            ],
+            "loot":[]
+
         },
         {
             "templateName":"puppy",
+            "name":"puppy",
             "creatureType":"mammalPredator",
             "startingGold":0,
             "hitPoints":10,
@@ -128,6 +147,7 @@
             "image":"PUPPY",
             "corpseImage":"DEAD_DOG",
             "startingEquipment":[],
+            "innateArmor":"3",
             "itemlessAttack":[
                 {
                     "slotType":"mouth",
@@ -137,17 +157,20 @@
                     "slotType":"claw",
                     "value":1
                 }
-            ]
+            ],
+            "loot":[]
         },
         {
             "templateName":"wolf",
             "creatureType":"mammalPredator",
+            "name":"wolf",
             "startingGold":0,
             "hitPoints":20,
             "profession":"MOB",
             "image":"WOLF",
             "corpseImage":"DEAD_WOLF",
             "startingEquipment":[],
+            "innateArmor":"4",
             "itemlessAttack":[
                 {
                     "slotType":"mouth",
@@ -156,6 +179,18 @@
                 {
                     "slotType":"claw",
                     "value":2
+                }
+            ],
+            "loot":[
+                {
+                    "item":"hide.wolf",
+                    "chance":70,
+                    "quantity":1
+                },
+                {
+                    "item":"meat.wolf",
+                    "chance":40,
+                    "quantity":5
                 }
             ]
         }

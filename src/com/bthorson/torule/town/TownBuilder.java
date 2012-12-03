@@ -22,7 +22,7 @@ public class TownBuilder {
     public TownBuilder(Local toBuildOn) {
         this.toBuildOn = toBuildOn;
         this.town = new Town();
-        toBuildOn.setType(LocalType.TOWN);
+        town.setLocal(toBuildOn);
     }
 
     public TownBuilder buildTownSquare(int size) {

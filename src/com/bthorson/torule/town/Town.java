@@ -4,6 +4,7 @@ import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Faction;
 import com.bthorson.torule.entity.NameGenerator;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.Local;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Town {
     private Point regionalPosition;
     private Faction faction;
     private String name;
+    private Local local;
 
     public Town(){
         name = NameGenerator.getInstance().genName();
@@ -56,4 +58,11 @@ public class Town {
     }
 
 
+    public Local getLocal() {
+        return local;
+    }
+
+    public void setLocal(Local local) {
+        this.local = local;
+    }
 }

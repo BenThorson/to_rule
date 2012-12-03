@@ -18,6 +18,7 @@ public class Entity {
     private String name;
 
     public final int id;
+    protected String templateName;
 
     private static int getId() {
         return idGen++;

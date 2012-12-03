@@ -2,6 +2,7 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.World;
 
 import java.awt.event.KeyEvent;
 
@@ -27,6 +28,7 @@ public class DeadScreen implements Screen {
     @Override
     public Screen respondToUserInput(KeyEvent key) {
         if (key.getKeyCode() == KeyEvent.VK_ENTER){
+            World.destroy();
             return new StartScreen();
         }
         return this;

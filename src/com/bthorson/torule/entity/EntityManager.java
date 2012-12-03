@@ -22,7 +22,11 @@ public class EntityManager {
     private Group playerGroup;
     private Creature player;
 
-    private static final EntityManager INSTANCE = new EntityManager();
+    private static EntityManager INSTANCE = new EntityManager();
+
+    public static void destroy(){
+        INSTANCE = null;
+    }
 
     private EntityManager(){
         groupToRemove = new ArrayList<Group>();
@@ -33,6 +37,9 @@ public class EntityManager {
     }
 
     public static EntityManager getInstance(){
+        if (INSTANCE == null){
+            INSTANCE = new EntityManager();
+        }
         return INSTANCE;
     }
 

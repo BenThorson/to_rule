@@ -104,11 +104,24 @@
         },
 
         {
+            "itemId":"wood.shield.2",
+            "type":"SHIELD",
+            "slotType":"shield",
+            "name":"wooden kite shield",
+            "price":250,
+            "weight":25,
+            "attributes":{
+                "Armor Class":8,
+                "block chance":5
+            }
+        },
+
+        {
             "itemId":"iron.sword.1",
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"iron short sword",
-            "price":"100",
+            "price":100,
             "weight":10,
             "attributes":{
                 "damage":4
@@ -119,7 +132,7 @@
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"iron sabre",
-            "price":"200",
+            "price":200,
             "weight":12,
             "attributes":{
                 "damage":5
@@ -130,7 +143,7 @@
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"iron long sword",
-            "price":"300",
+            "price":300,
             "weight":15,
             "attributes":{
                 "damage":6
@@ -141,7 +154,7 @@
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"steel short sword",
-            "price":"1000",
+            "price":1000,
             "weight":10,
             "attributes":{
                 "damage":8
@@ -152,7 +165,7 @@
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"steel sabre",
-            "price":"1500",
+            "price":1500,
             "weight":12,
             "attributes":{
                 "damage":10
@@ -163,11 +176,25 @@
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"steel long sword",
-            "price":"2000",
+            "price":2000,
             "weight":15,
             "attributes":{
                 "damage":12
             }
+        },
+        {
+            "itemId":"hide.wolf",
+            "type":"LOOT",
+            "name":"wolf hide",
+            "price":75,
+            "weight":10
+        },
+        {
+            "itemId":"meat.wolf",
+            "type":"LOOT",
+            "name":"wolf meat",
+            "price":20,
+            "weight":4
         }
     ]
 }

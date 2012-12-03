@@ -64,6 +64,7 @@ public class World {
 
     public static void destroy() {
         instance = null;
+        EntityManager.destroy();
     }
 
     public void loadWorld(WorldGenParams params){
@@ -99,7 +100,7 @@ public class World {
 
             for (Point exist : townPoints) {
                 if (PointUtil.manhattanDist(exist, candidate) < 3) {
-                    break outer;
+                    continue outer;
                 }
             }
             townPoints.add(candidate);
@@ -111,6 +112,10 @@ public class World {
         }
 
         getMSTPath(townPoints);
+
+        for (Town town : towns){
+            town.getLocal().setType(LocalType.TOWN);
+        }
     }
 
     private void getMSTPath(Set<Point> townPoints) {
@@ -205,8 +210,6 @@ public class World {
 
             }
         }
-
-
     }
 
     private void placeHostileMobs(){
@@ -346,5 +349,15 @@ public class World {
 
     public long getTurnCounter() {
         return turnCounter;
+    }
+
+    public void skipTurns(int turnsSkipped) {
+        for (int i = 0; i < turnsSkipped; i++){
+            if (player.getCreature().getHitpoints() < player.getCreature().getMaxHitpoints()) {
+                update();
+            } else {
+                return;
+            }
+        }
     }
 }

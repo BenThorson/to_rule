@@ -108,6 +108,7 @@ public class PlayScreen implements Screen {
             case KeyEvent.VK_I: return new InventoryManagementScreen(this);
 //            case KeyEvent.VK_PERIOD: player.getCreature().getGroup().rotateTest(); break;
             case KeyEvent.VK_T: return new ConversationScreen(this, player.getCreature().position().subtract(getOffset()));
+            case KeyEvent.VK_H: World.getInstance().skipTurns(500);
             default:
                 player.getCreature().move(PointUtil.POINT_ORIGIN);
                 break;
