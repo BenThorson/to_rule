@@ -5,10 +5,12 @@ import com.bthorson.torule.entity.ai.AiControllable;
 import com.bthorson.torule.entity.ai.CreatureAI;
 import com.bthorson.torule.entity.ai.DeadAi;
 import com.bthorson.torule.entity.group.Group;
+import com.bthorson.torule.exception.CannotEquipException;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Line;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
+import com.bthorson.torule.item.ItemType;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.town.Building;
@@ -46,8 +48,6 @@ public class Creature extends Entity implements AiControllable {
 
     private Faction faction;
 
-    private String name;
-
     private int gold;
 
     private Profession profession;
@@ -57,22 +57,42 @@ public class Creature extends Entity implements AiControllable {
     private Map<String, EquipmentSlot> equipmentSlots = new HashMap<String, EquipmentSlot>();
 
     public Creature(CreatureBuilder builder) {
-        super(builder.position, builder.glyph, Color.WHITE);
+        super(builder.position, builder.glyph, Color.WHITE, NameGenerator.getInstance().genName());
         this.visionRadius = builder.visionRadius;
         this.maxHitpoints = builder.hitPoints;
         this.hitpoints = builder.hitPoints;
         this.heading = Direction.SOUTH;
         this.profession = builder.profession;
         this.gold = builder.gold;
-        name = NameGenerator.getInstance().genName();
         this.inventory = builder.inventory;
         this.equipmentSlots = builder.equipmentSlots;
+        assignOwnershipOfItems();
+    }
+
+    private void assignOwnershipOfItems() {
+        for (Item item : inventory){
+            item.setOwnedBy(this);
+        }
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public int purchaseItem(Item selectedItem, int price) {
+        if (gold < price){
+            return 0;
+        }
+        selectedItem.setOwnedBy(this);
+        inventory.add(selectedItem);
+        gold -= price;
+        return price;
     }
 
     public static class CreatureBuilder{
         private Point position;
         private int glyph;
-        private int visionRadius = 30;
+        private int visionRadius = 20;
         private int hitPoints;
         private Profession profession;
         private int gold = 0;
@@ -315,14 +335,6 @@ public class Creature extends Entity implements AiControllable {
         return group;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Profession getProfession() {
         return profession;
     }
@@ -340,10 +352,62 @@ public class Creature extends Entity implements AiControllable {
     }
 
     public List<Item> getInventory() {
-        return inventory;
+        return new ArrayList<Item>(inventory);
     }
 
     public Map<String, EquipmentSlot> getEquipmentSlots() {
-        return equipmentSlots;
+        return new HashMap<String, EquipmentSlot>(equipmentSlots);
+    }
+
+    public void equip(int itemNumber) throws CannotEquipException{
+        Item item = inventory.get(itemNumber);
+        equip(item);
+    }
+
+    private void equip(Item item) throws CannotEquipException {
+
+        if (item == null){
+            return;
+        }
+
+        if (equipmentSlots.get(item.getSlotType()) == null){
+            System.out.println("cannot equip");
+        }
+
+        Item oldItem = equipmentSlots.get(item.getSlotType()).getItem();
+
+        if (oldItem != null){
+            oldItem.setEquipped(false);
+        }
+
+        equipmentSlots.get(item.getSlotType()).setItem(item);
+        item.setEquipped(true);
+    }
+
+    public void optimizeEquippedItems() {
+
+        for (String key : equipmentSlots.keySet()){
+            EquipmentSlot slot = equipmentSlots.get(key);
+            Item toEquip = findBestEquipmentForSlot(slot);
+            try {
+                equip(toEquip);
+            } catch (CannotEquipException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private Item findBestEquipmentForSlot(EquipmentSlot slot) {
+        Item toEquip = null;
+        for (Item item : inventory){
+            if (item.getSlotType().equals(slot.getSlotName())){
+                if (toEquip == null ||
+                        ItemType.INSTANCE.getItemRelativeWorth(item) > ItemType.INSTANCE.getItemRelativeWorth(toEquip)){
+                    toEquip = item;
+                }
+            }
+        }
+        return toEquip;
     }
 }

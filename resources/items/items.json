@@ -2,109 +2,109 @@
     "items":[
 
         {
-            "id":"cloth.chest.1",
+            "itemId":"cloth.chest.1",
             "type":"ARMOR",
             "slotType":"torso",
             "name":"padded chest",
             "price":25,
             "weight":10,
             "attributes":{
-                "armor class":4
+                "Armor Class":4
             }
         },
         {
-            "id":"leather.chest.1",
+            "itemId":"leather.chest.1",
             "type":"ARMOR",
             "slotType":"torso",
             "name":"leather chest",
             "price":75,
             "weight":15,
             "attributes":{
-                "armor class":10
+                "Armor Class":10
             }
         },
         {
-            "id":"leather.chest.2",
+            "itemId":"leather.chest.2",
             "type":"ARMOR",
             "slotType":"torso",
             "name":"studded chest",
             "price":125,
             "weight":20,
             "attributes":{
-                "armor class":15
+                "Armor Class":15
             }
         },
         {
-            "id":"metal.chest.1",
+            "itemId":"metal.chest.1",
             "type":"ARMOR",
             "slotType":"torso",
             "name":"chain chest",
             "price":300,
             "weight":50,
             "attributes":{
-                "armor class":30
+                "Armor Class":30
             }
         },
         {
-            "id":"cloth.helm.1",
+            "itemId":"cloth.helm.1",
             "type":"ARMOR",
             "slotType":"head",
             "name":"padded cap",
             "price":25,
             "weight":10,
             "attributes":{
-                "armor class":1
+                "Armor Class":1
             }
         },
         {
-            "id":"leather.helm.1",
+            "itemId":"leather.helm.1",
             "type":"ARMOR",
             "slotType":"head",
             "name":"leather cap",
             "price":75,
             "weight":15,
             "attributes":{
-                "armor class":4
+                "Armor Class":4
             }
         },
         {
-            "id":"leather.helm.2",
+            "itemId":"leather.helm.2",
             "type":"ARMOR",
             "slotType":"head",
             "name":"studded cap",
             "price":125,
             "weight":20,
             "attributes":{
-                "armor class":6
+                "Armor Class":6
             }
         },
         {
-            "id":"metal.helm.1",
+            "itemId":"metal.helm.1",
             "type":"ARMOR",
             "slotType":"head",
             "name":"chain coif",
             "price":300,
             "weight":40,
             "attributes":{
-                "armor class":10
+                "Armor Class":10
             }
         },
 
         {
-            "id":"wood.shield.1",
+            "itemId":"wood.shield.1",
             "type":"SHIELD",
             "slotType":"shield",
             "name":"wooden buckler",
             "price":50,
             "weight":10,
             "attributes":{
-                "armor class":4,
+                "Armor Class":4,
                 "block chance":3
             }
         },
 
         {
-            "id":"iron.sword.1",
+            "itemId":"iron.sword.1",
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"iron short sword",
@@ -115,7 +115,7 @@
             }
         },
         {
-            "id":"iron.sword.2",
+            "itemId":"iron.sword.2",
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"iron sabre",
@@ -126,7 +126,7 @@
             }
         },
         {
-            "id":"iron.sword.3",
+            "itemId":"iron.sword.3",
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"iron long sword",
@@ -137,7 +137,7 @@
             }
         },
         {
-            "id":"steel.sword.1",
+            "itemId":"steel.sword.1",
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"steel short sword",
@@ -148,7 +148,7 @@
             }
         },
         {
-            "id":"steel.sword.2",
+            "itemId":"steel.sword.2",
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"steel sabre",
@@ -159,7 +159,7 @@
             }
         },
         {
-            "id":"steel.sword.3",
+            "itemId":"steel.sword.3",
             "type":"WEAPON",
             "slotType":"weapon",
             "name":"steel long sword",

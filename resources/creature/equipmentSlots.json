@@ -1,22 +1,22 @@
 {
     "slotTypes":[
         {
-            "name":"weapon",
+            "slotName":"weapon",
             "itemType":"WEAPON",
             "itemPurpose":"OFFENSE"
         },
         {
-            "name":"head",
+            "slotName":"head",
             "itemType":"ARMOR",
             "itemPurpose":"DEFENSE"
         },
         {
-            "name":"torso",
+            "slotName":"torso",
             "itemType":"ARMOR",
             "itemPurpose":"DEFENSE"
         },
         {
-            "name":"shield",
+            "slotName":"shield",
             "itemType":"SHIELD",
             "itemPurpose":"DEFENSE"
         }

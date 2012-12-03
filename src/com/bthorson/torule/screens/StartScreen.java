@@ -2,6 +2,7 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.screens.component.Menu;
 
 import java.awt.event.KeyEvent;
 
@@ -41,11 +42,11 @@ public class StartScreen implements Screen {
 
     @Override
     public Screen respondToMouseInput(Point translatedPoint) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 
     @Override
     public Screen respondToMouseClick(Point translatedPoint, int mouseButton) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 }

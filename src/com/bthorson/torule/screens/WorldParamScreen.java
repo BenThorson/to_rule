@@ -15,8 +15,8 @@ import java.awt.event.KeyEvent;
  */
 public class WorldParamScreen implements Screen {
 
-    private Menu worldSize = new Menu("World Size", null, new String[]{"1000 by 1000"}, Color.YELLOW, Color.BLACK);
-    private Menu numCities = new Menu("Number of Towns", null, new String[]{"5", "10", "15"}, Color.YELLOW, Color.BLACK);
+    private com.bthorson.torule.screens.component.Menu worldSize = new com.bthorson.torule.screens.component.Menu("World Size", null, new String[]{"1000 by 1000"}, Color.YELLOW, Color.BLACK);
+    private com.bthorson.torule.screens.component.Menu numCities = new com.bthorson.torule.screens.component.Menu("Number of Towns", null, new String[]{"5", "10", "15"}, Color.YELLOW, Color.BLACK);
     private InputDialog playerName = new InputDialog("Enter Player Name", Color.YELLOW, Color.BLACK);
 
     private enum MenuType {WORLD_SIZE, NUM_CITIES, PLAYER_NAME}
@@ -89,11 +89,11 @@ public class WorldParamScreen implements Screen {
 
     @Override
     public Screen respondToMouseInput(Point translatedPoint) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 
     @Override
     public Screen respondToMouseClick(Point translatedPoint, int mouseButton) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 }

@@ -19,7 +19,6 @@ public class SelectScreen implements Screen{
     private final Screen displayParent;
 
     private Point cursor;
-    private Point mousePos;
 
     public SelectScreen(Screen displayParent, Point cursor, ControlCallbackScreen controlParentScreen){
 
@@ -38,6 +37,7 @@ public class SelectScreen implements Screen{
     public Screen respondToUserInput(KeyEvent key) {
         switch (key.getKeyCode()){
             case KeyEvent.VK_ESCAPE:
+                controlParentScreen.positionSelected(null);
                 return controlParentScreen;
             case KeyEvent.VK_ENTER:
                 return setPositionAndReturn();

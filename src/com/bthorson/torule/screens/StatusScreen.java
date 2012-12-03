@@ -37,6 +37,7 @@ public class StatusScreen implements Screen {
         terminal.write("Turn " + World.getInstance().getTurnCounter(), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
         terminal.write(String.format("%d/%d HP", player.getCreature().getHitpoints(),
                                      player.getCreature().getMaxHitpoints()), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
+        terminal.write(String.format("%d gold",  player.getCreature().getGold()), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
         row++;
         terminal.write("Equipped Items", new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
         for (String key : player.getCreature().getEquipmentSlots().keySet()){
@@ -55,16 +56,16 @@ public class StatusScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 
     @Override
     public Screen respondToMouseInput(Point translatedPoint) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 
     @Override
     public Screen respondToMouseClick(Point translatedPoint, int mouseButton) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 }

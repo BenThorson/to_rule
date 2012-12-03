@@ -500,8 +500,8 @@ public class AsciiPanel extends JPanel {
         }
 
         entities[position.x()][position.y()] = catPosition;
-        foregroundColors[position.x()][position.y()] = defaultForegroundColor;
-        backgroundColors[position.x()][position.y()] = background.color();
+        foregroundColors[position.x()][position.y()] = background.colorFG();
+        backgroundColors[position.x()][position.y()] = background.colorBG();
         cursor = position.add(new Point(1,0));
         return this;
     }
@@ -557,12 +557,12 @@ public class AsciiPanel extends JPanel {
     }
 
     public AsciiPanel writeTile(Tile tile, Point viewPort) {
-        return write(tile.glyph(), viewPort, tile.color(), tile.color());
+        return write(tile.glyph(), viewPort, tile.colorFG(), tile.colorBG());
     }
 
 
     public AsciiPanel writeDarkTile(Tile tile, Point viewPort, int amount) {
-        return write(tile.glyph(), viewPort, ColorUtil.darken(tile.color(), amount), ColorUtil.darken(tile.color(), amount));
+        return write(tile.glyph(), viewPort, ColorUtil.darken(tile.colorFG(), amount), ColorUtil.darken(tile.colorBG(), amount));
     }
 
     /**

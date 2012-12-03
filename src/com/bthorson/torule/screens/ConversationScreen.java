@@ -6,6 +6,7 @@ import com.bthorson.torule.entity.conversation.SampleConversation;
 import com.bthorson.torule.entity.conversation.model.ConversationTextAndOptions;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
+import com.bthorson.torule.screens.component.Menu;
 
 import java.awt.event.KeyEvent;
 
@@ -23,6 +24,7 @@ public class ConversationScreen implements ControlCallbackScreen {
     private SampleConversation conversation;
     private Creature conversant;
     private Screen newScreen;
+    private boolean goBack = false;
 
     public ConversationScreen(PlayScreen playScreen, Point position) {
         this.previous = playScreen;
@@ -31,6 +33,10 @@ public class ConversationScreen implements ControlCallbackScreen {
 
     @Override
     public void positionSelected(Point point) {
+        if (point == null){
+            goBack = true;
+            return;
+        }
         attemptedSelection = true;
         conversant = World.getInstance().creature(point.add(previous.getOffset()));
         if (conversant != null){
@@ -52,11 +58,17 @@ public class ConversationScreen implements ControlCallbackScreen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        if (goBack){
+            return previous;
+        }
         newScreen = null;
         int response = -1;
         if (convoDialog == null){
             return attemptedSelection ? previous : selectScreen.respondToUserInput(key);
         } else if ((response = convoDialog.respondToUserInput(key)) != -1) {
+            if (response == -2){
+                return previous;
+            }
             ConversationTextAndOptions convs = conversation.continueConversation(this, response);
             if (convs != null){
                 if (newScreen != null){

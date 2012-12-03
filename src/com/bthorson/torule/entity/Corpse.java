@@ -1,7 +1,5 @@
 package com.bthorson.torule.entity;
 
-import com.bthorson.torule.map.World;
-
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +10,6 @@ import com.bthorson.torule.map.World;
  */
 public class Corpse extends Entity {
     public Corpse(Creature creature) {
-        super(creature.position(), creature.glyph(), creature.color());
+        super(creature.position(), creature.glyph(), creature.color(), NameGenerator.getInstance().genName());
     }
 }

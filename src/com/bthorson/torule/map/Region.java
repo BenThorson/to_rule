@@ -3,6 +3,7 @@ package com.bthorson.torule.map;
 import com.bthorson.torule.geom.Point;
 
 import java.io.PrintWriter;
+import java.util.Random;
 
 import static com.bthorson.torule.map.MapConstants.*;
 
@@ -16,10 +17,12 @@ public class Region {
     private Local[][] locals = new Local[REGION_X_IN_LOCALS][REGION_Y_IN_LOCALS];
 
     public Region(int worldX, int worldY) {
+        Random random = new Random();
         for (int x = 0; x < REGION_X_IN_LOCALS; x++) {
             for (int y = 0; y < REGION_Y_IN_LOCALS; y++) {
-                locals[x][y] = new LocalBuilder().makeGrassland().build(new Point(worldX * REGION_SIZE_X + x * LOCAL_SIZE_X,
-                                                                                  worldY * REGION_SIZE_Y + y * LOCAL_SIZE_Y));
+                locals[x][y] = new LocalBuilder(random.nextInt(5), random.nextInt(5), random.nextInt(5))
+                        .makeGrassland().build(new Point(worldX * REGION_SIZE_X + x * LOCAL_SIZE_X,
+                                               worldY * REGION_SIZE_Y + y * LOCAL_SIZE_Y));
             }
         }
     }

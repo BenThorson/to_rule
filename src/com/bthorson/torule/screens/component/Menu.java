@@ -1,7 +1,8 @@
-package com.bthorson.torule.screens;
+package com.bthorson.torule.screens.component;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.screens.ScreenUtil;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -132,6 +133,8 @@ public class Menu {
         } else if (key.getKeyCode() == KeyEvent.VK_UP
                 || key.getKeyCode() == KeyEvent.VK_NUMPAD8){
             currentChoice = Math.abs((currentChoice - 1 + choices.length) % choices.length);
+        } else if (key.getKeyCode() == KeyEvent.VK_ESCAPE){
+            return -2;
         }
 
         if (key.getKeyCode() == KeyEvent.VK_ENTER){

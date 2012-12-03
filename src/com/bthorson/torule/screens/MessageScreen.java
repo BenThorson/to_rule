@@ -42,16 +42,16 @@ public class MessageScreen implements Screen{
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 
     @Override
     public Screen respondToMouseInput(Point translatedPoint) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 
     @Override
     public Screen respondToMouseClick(Point translatedPoint, int mouseButton) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 }

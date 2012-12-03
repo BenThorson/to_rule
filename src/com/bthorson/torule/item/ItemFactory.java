@@ -29,7 +29,7 @@ public enum ItemFactory {
             JsonObject jo = new JsonParser().parse(armor).getAsJsonObject();
             JsonArray items = jo.get("items").getAsJsonArray();
             for (JsonElement item : items){
-                catalog.put(item.getAsJsonObject().get("id").getAsString(), item.getAsJsonObject());
+                catalog.put(item.getAsJsonObject().get("itemId").getAsString(), item.getAsJsonObject());
             }
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -38,8 +38,8 @@ public enum ItemFactory {
 
     public Item createItemOfId(String itemId){
         JsonObject obj = catalog.get(itemId);
-        Item item = new Gson().fromJson(obj, Item.class);
-        return item;
+        return new Gson().fromJson(obj, Item.class);
+//        return new Item(new Gson().fromJson(obj, Item.class));
     }
 
     public static void main(String[] args) {

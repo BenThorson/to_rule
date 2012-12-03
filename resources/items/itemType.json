@@ -3,21 +3,21 @@
         {
             "type":"ARMOR",
             "attributes":[
-                    "armor class"
+                    "Armor Class"
             ],
             "worthWeight":{
-                "armor class":1
+                "Armor Class":1
             }
         },
         {
             "type":"SHIELD",
             "attributes":[
-                    "armor class",
+                    "Armor Class",
                     "block chance"
             ],
             "worthWeight":{
                 "block chance":1,
-                "armor class":1
+                "Armor Class":1
             }
         },
         {

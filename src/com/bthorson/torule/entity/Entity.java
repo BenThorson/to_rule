@@ -17,6 +17,7 @@ public class Entity {
     private String name;
 
     public final int id;
+
     private static int getId() {
         return idGen++;
     }
@@ -36,16 +37,26 @@ public class Entity {
         return glyph;
     }
 
-    private Color color;
+    protected Color color;
     public Color color(){
         return color;
     }
 
-    public Entity(Point pos, int glyph, Color color) {
+    public Entity(){
+        this.id = getId();
+        this.position = new Point(0,0);
+        this.glyph = 0;
+        this.color = Color.WHITE;
+        this.name = "";
+    }
+
+
+    public Entity(Point pos, int glyph, Color color, String name) {
         this.id = getId();
         this.position = pos;
         this.glyph = glyph;
         this.color = color;
+        this.name = name;
     }
 
     public void setGlyph(int glyph) {
@@ -60,7 +71,13 @@ public class Entity {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null && obj instanceof Entity && ((Entity) obj).id == id;
+    }
 
-
-
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

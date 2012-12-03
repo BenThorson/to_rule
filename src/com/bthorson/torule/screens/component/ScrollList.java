@@ -46,12 +46,8 @@ public class ScrollList {
         firstDisplayed = 0;
         if (height < items.size()){
             lastDisplayed = height + 1;
-//            for (int i = 0 ; i < height; i++){
-//                displayedItems.add(items.get(i));
-//            }
         } else {
             lastDisplayed = items.size();
-//            displayedItems.addAll(items);
         }
 
     }
@@ -89,24 +85,45 @@ public class ScrollList {
     }
 
     public int respondToUserInput(KeyEvent key) {
-        if (key.getKeyCode() == KeyEvent.VK_DOWN
-                || key.getKeyCode() == KeyEvent.VK_NUMPAD2){
-            currentChoice = currentChoice < items.size()-1 ? currentChoice + 1 : currentChoice;
-            if (currentChoice >= lastDisplayed){
-                lastDisplayed++;
-                firstDisplayed++;
-            }
-        } else if (key.getKeyCode() == KeyEvent.VK_UP
-                || key.getKeyCode() == KeyEvent.VK_NUMPAD8){
-            currentChoice = currentChoice > 0 ? currentChoice - 1 : currentChoice;
-            if (currentChoice < firstDisplayed){
-                lastDisplayed--;
-                firstDisplayed--;
-            }
-        }
 
-        if (key.getKeyCode() == KeyEvent.VK_ENTER){
-            return currentChoice;
+        switch (key.getKeyCode()){
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_NUMPAD2:
+                currentChoice = currentChoice < items.size()-1 ? currentChoice + 1 : currentChoice;
+                if (currentChoice >= lastDisplayed){
+                    lastDisplayed++;
+                    firstDisplayed++;
+                }
+                break;
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_NUMPAD8:
+                currentChoice = currentChoice > 0 ? currentChoice - 1 : currentChoice;
+                if (currentChoice < firstDisplayed){
+                    lastDisplayed--;
+                    firstDisplayed--;
+                }
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                int temp = height;
+                int actualMoved = temp + currentChoice< items.size()-1 ? temp : (items.size() -1) - currentChoice;
+                currentChoice += actualMoved;
+                int scrollAmount = lastDisplayed + actualMoved < items.size() ? actualMoved : items.size() - lastDisplayed;
+                firstDisplayed += scrollAmount;
+                lastDisplayed += scrollAmount;
+                break;
+            case KeyEvent.VK_PAGE_UP:
+                int t = height;
+                int actMoved = currentChoice - t > 0 ? t : currentChoice;
+                currentChoice -= actMoved;
+                int sAmount = firstDisplayed - actMoved > 0 ? actMoved : firstDisplayed;
+                firstDisplayed -= sAmount;
+                lastDisplayed -= sAmount;
+                break;
+
+            case KeyEvent.VK_ESCAPE:
+                return -2;
+            case KeyEvent.VK_ENTER:
+                return currentChoice;
         }
         return -1;
     }

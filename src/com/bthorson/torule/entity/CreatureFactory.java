@@ -42,7 +42,7 @@ public enum CreatureFactory {
             JsonObject jo = new JsonParser().parse(equipSlots).getAsJsonObject();
             JsonArray items = jo.get("slotTypes").getAsJsonArray();
             for (JsonElement item : items){
-                equipmentSlotMap.put(item.getAsJsonObject().get("name").getAsString(), item.getAsJsonObject());
+                equipmentSlotMap.put(item.getAsJsonObject().get("slotName").getAsString(), item.getAsJsonObject());
             }
 
             String creatureSlots = FileUtils.readFileToString(new File("resources/creature/creatureEquipmentFormat.json"));
@@ -92,7 +92,7 @@ public enum CreatureFactory {
                 .build();
 
         EntityManager.getInstance().addCreature(creature);
-        CreatureUtils.optimizeEquipedItems(creature);
+        creature.optimizeEquippedItems();
         return creature;
 
     }
