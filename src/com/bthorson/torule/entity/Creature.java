@@ -75,20 +75,6 @@ public class Creature extends Entity implements AiControllable {
         }
     }
 
-    public int getGold() {
-        return gold;
-    }
-
-    public int purchaseItem(Item selectedItem, int price) {
-        if (gold < price){
-            return 0;
-        }
-        selectedItem.setOwnedBy(this);
-        inventory.add(selectedItem);
-        gold -= price;
-        return price;
-    }
-
     public static class CreatureBuilder{
         private Point position;
         private int glyph;
@@ -245,7 +231,7 @@ public class Creature extends Entity implements AiControllable {
             dead = true;
             ai = new DeadAi();
             super.setGlyph(10);
-            getWorld().creatureDead(this);
+            EntityManager.getInstance().creatureDead(this);
         }
         if (hitpoints > maxHitpoints){
             hitpoints = maxHitpoints;
@@ -360,8 +346,10 @@ public class Creature extends Entity implements AiControllable {
     }
 
     public void equip(int itemNumber) throws CannotEquipException{
-        Item item = inventory.get(itemNumber);
-        equip(item);
+        if (itemNumber >= 0 && itemNumber < inventory.size()){
+            Item item = inventory.get(itemNumber);
+            equip(item);
+        }
     }
 
     private void equip(Item item) throws CannotEquipException {
@@ -383,6 +371,42 @@ public class Creature extends Entity implements AiControllable {
         equipmentSlots.get(item.getSlotType()).setItem(item);
         item.setEquipped(true);
     }
+
+    public void unEquip(int i) {
+        if (i >= 0 && i < inventory.size()){
+            unEquip(inventory.get(i));
+        }
+    }
+
+    private void unEquip(Item item) {
+        if (item.isEquipped()){
+            equipmentSlots.get(item.getSlotType()).setItem(null);
+            item.setEquipped(false);
+        }
+    }
+
+
+    public int getGold() {
+        return gold;
+    }
+
+    public int purchaseItem(Item selectedItem, int price) {
+        if (gold < price){
+            return 0;
+        }
+        selectedItem.setOwnedBy(this);
+        inventory.add(selectedItem);
+        gold -= price;
+        return price;
+    }
+
+    public void removeItem(Item selectedItem) {
+        selectedItem.setOwnedBy(null);
+        selectedItem.setPosition(position());
+        inventory.remove(selectedItem);
+        EntityManager.getInstance().addFreeItem(selectedItem);
+    }
+
 
     public void optimizeEquippedItems() {
 

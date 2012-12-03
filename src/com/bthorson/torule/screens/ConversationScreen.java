@@ -8,6 +8,7 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.screens.component.Menu;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**
@@ -42,7 +43,7 @@ public class ConversationScreen implements ControlCallbackScreen {
         if (conversant != null){
             conversation = new SampleConversation(conversant);
             ConversationTextAndOptions convoTexts = conversation.startConversation();
-            convoDialog = new Menu(conversant.getName(), convoTexts.getText(), convoTexts.getOptions(), AsciiPanel.yellow, AsciiPanel.black );
+            convoDialog = new Menu(conversant.getName(), convoTexts.getText(), convoTexts.getOptions(), Color.YELLOW, Color.BLACK, Color.WHITE);
         }
     }
 
@@ -74,7 +75,7 @@ public class ConversationScreen implements ControlCallbackScreen {
                 if (newScreen != null){
                     return newScreen;
                 }
-                convoDialog = new Menu(conversant.getName(), convs.getText(), convs.getOptions(), AsciiPanel.yellow, AsciiPanel.black );
+                convoDialog = new Menu(conversant.getName(), convs.getText(), convs.getOptions(), Color.YELLOW, Color.BLACK, Color.WHITE);
             } else {
                 return previous;
             }

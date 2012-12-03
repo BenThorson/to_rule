@@ -2,6 +2,7 @@ package com.bthorson.torule.entity;
 
 import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.item.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +15,10 @@ import java.util.List;
 public class EntityManager {
 
     private List<Creature> nonGroupedCreatures;
+    private List<Entity> freeItems;
     private List<Group> groups;
     private List<Group> groupToRemove;
+    List<Creature> toRemove;
     private Group playerGroup;
     private Creature player;
 
@@ -25,6 +28,8 @@ public class EntityManager {
         groupToRemove = new ArrayList<Group>();
         nonGroupedCreatures = new ArrayList<Creature>();
         groups = new ArrayList<Group>();
+        freeItems = new ArrayList<Entity>();
+        toRemove = new ArrayList<Creature>();
     }
 
     public static EntityManager getInstance(){
@@ -49,6 +54,12 @@ public class EntityManager {
     }
 
     public void update(){
+
+        for (Creature dead : toRemove){
+            remove(dead);
+        }
+        toRemove.clear();
+
         for (Group toRemove: groupToRemove){
             groups.remove(toRemove);
         }
@@ -108,7 +119,26 @@ public class EntityManager {
         groupToRemove.add(group);
     }
 
+    public void creatureDead(Creature creature){
+
+        toRemove.add(creature);
+        EntityManager.getInstance().addFreeItem(new Corpse(creature));
+    }
+
     public boolean isPlayer(Creature creature) {
         return creature.equals(player);
+    }
+
+    public Entity item(Point itemPos) {
+        for (Entity item : freeItems){
+            if (item.position().equals(itemPos)){
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void addFreeItem(Entity item) {
+        freeItems.add(item);
     }
 }

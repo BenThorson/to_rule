@@ -21,13 +21,13 @@ public class PlayerBuyScreen implements Screen {
     private Screen previous;
     private com.bthorson.torule.screens.component.Menu confirmation;
     private Item selectedItem;
-    private com.bthorson.torule.screens.component.Menu noAfford = new com.bthorson.torule.screens.component.Menu("Cannot afford", null, new String[]{"Okay"}, Color.YELLOW, Color.BLACK);
+    private com.bthorson.torule.screens.component.Menu noAfford = new com.bthorson.torule.screens.component.Menu("Cannot afford", null, new String[]{"Okay"}, Color.YELLOW, Color.BLACK, Color.WHITE);
     private boolean showNoAfford = false;
 
     public PlayerBuyScreen(ConversationScreen previous, Building shop) {
         this.previous = previous;
         this.shop = shop;
-        itemDetailScreen = new ItemDetailScreen(this, shop.getInventory(), shop.getOwner().getName() + "s " + shop.getBuildingType().prettyName());
+        itemDetailScreen = new ItemDetailScreen(shop.getInventory(), shop.getOwner().getName() + "s " + shop.getBuildingType().prettyName());
 
     }
 
@@ -86,7 +86,7 @@ public class PlayerBuyScreen implements Screen {
         selectedItem = shop.getInventory().get(itemNum);
         if (World.getInstance().getPlayer().getCreature().getGold() >= selectedItem.getPrice()){
             confirmation = new com.bthorson.torule.screens.component.Menu("Confirm Purchase", "Purchase " + selectedItem.getName() + " for " + selectedItem.getPrice() + " gold?",
-                                    new String[]{"Yes", "No"}, Color.YELLOW, Color.BLACK);
+                                    new String[]{"Yes", "No"}, Color.YELLOW, Color.BLACK, Color.WHITE);
 
         } else {
             showNoAfford = true;

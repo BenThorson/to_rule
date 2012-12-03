@@ -10,6 +10,6 @@ package com.bthorson.torule.entity;
  */
 public class Corpse extends Entity {
     public Corpse(Creature creature) {
-        super(creature.position(), creature.glyph(), creature.color(), NameGenerator.getInstance().genName());
+        super(creature.position(), creature.glyph(), creature.color(), creature.getName());
     }
 }

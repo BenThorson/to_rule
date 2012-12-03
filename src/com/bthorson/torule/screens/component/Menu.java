@@ -28,12 +28,14 @@ public class Menu {
 
     private Color foreground;
     private Color background;
+    private Color textColor;
 
-    public Menu(String title, String additionalDetails, String[] choices, Color foreground, Color background) {
+    public Menu(String title, String additionalDetails, String[] choices, Color foreground, Color background, Color textColor) {
         this.title = title;
         this.choices = choices;
         this.foreground = foreground;
         this.background = background;
+        this.textColor = textColor;
 
         currentChoice = 0;
 
@@ -91,19 +93,19 @@ public class Menu {
         Point pos = new Point(x,y);
         int row = 1;
         ScreenUtil.makeRect(terminal, x, y, width, height, foreground, background, true);
-        terminal.writePopup(title, pos.add(new Point(1,row++)), foreground, background);
+        terminal.writePopupText(title, pos.add(new Point(1, row++)), textColor, background);
         terminal.writePopup(makeDivider(), pos.add(new Point(0,row++)), foreground, background);
         if (splitDetails.size() > 0){
             for (String detail : splitDetails){
-                terminal.writePopup(detail, pos.add(new Point(1, row++)), foreground, background);
+                terminal.writePopupText(detail, pos.add(new Point(1, row++)), textColor, background);
             }
             terminal.writePopup(makeDivider(), pos.add(new Point(0, row++)), foreground, background);
         }
         for (int i = 0; i < choices.length; i++){
             if (i == currentChoice){
-                terminal.writePopup(choices[i], pos.add(new Point(1, row++)),foreground, AsciiPanel.red);
+                terminal.writePopupText(choices[i], pos.add(new Point(1, row++)), textColor, AsciiPanel.red);
             } else {
-                terminal.writePopup(choices[i], pos.add(new Point(1, row++)), foreground, background);
+                terminal.writePopupText(choices[i], pos.add(new Point(1, row++)), textColor, background);
             }
         }
     }

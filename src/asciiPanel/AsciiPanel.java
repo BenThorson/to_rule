@@ -30,6 +30,8 @@ public class AsciiPanel extends JPanel {
      */
     public static Color red = new Color(128, 0, 0);
 
+    public static Color brown =  new Color(0x994444);
+
     /**
      * The color green.
      */
@@ -110,18 +112,20 @@ public class AsciiPanel extends JPanel {
     private Point cursor;
     private static final int GLYPH_SIZE = 256;
     private Map<ForeGroundBackGround, BufferedImage[]> glyphs;
+    private Map<ForeGroundBackGround, BufferedImage[]> text;
     private BufferedImage humanoidsSprite;
     private BufferedImage[] humanoids;
     private BufferedImage crittersSprite;
     private BufferedImage[] critters;
     private Point mousePosition = new Point(0,0);
-    private boolean mousePositionShow = false;
     private int[][] entities;
     private char[][] backgroundChars;
+    private char[][] textChars;
     private Color[][] backgroundColors;
     private Color[][] foregroundColors;
 
     private char[][] popupChars;
+    private char[][] popupText;
 
     private Color mouseColor = Color.YELLOW;
 
@@ -131,53 +135,6 @@ public class AsciiPanel extends JPanel {
      */
     public Point charBr(){
         return charBr;
-    }
-
-    /**
-     * Sets the x and y position of where new text will be written to. The origin (0,0) is the upper left corner.
-     * The x should be equal to or greater than 0 and less than the the width in characters.
-     * The y should be equal to or greater than 0 and less than the the height in characters.
-     */
-    public void setCursorPosition(Point point) {
-        cursor = point;
-    }
-
-    /**
-     * Gets the default background color that is used when writing new text.
-     * @return
-     */
-    public Color getDefaultBackgroundColor() {
-        return defaultBackgroundColor;
-    }
-
-    /**
-     * Sets the default background color that is used when writing new text.
-     * @param defaultBackgroundColor
-     */
-    public void setDefaultBackgroundColor(Color defaultBackgroundColor) {
-        if (defaultBackgroundColor == null)
-            throw new NullPointerException("defaultBackgroundColor must not be null.");
-
-        this.defaultBackgroundColor = defaultBackgroundColor;
-    }
-
-    /**
-     * Gets the default foreground color that is used when writing new text.
-     * @return
-     */
-    public Color getDefaultForegroundColor() {
-        return defaultForegroundColor;
-    }
-
-    /**
-     * Sets the default foreground color that is used when writing new text.
-     * @param defaultForegroundColor
-     */
-    public void setDefaultForegroundColor(Color defaultForegroundColor) {
-        if (defaultForegroundColor == null)
-            throw new NullPointerException("defaultForegroundColor must not be null.");
-
-        this.defaultForegroundColor = defaultForegroundColor;
     }
 
     /**
@@ -209,12 +166,15 @@ public class AsciiPanel extends JPanel {
         defaultForegroundColor = white;
 
         backgroundChars = new char[width][height];
+        textChars = new char[width][height];
         backgroundColors = new Color[width][height];
         foregroundColors = new Color[width][height];
 
         popupChars = new char[width][height];
+        popupText = new char[width][height];
 
         glyphs = new HashMap<ForeGroundBackGround, BufferedImage[]>();
+        text = new HashMap<ForeGroundBackGround, BufferedImage[]>();
 
         entities= new int[width][height];
         humanoids = new BufferedImage[144];
@@ -247,7 +207,15 @@ public class AsciiPanel extends JPanel {
                 if (!glyphs.containsKey(bgfg)){
                     loadGlyphs(fg, bg);
                 }
-                g2d.drawImage(glyphs.get(bgfg)[backgroundChars[x][y]], translate.x(), translate.y(), null);
+                if (!text.containsKey(bgfg)){
+                    loadText(fg, bg);
+                }
+                if (textChars[x][y] != 0){
+                    g2d.drawImage(text.get(bgfg)[textChars[x][y]], translate.x(), translate.y(), null);
+                    textChars[x][y] =0;
+                } else {
+                    g2d.drawImage(glyphs.get(bgfg)[backgroundChars[x][y]], translate.x(), translate.y(), null);
+                }
                 if (entities[x][y] != 0){
                     if (entities[x][y] > humanoids.length){
                         g.drawImage(critters[entities[x][y] - humanoids.length], translate.x(), translate.y(), null);
@@ -258,8 +226,12 @@ public class AsciiPanel extends JPanel {
                 }
                 if (popupChars[x][y] != 0){
                     g2d.drawImage(glyphs.get(bgfg)[popupChars[x][y]], translate.x(), translate.y(), null);
+                    popupChars[x][y] = 0;
                 }
-                popupChars[x][y] = 0;
+                if (popupText[x][y] != 0){
+                    g2d.drawImage(text.get(bgfg)[popupText[x][y]], translate.x(), translate.y(), null);
+                    popupText[x][y] = 0;
+                }
 
             }
         }
@@ -279,13 +251,6 @@ public class AsciiPanel extends JPanel {
         GraphicsConfiguration gfx_config = GraphicsEnvironment.
                 getLocalGraphicsEnvironment().getDefaultScreenDevice().
                 getDefaultConfiguration();
-
-//        /*
-//         * if image is already compatible and optimized for current system
-//         * settings, simply return it
-//         */
-//        if (image.getColorModel().equals(gfx_config.getColorModel()))
-//            return image;
 
         // image is not optimized, so create a new image that is
         BufferedImage new_image = gfx_config.createCompatibleImage(
@@ -348,41 +313,34 @@ public class AsciiPanel extends JPanel {
         glyphs.put(new ForeGroundBackGround(fg, bg), imgs);
     }
 
+    private void loadText(Color fg, Color bg) {
+        Image textSprite = null;
+        try {
+            textSprite = ImageIO.read(AsciiPanel.class.getResource("text.png"));
+        } catch (IOException e) {
+            System.err.println("loadText(): " + e.getMessage());
+        }
+        BufferedImage[] imgs = new BufferedImage[GLYPH_SIZE];
+
+        for (int i = 0; i < GLYPH_SIZE; i++) {
+            int sx = (i % 16) * charBr.x();
+            int sy = (i / 16) * charBr.y();
+
+            imgs[i] = new BufferedImage(charBr.x(), charBr.y(), BufferedImage.TYPE_INT_ARGB);
+            imgs[i].getGraphics().drawImage(textSprite, 0, 0, charBr.x(), charBr.y(), sx, sy, sx + charBr.x(), sy + charBr.y(), null);
+            Image img2 = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(imgs[i].getSource(), new MixerFilter(fg, bg)));
+            imgs[i].getGraphics().drawImage(img2, 0,0, null);
+            imgs[i] = toCompatibleImage(imgs[i]);
+        }
+        text.put(new ForeGroundBackGround(fg, bg), imgs);
+    }
+
     /**
      * Clear the entire screen to whatever the default background color is.
      * @return this for convenient chaining of method calls
      */
     public AsciiPanel clear() {
         return clear(' ', screenTL, screenBR, defaultForegroundColor, defaultBackgroundColor);
-    }
-
-    /**
-     * Clear the entire screen with the specified character and whatever the default foreground and background colors are.
-     * @param character  the character to write
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel clear(char character) {
-        return clear(character, screenTL, screenBR, defaultForegroundColor, defaultBackgroundColor);
-    }
-
-    /**
-     * Clear the entire screen with the specified character and whatever the specified foreground and background colors are.
-     * @param character  the character to write
-     * @param foreground the foreground color or null to use the default
-     * @param background the background color or null to use the default
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel clear(char character, Color foreground, Color background) {
-        return clear(character, screenTL, screenBR, foreground, background);
-    }
-
-    /**
-     * Clear the section of the screen with the specified character and whatever the default foreground and background colors are.
-     * @param character  the character to write
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel clear(char character, Point topLeft, Point bottomRight) {
-        return clear(character, topLeft, bottomRight, defaultForegroundColor, defaultBackgroundColor);
     }
 
     /**
@@ -413,16 +371,6 @@ public class AsciiPanel extends JPanel {
     }
 
     /**
-     * Write a character to the cursor's position.
-     * This updates the cursor's position.
-     * @param character  the character to write
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel write(char character) {
-        return write(character, cursor, defaultForegroundColor, defaultBackgroundColor);
-    }
-
-    /**
      * Write a character to the cursor's position with the specified foreground color.
      * This updates the cursor's position but not the default foreground color.
      * @param character  the character to write
@@ -431,39 +379,6 @@ public class AsciiPanel extends JPanel {
      */
     public AsciiPanel write(char character, Color foreground) {
         return write(character, cursor, foreground, defaultBackgroundColor);
-    }
-
-    /**
-     * Write a character to the cursor's position with the specified foreground and background colors.
-     * This updates the cursor's position but not the default foreground or background colors.
-     * @param character  the character to write
-     * @param foreground the foreground color or null to use the default
-     * @param background the background color or null to use the default
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel write(char character, Color foreground, Color background) {
-        return write(character, cursor, foreground, background);
-    }
-
-    /**
-     * Write a character to the specified position.
-     * This updates the cursor's position.
-     * @param character  the character to write
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel write(char character, Point position) {
-        return write(character, position, defaultForegroundColor, defaultBackgroundColor);
-    }
-
-    /**
-     * Write a character to the specified position with the specified foreground color.
-     * This updates the cursor's position but not the default foreground color.
-     * @param character  the character to write
-     * @param foreground the foreground color or null to use the default
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel write(char character, Point position, Color foreground) {
-        return write(character, position, foreground, defaultBackgroundColor);
     }
 
     /**
@@ -486,6 +401,24 @@ public class AsciiPanel extends JPanel {
         if (background == null) background = defaultBackgroundColor;
 
         backgroundChars[position.x()][position.y()] = character;
+        foregroundColors[position.x()][position.y()] = foreground;
+        backgroundColors[position.x()][position.y()] = background;
+        cursor= position.add(new Point(1,0));
+        return this;
+    }
+
+    private AsciiPanel writeTextChar(char character, Point position, Color foreground, Color background) {
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
+
+        if (!position.withinRect(this.screenTL, screenBR)) {
+            throw new IllegalArgumentException(String.format("WritePosition %d %d not within range of %d %d and %d %d",
+                    screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
+        }
+        if (foreground == null) foreground = defaultForegroundColor;
+        if (background == null) background = defaultBackgroundColor;
+
+        textChars[position.x()][position.y()] = character;
         foregroundColors[position.x()][position.y()] = foreground;
         backgroundColors[position.x()][position.y()] = background;
         cursor= position.add(new Point(1,0));
@@ -524,6 +457,24 @@ public class AsciiPanel extends JPanel {
         return this;
     }
 
+    private AsciiPanel writePopupTextChar(char character, Point position, Color fg, Color bg){
+        if (character < 0 || character >= GLYPH_SIZE)
+            throw new IllegalArgumentException("character " + character + " must be within range [0," + GLYPH_SIZE + "]." );
+
+        if (!position.withinRect(this.screenTL, screenBR)) {
+            throw new IllegalArgumentException(String.format("WritePosition %d %d not within range of %d %d and %d %d",
+                    position.x(), position.y(), screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
+        }
+        if (fg == null) fg = defaultForegroundColor;
+        if (bg == null) bg = defaultBackgroundColor;
+
+        popupText[position.x()][position.y()] = character;
+        foregroundColors[position.x()][position.y()] = fg;
+        backgroundColors[position.x()][position.y()] = bg;
+        cursor= position.add(new Point(1,0));
+        return this;
+    }
+
     /**
      * Write a string to the specified position with the specified foreground and background colors.
      * This updates the cursor's position but not the default foreground or background colors.
@@ -556,6 +507,39 @@ public class AsciiPanel extends JPanel {
         return this;
     }
 
+
+    /**
+     * Write a string to the specified position with the specified foreground and background colors.
+     * This updates the cursor's position but not the default foreground or background colors.
+     * @param string     the string to write
+     * @param foreground the foreground color or null to use the default
+     * @param background the background color or null to use the default
+     * @return this for convenient chaining of method calls
+     */
+    public AsciiPanel writePopupText(String string, Point position, Color foreground, Color background) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (position.x() + string.length() > screenBR.x())
+            throw new IllegalArgumentException("String too big to fit on terminal.  " );
+
+        if (!position.withinRect(this.screenTL, screenBR)) {
+            throw new IllegalArgumentException(String.format("Write start position %d %d not within range of %d %d and %d %d",
+                    position.x(), position.y(), screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
+        };
+
+        if (foreground == null)
+            foreground = defaultForegroundColor;
+
+        if (background == null)
+            background = defaultBackgroundColor;
+
+        for (int i = 0; i < string.length(); i++) {
+            writePopupTextChar(string.charAt(i), position.add(new Point(i,0)), foreground, background);
+        }
+        return this;
+    }
+
     public AsciiPanel writeTile(Tile tile, Point viewPort) {
         return write(tile.glyph(), viewPort, tile.colorFG(), tile.colorBG());
     }
@@ -563,60 +547,6 @@ public class AsciiPanel extends JPanel {
 
     public AsciiPanel writeDarkTile(Tile tile, Point viewPort, int amount) {
         return write(tile.glyph(), viewPort, ColorUtil.darken(tile.colorFG(), amount), ColorUtil.darken(tile.colorBG(), amount));
-    }
-
-    /**
-     * Write a string to the cursor's position.
-     * This updates the cursor's position.
-     * @param string     the string to write
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel write(String string) {
-        return write(string, cursor, defaultForegroundColor, defaultBackgroundColor);
-    }
-
-    /**
-     * Write a string to the cursor's position with the specified foreground color.
-     * This updates the cursor's position but not the default foreground color.
-     * @param string     the string to write
-     * @param foreground the foreground color or null to use the default
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel write(String string, Color foreground) {
-        return write(string, cursor, foreground, defaultBackgroundColor);
-    }
-
-    /**
-     * Write a string to the cursor's position with the specified foreground and background colors.
-     * This updates the cursor's position but not the default foreground or background colors.
-     * @param string     the string to write
-     * @param foreground the foreground color or null to use the default
-     * @param background the background color or null to use the default
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel write(String string, Color foreground, Color background) {
-        return write(string, cursor, foreground, background);
-    }
-
-    /**
-     * Write a string to the specified position.
-     * This updates the cursor's position.
-     * @param string     the string to write
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel write(String string, Point position) {
-        return write(string, position, defaultForegroundColor, defaultBackgroundColor);
-    }
-
-    /**
-     * Write a string to the specified position with the specified foreground color.
-     * This updates the cursor's position but not the default foreground color.
-     * @param string     the string to write
-     * @param foreground the foreground color or null to use the default
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel write(String string, Point position, Color foreground) {
-        return write(string, position, foreground, defaultBackgroundColor);
     }
 
     /**
@@ -652,6 +582,38 @@ public class AsciiPanel extends JPanel {
     }
 
     /**
+     * Write a string to the specified position with the specified foreground and background colors.
+     * This updates the cursor's position but not the default foreground or background colors.
+     * @param string     the string to write
+     * @param foreground the foreground color or null to use the default
+     * @param background the background color or null to use the default
+     * @return this for convenient chaining of method calls
+     */
+    public AsciiPanel writeText(String string, Point position, Color foreground, Color background) {
+        if (string == null)
+            throw new NullPointerException("string must not be null" );
+
+        if (position.x() + string.length() > screenBR.x())
+            throw new IllegalArgumentException("String too big to fit on terminal.  " );
+
+        if (!position.withinRect(this.screenTL, screenBR)) {
+            throw new IllegalArgumentException(String.format("Write start position %d %d not within range of %d %d and %d %d",
+                    position.x(), position.y(), screenTL.x(), screenTL.y(), screenBR.x(), screenBR.y()));
+        }
+
+        if (foreground == null)
+            foreground = defaultForegroundColor;
+
+        if (background == null)
+            background = defaultBackgroundColor;
+
+        for (int i = 0; i < string.length(); i++) {
+            writeTextChar(string.charAt(i), position.add(new Point(i, 0)), foreground, background);
+        }
+        return this;
+    }
+
+    /**
      * Write a string to the center of the panel at the specified y position.
      * This updates the cursor's position.
      * @param string     the string to write
@@ -664,42 +626,6 @@ public class AsciiPanel extends JPanel {
         return write(string, new Point(x,y), defaultForegroundColor, defaultBackgroundColor);
     }
 
-    /**
-     * Write a string to the center of the panel at the specified y position with the specified foreground color.
-     * This updates the cursor's position but not the default foreground color.
-     * @param string     the string to write
-     * @param y          the distance from the top to begin writing from
-     * @param foreground the foreground color or null to use the default
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel writeCenter(String string, int y, Color foreground) {
-        int x = (screenBR.x() - string.length()) / 2;
-        return write(string, new Point(x,y), foreground, defaultBackgroundColor);
-    }
-
-    /**
-     * Write a string to the center of the panel at the specified y position with the specified foreground and background colors.
-     * This updates the cursor's position but not the default foreground or background colors.
-     * @param string     the string to write
-     * @param y          the distance from the top to begin writing from
-     * @param foreground the foreground color or null to use the default
-     * @param background the background color or null to use the default
-     * @return this for convenient chaining of method calls
-     */
-    public AsciiPanel writeCenter(String string, int y, Color foreground, Color background) {
-        int x = (screenBR.x() - string.length()) / 2;
-        if (foreground == null)
-            foreground = defaultForegroundColor;
-
-        if (background == null)
-            background = defaultBackgroundColor;
-
-        for (int i = 0; i < string.length(); i++) {
-            write(string.charAt(i), new Point(x+1, y), foreground, background);
-        }
-        return this;
-    }
-    
     public void withEachTile(TileTransformer transformer){
 		withEachTile(screenTL, screenBR, transformer);
     }
@@ -728,6 +654,5 @@ public class AsciiPanel extends JPanel {
     public void highlight(Point mousePos, Color color) {
         this.mousePosition = mousePos;
         this.mouseColor = color;
-        this.mousePositionShow = mousePositionShow;
     }
 }

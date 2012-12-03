@@ -61,4 +61,7 @@ public class Player {
         followers.remove(creature);
     }
 
+    public List<Creature> getFollowers() {
+        return new ArrayList<Creature>(followers);
+    }
 }

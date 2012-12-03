@@ -4,6 +4,7 @@ import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.screens.component.Menu;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**
@@ -18,7 +19,7 @@ public class StartScreen implements Screen {
     public StartScreen(){
         startMenu = new Menu("Welcome to my game!", null, new String[]{"Start new game",
                                                                  "Load saved game",
-                                                                 "Exit to OS"}, AsciiPanel.yellow, AsciiPanel.black);
+                                                                 "Exit to OS"}, Color.YELLOW, Color.BLACK, Color.WHITE);
     }
 
 

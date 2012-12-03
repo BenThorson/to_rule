@@ -1,7 +1,6 @@
 package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
-import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.screens.component.ScrollList;
@@ -18,23 +17,22 @@ import java.util.List;
  */
 public class ItemDetailScreen {
 
-    private Screen previous;
     ScrollList list;
     List<Item> items;
     String title;
 
-    public ItemDetailScreen(Screen previous, List<Item> items, String title){
-        this.previous = previous;
+    public ItemDetailScreen(List<Item> items, String title){
         List<String> extractStrings = getItemNames(items);
         this.items = items;
-        list = new ScrollList(extractStrings, 15, Screen.SCREEN_HEIGHT-1, Color.YELLOW, Color.BLACK);
+        list = new ScrollList(extractStrings, 20, Screen.SCREEN_HEIGHT-1, Color.YELLOW, Color.BLACK, Color.WHITE);
         this.title = title;
     }
 
     private List<String> getItemNames(List<Item> inventory) {
         List<String> list = new ArrayList<String>();
         for (Item item: inventory){
-            list.add(item.getName());
+            String prefix = item.isEquipped() ? "*" : "";
+            list.add(prefix + item.getName());
         }
         return list;
     }
@@ -42,16 +40,16 @@ public class ItemDetailScreen {
     public void displayOutput(AsciiPanel terminal) {
 
         list.displayOutput(terminal, 0, 0);
-        Point detailsStart = new Point(17, 2);
-        terminal.writePopup(title, new Point(20, 0), Color.WHITE, Color.BLACK);
+        Point detailsStart = new Point(22, 2);
+        terminal.writePopupText(title, new Point(22, 0), Color.WHITE, Color.BLACK);
         int detailsRow = 1;
         Item item = items.get(list.getCurrentChoice());
 
-        terminal.writePopup("Item:    " + item.getName(), detailsStart.add(new Point(0,detailsRow++)), Color.WHITE, Color.BLACK);
-        terminal.writePopup("Price:   " + item.getPrice(), detailsStart.add(new Point(0,detailsRow++)), Color.WHITE, Color.BLACK);
-        terminal.writePopup("Weight:  " + item.getWeight(), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
+        terminal.writePopupText("Item:    " + item.getName(), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
+        terminal.writePopupText("Price:   " + item.getPrice(), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
+        terminal.writePopupText("Weight:  " + item.getWeight(), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
         for (String key : item.getAttributes().keySet()){
-            terminal.writePopup(key + ":  " + item.getAttributes().get(key), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
+            terminal.writePopupText(key + ":  " + item.getAttributes().get(key), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
         }
 
     }

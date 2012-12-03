@@ -37,8 +37,6 @@ public class World {
 
     private Region[][] regions;
 
-    List<Entity> items = new ArrayList<Entity>();
-    List<Creature> toRemove = new ArrayList<Creature>();
     private Player player;
 
     private List<Point> openDoors = new ArrayList<Point>();
@@ -241,10 +239,6 @@ public class World {
     public void update() {
         turnCounter++;
         EntityManager.getInstance().update();
-        for (Creature dead : toRemove){
-            EntityManager.getInstance().remove(dead);
-        }
-        toRemove.clear();
         List<Point> updated = new ArrayList<Point>();
         for (Point openDoor : openDoors){
             if (!isOccupied(openDoor)){
@@ -258,25 +252,6 @@ public class World {
 
     public Player getPlayer() {
         return player;
-    }
-
-    public List<Creature> getCreaturesInRange(Point p1, Point p2) {
-        return EntityManager.getInstance().getCreaturesInRange(p1, p2);
-    }
-
-    public void creatureDead(Creature creature){
-
-        toRemove.add(creature);
-        items.add(new Corpse(creature));
-    }
-
-    public Entity item(Point itemPos) {
-        for (Entity item : items){
-            if (item.position().equals(itemPos)){
-                return item;
-            }
-        }
-        return null;
     }
 
     public boolean isTravelable(Point point) {

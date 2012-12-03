@@ -1,5 +1,6 @@
 package com.bthorson.torule.item;
 
+import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.geom.Point;
@@ -24,11 +25,11 @@ public class Item extends Entity {
     private Creature ownedBy;
 
     public Item(){
-        super();
+        super(new Point(0,0), 0x5B, AsciiPanel.brown, "");
     }
 
     public Item(String name, int price, int weight, String type, String slotType, Map<String, Integer> attributes) {
-        super(new Point(0,0), '0', Color.WHITE, name);
+        super(new Point(0,0), 0x5B, AsciiPanel.brown, name);
         this.price = price;
         this.weight = weight;
         this.type = type;
@@ -89,4 +90,7 @@ public class Item extends Entity {
         return ownedBy != null;
     }
 
+    public void setPosition(Point position){
+        this.position = position;
+    }
 }

@@ -31,11 +31,11 @@ public class MessageScreen implements Screen{
     public void displayOutput(AsciiPanel terminal) {
         List<Message> msg = world.getPlayer().getCreature().getMessages();
         String border = ScreenUtil.solidLine(SCREEN_WIDTH, Tile.WALL_HORIZ.glyph());
-        terminal.write(border, new Point(0, yOffset), Color.WHITE, Color.BLUE);
+        terminal.write(border, new Point(0, yOffset), Color.WHITE, Color.BLACK);
 
         int size = Math.min(3, msg.size());
         for (int i = 0; i < size; i++){
-            terminal.write(msg.get(i).getMessage(), new Point(0, yOffset+ 1 +i));
+            terminal.writeText(msg.get(i).getMessage(), new Point(0, yOffset+ 1 +i), Color.WHITE, Color.BLACK);
         }
         msg.clear();
     }

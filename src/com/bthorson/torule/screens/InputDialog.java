@@ -22,11 +22,13 @@ public class InputDialog {
 
     private Color foreground;
     private Color background;
+    private Color textColor;
 
-    public InputDialog(String title, Color foreground, Color background) {
+    public InputDialog(String title, Color foreground, Color background, Color textColor) {
         this.title = title;
         this.foreground = foreground;
         this.background = background;
+        this.textColor = textColor;
 
         width = 20;
         height = 5;
@@ -38,9 +40,9 @@ public class InputDialog {
         Point pos = new com.bthorson.torule.geom.Point(x,y);
         int row = 1;
         ScreenUtil.makeRect(terminal, x, y, width, height, foreground, background, true);
-        terminal.writePopup(title, pos.add(new com.bthorson.torule.geom.Point(1,row++)), foreground, background);
+        terminal.writePopupText(title, pos.add(new com.bthorson.torule.geom.Point(1, row++)), textColor, background);
         terminal.writePopup(makeDivider(), pos.add(new Point(0,row++)), foreground, background);
-        terminal.writePopup(input.toString(), pos.add(new Point(1, row)), foreground, background);
+        terminal.writePopupText(input.toString(), pos.add(new Point(1, row)), textColor, background);
         terminal.writePopup((char) 27, pos.add(new Point(1 + input.length(), row++)), Color.GREEN, Color.BLACK);
 
     }
@@ -53,14 +55,6 @@ public class InputDialog {
         }
         sb.append((char)185);
         return sb.toString();
-    }
-
-    private Color highlightColor(Color foreground) {
-        int red = foreground.getRed() + 80 < 255 ? foreground.getRed() + 80 : 255;
-        int green = foreground.getGreen() + 80 < 255 ? foreground.getGreen() + 80 : 255;
-        int blue = foreground.getBlue() + 80 < 255 ? foreground.getBlue() + 80 : 255;
-
-        return new Color(red, green, blue);
     }
 
     public String respondToUserInput(KeyEvent key) {

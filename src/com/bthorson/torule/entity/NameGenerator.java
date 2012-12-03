@@ -23,7 +23,7 @@ public class NameGenerator {
 
     private NameGenerator() {
         try {
-            Scanner s = new Scanner(new File("resources/maleGivenName"));
+            Scanner s = new Scanner(new File("resources/maleGivenName.txt"));
             while (s.hasNext()){
                 names.add(s.next());
             }

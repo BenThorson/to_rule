@@ -18,6 +18,7 @@ import java.util.List;
 public class ScrollList {
 
     private List<String> items;
+    private Color textColor;
     private int firstDisplayed;
     private int lastDisplayed;
 
@@ -30,8 +31,9 @@ public class ScrollList {
 
     private int currentChoice;
 
-    public ScrollList(List<String> items, int width, int height, Color foreground, Color background){
+    public ScrollList(List<String> items, int width, int height, Color foreground, Color background, Color textColor){
         this.items = items;
+        this.textColor = textColor;
 
         this.width = width - 2;
         this.totalWidth = width;
@@ -55,7 +57,7 @@ public class ScrollList {
     public void displayOutput(AsciiPanel terminal, int x, int y) {
         Point pos = new Point(x,y);
         int row = 1;
-        ScreenUtil.makeRect(terminal, x, y, totalWidth, totalHeight, Color.WHITE, Color.BLACK, true);
+        ScreenUtil.makeRect(terminal, x, y, totalWidth, totalHeight, foreground, background, true);
         for (int i = firstDisplayed; i < lastDisplayed; i++){
 
             String toWrite = items.get(i);
@@ -63,10 +65,10 @@ public class ScrollList {
                 toWrite = toWrite.substring(0,width);
             }
             if (i == currentChoice){
-                terminal.writePopup(toWrite,
-                                    pos.add(new Point(1, row++)),foreground, AsciiPanel.red);
+                terminal.writePopupText(toWrite,
+                                        pos.add(new Point(1, row++)), textColor, AsciiPanel.red);
             } else {
-                terminal.writePopup(toWrite, pos.add(new Point(1, row++)), foreground, background);
+                terminal.writePopupText(toWrite, pos.add(new Point(1, row++)), textColor, background);
             }
         }
         if (firstDisplayed > 0){

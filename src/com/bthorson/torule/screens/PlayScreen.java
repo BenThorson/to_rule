@@ -1,8 +1,10 @@
 package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
+import com.bthorson.torule.entity.Corpse;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
@@ -60,9 +62,14 @@ public class PlayScreen implements Screen {
                     player.explore(worldPoint);
                     terminal.writeTile(world.tile(worldPoint), viewPort);
 
-                    Entity item = world.item(worldPoint);
+                    Entity item = EntityManager.getInstance().item(worldPoint);
                     if (item != null){
-                        terminal.writeHumanoid(item.glyph(), item.position().subtract(offset), world.tile(worldPoint));
+                        if (item instanceof Corpse){
+                            terminal.writeHumanoid(item.glyph(), item.position().subtract(offset), world.tile(worldPoint));
+                        } else {
+                            terminal.write((char)item.glyph(), item.position().subtract(offset),
+                                           item.color(), world.tile(worldPoint).colorBG());
+                        }
                     }
 
                     Creature creature = world.creature(worldPoint);
@@ -97,6 +104,7 @@ public class PlayScreen implements Screen {
             case KeyEvent.VK_NUMPAD9: player.getCreature().move(Direction.NORTHEAST.point()); break;
             case KeyEvent.VK_NUMPAD1: player.getCreature().move(Direction.SOUTHWEST.point()); break;
             case KeyEvent.VK_NUMPAD3: player.getCreature().move(Direction.SOUTHEAST.point()); break;
+            case KeyEvent.VK_I: return new InventoryManagementScreen(this);
 //            case KeyEvent.VK_PERIOD: player.getCreature().getGroup().rotateTest(); break;
             case KeyEvent.VK_T: return new ConversationScreen(this, player.getCreature().position().subtract(getOffset()));
             default:
