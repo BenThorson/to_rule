@@ -28,9 +28,13 @@ public enum BuildingInventoryFactory {
     private void load() {
         try {
             String armor = FileUtils.readFileToString(new File("resources/merchant/armorMerchant.json"));
+            String weapon = FileUtils.readFileToString(new File("resources/merchant/weaponMerchant.json"));
             JsonObject jo = new JsonParser().parse(armor).getAsJsonObject();
+            JsonObject jWeapon = new JsonParser().parse(weapon).getAsJsonObject();
             JsonArray armorItems = jo.get("inventory").getAsJsonArray();
+            JsonArray weaponItems = jWeapon.get("inventory").getAsJsonArray();
             catalog.put(BuildingType.ARMOR_SHOP, armorItems);
+            catalog.put(BuildingType.WEAPON_SHOP, weaponItems);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

@@ -13,7 +13,6 @@ import com.bthorson.torule.item.Item;
 import com.bthorson.torule.item.ItemType;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
-import com.bthorson.torule.screens.component.*;
 import com.bthorson.torule.town.Building;
 
 import java.awt.*;
@@ -308,6 +307,16 @@ public class Creature extends Entity implements AiControllable {
     }
 
     private void dropLoot() {
+        Random random = new Random();
+        for (Item item: inventory){
+            if (random.nextBoolean()){
+                //puts it on the ground
+                dropItem(item);
+            } else {
+                //destroys it
+                removeItem(item);
+            }
+        }
         List<Item> lootItems = CreatureFactory.INSTANCE.getLootDropsForCreature(templateName);
         for (Item item : lootItems){
             item.setPosition(position);
@@ -327,7 +336,7 @@ public class Creature extends Entity implements AiControllable {
                 }
             }
         }
-        double rawValue = new Random().nextInt(weaponDmg - 1) + 1;
+        double rawValue = weaponDmg == 1 ? 1 : new Random().nextInt(weaponDmg - 1) + 1;
 
         double multiplier = (double)strength * .1 + 1;
         return other.mitigateDamage(rawValue * multiplier);
@@ -594,5 +603,73 @@ public class Creature extends Entity implements AiControllable {
 
     public int getCorpseGlyph() {
         return corpseGlyph;
+    }
+
+    @Override
+    public List<String> getDetailedInfo() {
+        List<String> info = new ArrayList<String>();
+        info.add("This is " + getName());
+        int armoredWorth = getEquippedItemWorth();
+        String armoredModifier = "";
+        if (armoredWorth < 100){
+            armoredModifier = "barely armed";
+        } else if (armoredWorth < 500){
+            armoredModifier = "lightly armed";
+        } else if (armoredWorth < 1000){
+            armoredModifier = "moderately armed";
+        } else {
+            armoredModifier = "heavily armed";
+        }
+        info.add(getName() + " looks " + armoredModifier + ",");
+        String strengthDesc = "";
+        if (strength < 4) {
+            strengthDesc = "weak";
+        } else if (strength < 7){
+            strengthDesc = "of average strength";
+        } else {
+            strengthDesc = "pretty strong";
+        }
+        info.add(" looks like he is " + strengthDesc + ",");
+        String dexterityDesc = "";
+        if (dexterity < 4) {
+            dexterityDesc = "clumsy";
+        } else if (dexterity < 7){
+            dexterityDesc = "of average coordination";
+        } else {
+            dexterityDesc = "pretty swift";
+        }
+        info.add(" looks like he is " + dexterityDesc + ",");
+        String constitutionDesc = "";
+        if (constitution < 4) {
+            constitutionDesc = "fragile";
+        } else if (constitution < 7){
+            constitutionDesc = "of average sturdiness";
+        } else {
+            constitutionDesc = "pretty robust";
+        }
+        info.add(" looks like he is " + constitutionDesc + ",");
+
+        String hitpointDesc = "";
+        if (maxHitpoints < 20) {
+            hitpointDesc = "flimsy";
+        } else if (maxHitpoints < 35){
+            hitpointDesc = "can take a hit";
+        } else {
+            hitpointDesc = "is a tank";
+        }
+        info.add(" looks like he is " + hitpointDesc + ".");
+        return info;
+    }
+
+    private int getEquippedItemWorth() {
+        int worth = 0;
+        for (String key : equipmentSlots.keySet()){
+            EquipmentSlot slot = equipmentSlots.get(key);
+            Item item = slot.getItem();
+            if (item != null){
+                worth += item.getPrice();
+            }
+        }
+        return worth;
     }
 }

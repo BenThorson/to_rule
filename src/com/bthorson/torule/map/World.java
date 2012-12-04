@@ -5,10 +5,10 @@ import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
-import com.bthorson.torule.item.Item;
 import com.bthorson.torule.player.Player;
 import com.bthorson.torule.town.Town;
 import com.bthorson.torule.town.TownBuilder;
+import com.bthorson.torule.town.WealthLevel;
 import com.bthorson.torule.worldgen.WorldGenParams;
 import org.jgrapht.alg.KruskalMinimumSpanningTree;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -16,10 +16,7 @@ import org.jgrapht.graph.SimpleWeightedGraph;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.bthorson.torule.map.MapConstants.*;
 
@@ -39,10 +36,9 @@ public class World {
     private Region[][] regions;
 
     private Player player;
+    private Point playerHomeLocal;
 
     private List<Point> openDoors = new ArrayList<Point>();
-
-    private List<Town> towns = new ArrayList<Town>();
 
     private Faction aggressiveAnimalFaction = new Faction("aggressiveAnimal");
     private Faction passiveAnimalFaction = new Faction("passiveAnimal");
@@ -96,6 +92,7 @@ public class World {
 
             if (townPoints.isEmpty()) {
                 townPoints.add(candidate);
+                playerHomeLocal = candidate;
                 continue;
             }
 
@@ -109,14 +106,28 @@ public class World {
         }
 
         for (Point city : townPoints) {
-            towns.add(TownBuilder.buildPredefinedTown(getLocal(city), city));
+            Random random = new Random();
+            int dink = random.nextInt(3);
+            WealthLevel level = null;
+            switch (dink){
+                case 0:
+                    level = WealthLevel.POOR;
+                    break;
+                case 1:
+                    level = WealthLevel.AVERAGE;
+                    break;
+                case 2:
+                    level = WealthLevel.PROSPERING;
+                    break;
+            }
+            Town town = TownBuilder.buildPredefinedTown(getLocal(city), city, city.equals(playerHomeLocal) ? WealthLevel.POOR : level);
+            EntityManager.getInstance().addTown(city, town);
+
+            town.getLocal().setType(LocalType.TOWN);
         }
 
         getMSTPath(townPoints);
 
-        for (Town town : towns){
-            town.getLocal().setType(LocalType.TOWN);
-        }
     }
 
     private void getMSTPath(Set<Point> townPoints) {
@@ -173,7 +184,7 @@ public class World {
 
     private void buildConnectingRoad(Direction lastDirection, Direction cursorDirection, Point cursor) {
         Local local = getLocal(cursor);
-        TownBuilder builder = new TownBuilder(local);
+        TownBuilder builder = new TownBuilder(local, WealthLevel.POOR);
         builder.buildRoad(4, LOCAL_SIZE_X / 2 - 2, LOCAL_SIZE_Y / 2, LOCAL_SIZE_X / 2 + 2, LOCAL_SIZE_Y);
 
         if (lastDirection != null){
@@ -237,7 +248,7 @@ public class World {
 
 
     private void setupFactions() {
-        for (Town town : towns){
+        for (Town town : EntityManager.getInstance().getTowns()){
             aggressiveAnimalFaction.addEnemyFaction(town.getFaction());
             town.getFaction().addEnemyFaction(aggressiveAnimalFaction);
             town.getFaction().addEnemyFaction(goblinFaction);
@@ -275,7 +286,7 @@ public class World {
     }
 
     public void createPlayer(String playerName){
-        Town town = towns.get(0);
+        Town town = EntityManager.getInstance().town(playerHomeLocal);
         Point placement = town.getRegionalPosition().multiply(new Point(MapConstants.LOCAL_SIZE_X, MapConstants.LOCAL_SIZE_Y));
         player = new Player(CreatureFactory.INSTANCE.createCreature("player", placement.add(new Point(50, 50))));
         player.getCreature().setFaction(town.getFaction());

@@ -19,10 +19,11 @@ public class TownBuilder {
     private Local toBuildOn;
     private Town town;
 
-    public TownBuilder(Local toBuildOn) {
+    public TownBuilder(Local toBuildOn, WealthLevel wealthLevel) {
         this.toBuildOn = toBuildOn;
         this.town = new Town();
         town.setLocal(toBuildOn);
+        town.setWealthLevel(wealthLevel);
     }
 
     public TownBuilder buildTownSquare(int size) {
@@ -65,7 +66,7 @@ public class TownBuilder {
             shopOwner.setAi(new WanderAI(shopOwner,
                                          b.getNwCorner().add(Direction.SOUTHEAST.point()),
                                          b.getSeCorner().add(Direction.NORTHWEST.point())));
-            BuildingInventoryFactory.INSTANCE.createItemsForShop(b, WealthLevel.POOR);
+            BuildingInventoryFactory.INSTANCE.createItemsForShop(b, town.getWealthLevel());
             shopOwner.addOwnedProperty("shop", b);
             b.setOwner(shopOwner);
         }
@@ -141,8 +142,8 @@ public class TownBuilder {
         return town;
     }
 
-    public static Town buildPredefinedTown(Local local, Point localPoint) {
-        return new TownBuilder(local)
+    public static Town buildPredefinedTown(Local local, Point localPoint, WealthLevel wealthLevel) {
+        return new TownBuilder(local, wealthLevel)
                 .buildTownSquare(26)
                 .buildRoad(4, 0, MapConstants.LOCAL_SIZE_Y / 2, MapConstants.LOCAL_SIZE_X, MapConstants.LOCAL_SIZE_Y / 2)
                 .buildRoad(4, MapConstants.LOCAL_SIZE_X / 2, 0, MapConstants.LOCAL_SIZE_X / 2, MapConstants.LOCAL_SIZE_Y)

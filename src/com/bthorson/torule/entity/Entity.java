@@ -5,6 +5,7 @@ import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.World;
 
 import java.awt.*;
+import java.util.List;
 
 
 /**
@@ -12,7 +13,7 @@ import java.awt.*;
  * Date: 9/7/12
  * Time: 12:21 PM
  */
-public class Entity {
+public abstract class Entity {
 
     private static int idGen;
     private String name;
@@ -60,6 +61,8 @@ public class Entity {
         this.color = color;
         this.name = name;
     }
+
+    public abstract List<String> getDetailedInfo();
 
     public void setGlyph(int glyph) {
         this.glyph = glyph;

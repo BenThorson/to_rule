@@ -1,6 +1,9 @@
 package com.bthorson.torule.entity;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: benthorson
@@ -11,5 +14,10 @@ package com.bthorson.torule.entity;
 public class Corpse extends Entity {
     public Corpse(Creature creature) {
         super(creature.position(), creature.glyph(), creature.color(), creature.getName());
+    }
+
+    @Override
+    public List<String> getDetailedInfo() {
+        return Arrays.asList("This is " + getName() + "'s corpse.");
     }
 }

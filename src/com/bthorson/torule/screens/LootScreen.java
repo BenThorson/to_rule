@@ -26,7 +26,7 @@ public class LootScreen implements Screen {
     public LootScreen(Screen previous, List<Item> items){
         this.previous = previous;
         this.items = items;
-        itemsToLoot = new Menu("Pickup Items", null, makeChoiceArray(items), Color.YELLOW, Color.BLACK, Color.WHITE);
+        itemsToLoot = new Menu("Pickup Items", (String)null, makeChoiceArray(items), Color.YELLOW, Color.BLACK, Color.WHITE);
     }
 
     private String[] makeChoiceArray(List<Item> items) {

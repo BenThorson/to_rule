@@ -18,6 +18,7 @@ public class Town {
 
     private List<Building> buildings = new ArrayList<Building>();
     private List<Creature> citizens = new ArrayList<Creature>();
+    private WealthLevel wealthLevel;
     private Point regionalPosition;
     private Faction faction;
     private String name;
@@ -64,5 +65,17 @@ public class Town {
 
     public void setLocal(Local local) {
         this.local = local;
+    }
+
+    public WealthLevel getWealthLevel() {
+        return wealthLevel;
+    }
+
+    public void setWealthLevel(WealthLevel wealthLevel) {
+        this.wealthLevel = wealthLevel;
+    }
+
+    public List<Building> getBuildings() {
+        return new ArrayList<Building>(buildings);
     }
 }

@@ -2,10 +2,16 @@ package com.bthorson.torule.entity;
 
 import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.item.Item;
+import com.bthorson.torule.map.MapConstants;
+import com.bthorson.torule.town.Building;
+import com.bthorson.torule.town.Town;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: ben
@@ -16,6 +22,7 @@ public class EntityManager {
 
     private List<Creature> nonGroupedCreatures;
     private List<Entity> freeItems;
+    private Map<Point, Town> towns;
     private List<Group> groups;
     private List<Group> groupToRemove;
     List<Creature> toRemove;
@@ -34,6 +41,7 @@ public class EntityManager {
         groups = new ArrayList<Group>();
         freeItems = new ArrayList<Entity>();
         toRemove = new ArrayList<Creature>();
+        towns = new HashMap<Point, Town>();
     }
 
     public static EntityManager getInstance(){
@@ -152,5 +160,34 @@ public class EntityManager {
 
     public void removeItem(Item item) {
         freeItems.remove(item);
+    }
+
+    public List<Entity> getAllEntites(Point point) {
+        List<Entity> entities = new ArrayList<Entity>();
+        Creature creature = creatureAt(point);
+        if (creature != null){
+            entities.add(creatureAt(point));
+        }
+        entities.addAll(item(point));
+        for (Building building : town(point.divide(MapConstants.LOCAL_SIZE_POINT)).getBuildings()){
+            if (point.withinRect(building.getNwCorner(), building.getSeCorner().add(new Point(1,1)))){
+                entities.add(building);
+                break;
+            }
+        }
+        return entities;
+
+    }
+
+    public void addTown(Point localPosition, Town town) {
+        towns.put(localPosition, town);
+    }
+
+    public Town town(Point pointInLocal){
+        return towns.get(pointInLocal);
+    }
+
+    public List<Town> getTowns() {
+        return new ArrayList<Town>(towns.values());
     }
 }

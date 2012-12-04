@@ -78,12 +78,8 @@ public class PlayerSellScreen implements Screen {
     private void prepareTransaction(int itemNum) {
         selectedItem = player.getInventory().get(itemNum);
         sellPrice = selectedItem.getPrice() / 3;
-        if (World.getInstance().getPlayer().getCreature().getGold() >= selectedItem.getPrice()){
-            confirmation = new com.bthorson.torule.screens.component.Menu("Confirm Sale", "Sell " + selectedItem.getName() + " for " + sellPrice + " gold?",
-                                    new String[]{"Yes", "No"}, Color.YELLOW, Color.BLACK, Color.WHITE);
-
-        }
-
+        confirmation = new com.bthorson.torule.screens.component.Menu("Confirm Sale", "Sell " + selectedItem.getName() + " for " + sellPrice + " gold?",
+                                new String[]{"Yes", "No"}, Color.YELLOW, Color.BLACK, Color.WHITE);
     }
 
     @Override

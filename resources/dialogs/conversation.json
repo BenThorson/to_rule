@@ -17,13 +17,16 @@
                                 "action":"joinPlayer"
                             },
                             {
-                                "id":"recruit.1.response.yesButCost",
-                                "text":"I will join for %d gold.",
-                                "check":"determineJoinArmyForFee"
+                                "id":"recruit.1.response.noChange",
+                                "text":"I've already told you."
                             },
                             {
                                 "id":"recruit.1.response.no",
-                                "text":"No, because %s"
+                                "text":"No, not right now."
+                            },
+                            {
+                                "id":"recruit.1.response.duh",
+                                "text":"I already follow you."
                             }
 
                         ]
@@ -112,6 +115,13 @@
             "introduction":{
                 "id":"intro.1",
                 "text":"Bark Bark!"
+            }
+        },
+        {
+            "profession":"mob",
+            "introduction":{
+                "id":"intro.1",
+                "text":"(It's not talking...)"
             }
         }
     ]

@@ -4,7 +4,10 @@ import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,16 +18,26 @@ import java.util.Random;
  */
 public class RecruitDetermine implements Determiner {
 
+    private static final int REASK_TIME = 1000;
 
+    private final Map<Creature, Integer> haveAsked = new HashMap<Creature, Integer>();
 
     @Override
     public int determine(Creature creature) {
+        if (haveAsked.containsKey(creature) && haveAsked.get(creature) + REASK_TIME > World.getInstance().getTurnCounter()){
+            return 1;
+        }
+        if (World.getInstance().getPlayer().getFollowers().contains(creature)){
+            return 3;
+        }
         Random random = new Random();
         int value = random.nextInt(10) + World.getInstance().getPlayer().getFame();
         if (value > 7){
-            return 0;
+            value = 0;
         } else {
-            return 2;
+            value = 2;
         }
+        haveAsked.put(creature, REASK_TIME);
+        return value;
     }
 }

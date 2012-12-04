@@ -4,6 +4,7 @@ import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.World;
+import com.bthorson.torule.screens.component.Menu;
 import com.bthorson.torule.town.Building;
 
 import java.awt.*;
@@ -19,9 +20,9 @@ public class PlayerBuyScreen implements Screen {
     private ItemDetailScreen itemDetailScreen;
     private Building shop;
     private Screen previous;
-    private com.bthorson.torule.screens.component.Menu confirmation;
+    private Menu confirmation;
     private Item selectedItem;
-    private com.bthorson.torule.screens.component.Menu noAfford = new com.bthorson.torule.screens.component.Menu("Cannot afford", null, new String[]{"Okay"}, Color.YELLOW, Color.BLACK, Color.WHITE);
+    private Menu noAfford = new Menu("Cannot afford", (String)null, new String[]{"Okay"}, Color.YELLOW, Color.BLACK, Color.WHITE);
     private boolean showNoAfford = false;
 
     public PlayerBuyScreen(ConversationScreen previous, Building shop) {
@@ -35,10 +36,10 @@ public class PlayerBuyScreen implements Screen {
     public void displayOutput(AsciiPanel terminal) {
         itemDetailScreen.displayOutput(terminal);
         if (showNoAfford){
-            noAfford.displayOutput(terminal, 20, 20);
+            noAfford.displayOutput(terminal, 20,20);
         }
         if (confirmation != null){
-            confirmation.displayOutput(terminal, 20, 20);
+            confirmation.displayOutput(terminal, 15, 15);
         }
     }
 
@@ -85,7 +86,7 @@ public class PlayerBuyScreen implements Screen {
     private void prepareTransaction(int itemNum) {
         selectedItem = shop.getInventory().get(itemNum);
         if (World.getInstance().getPlayer().getCreature().getGold() >= selectedItem.getPrice()){
-            confirmation = new com.bthorson.torule.screens.component.Menu("Confirm Purchase", "Purchase " + selectedItem.getName() + " for " + selectedItem.getPrice() + " gold?",
+            confirmation = new Menu("Confirm Purchase", "Purchase " + selectedItem.getName() + " for " + selectedItem.getPrice() + " gold?",
                                     new String[]{"Yes", "No"}, Color.YELLOW, Color.BLACK, Color.WHITE);
 
         } else {

@@ -1,22 +1,162 @@
 {
     "inventory":[
         {
-            "wealthLevel":"poor",
+            "wealthLevel":"POOR",
             "inventory":[
                 {
                     "type":"ARMOR",
                     "refId":"cloth.chest.1",
-                    "quantity":20
+                    "quantity":15
                 },
                 {
                     "type":"ARMOR",
                     "refId":"leather.chest.1",
-                    "quantity":20
+                    "quantity":10
                 },
                 {
                     "type":"ARMOR",
                     "refId":"leather.chest.2",
                     "quantity":5
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"cloth.helm.1",
+                    "quantity":15
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.helm.1",
+                    "quantity":10
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.helm.2",
+                    "quantity":5
+                },
+                {
+                    "type":"SHIELD",
+                    "refId":"wood.shield.1",
+                    "quantity":20
+                },
+                {
+                    "type":"SHIELD",
+                    "refId":"wood.shield.2",
+                    "quantity":5
+                }
+            ]
+        },
+        {
+            "wealthLevel":"AVERAGE",
+            "inventory":[
+                {
+                    "type":"ARMOR",
+                    "refId":"cloth.chest.1",
+                    "quantity":5
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.chest.1",
+                    "quantity":10
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.chest.2",
+                    "quantity":10
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"metal.chest.1",
+                    "quantity":5
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"cloth.helm.1",
+                    "quantity":5
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.helm.1",
+                    "quantity":10
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.helm.2",
+                    "quantity":10
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"metal.helm.1",
+                    "quantity":5
+                },
+                {
+                    "type":"SHIELD",
+                    "refId":"wood.shield.1",
+                    "quantity":10
+                },
+                {
+                    "type":"SHIELD",
+                    "refId":"wood.shield.2",
+                    "quantity":10
+                }
+            ]
+        },
+        {
+            "wealthLevel":"PROSPEROUS",
+            "inventory":[
+                {
+                    "type":"ARMOR",
+                    "refId":"cloth.chest.1",
+                    "quantity":5
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.chest.1",
+                    "quantity":5
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.chest.2",
+                    "quantity":10
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"metal.chest.1",
+                    "quantity":15
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"cloth.helm.1",
+                    "quantity":5
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.helm.1",
+                    "quantity":5
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"leather.helm.2",
+                    "quantity":10
+                },
+                {
+                    "type":"ARMOR",
+                    "refId":"metal.helm.1",
+                    "quantity":15
+                },
+                {
+                    "type":"SHIELD",
+                    "refId":"wood.shield.1",
+                    "quantity":10
+                },
+                {
+                    "type":"SHIELD",
+                    "refId":"wood.shield.2",
+                    "quantity":10
+                },
+                {
+                    "type":"SHIELD",
+                    "refId":"wood.shield.3",
+                    "quantity":10
                 }
             ]
         }

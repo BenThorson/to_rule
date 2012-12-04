@@ -38,12 +38,24 @@ public class Menu {
         this.textColor = textColor;
 
         currentChoice = 0;
+        splitDetails(additionalDetails);
 
-        init(additionalDetails);
+        init();
     }
 
-    private void init(String additionalDetails) {
-        splitDetails(additionalDetails);
+    public Menu(String title, List<String> detailedInfo, String[] choices, Color foreground, Color background, Color textColor) {
+        this.title = title;
+        this.splitDetails = detailedInfo;
+        this.choices = choices;
+        this.foreground = foreground;
+        this.background = background;
+        this.textColor = textColor;
+
+        currentChoice = 0;
+        init();
+    }
+
+    private void init() {
 
         if (splitDetails.size() > 0){
             height = choices.length + splitDetails.size() + 4;

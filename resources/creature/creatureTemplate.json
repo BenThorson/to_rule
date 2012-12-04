@@ -12,7 +12,7 @@
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1",
-                "steel.sword.3",
+                "iron.sword.1",
                 "wood.shield.1"
             ],
             "itemlessAttack":[
@@ -29,7 +29,7 @@
             "creatureType":"human",
             "startingGold":10,
             "profession":"VILLAGER",
-            "hitPoints":20,
+            "hitPoints":35,
             "image":"H_PEASANT",
             "corpseImage":"H_SKELETON",
             "innateArmor":"1",

@@ -44,14 +44,9 @@ public class ItemDetailScreen {
         terminal.writePopupText(title, new Point(22, 0), Color.WHITE, Color.BLACK);
         int detailsRow = 1;
         Item item = items.get(list.getCurrentChoice());
-
-        terminal.writePopupText("Item:    " + item.getName(), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
-        terminal.writePopupText("Price:   " + item.getPrice(), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
-        terminal.writePopupText("Weight:  " + item.getWeight(), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
-        if (item.getAttributes() != null) {
-            for (String key : item.getAttributes().keySet()){
-                terminal.writePopupText(key + ":  " + item.getAttributes().get(key), detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
-            }
+        List<String> details = item.getDetailedInfo();
+        for (String detail : details){
+            terminal.writePopupText(detail, detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
         }
     }
 

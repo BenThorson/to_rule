@@ -7,7 +7,8 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
 
 import java.awt.*;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 /**
  * User: Ben Thorson
@@ -92,5 +93,19 @@ public class Item extends Entity {
 
     public void setPosition(Point position){
         this.position = position;
+    }
+
+    @Override
+    public List<String> getDetailedInfo() {
+        List<String> toRet = new ArrayList<String>();
+        toRet.add("Item:   " + getName());
+        toRet.add("Price:  " + getPrice());
+        toRet.add("Weight: " + getWeight());
+        if (attributes != null){
+            for (String key : getAttributes().keySet()){
+                toRet.add(key + ":  " + attributes.get(key));
+            }
+        }
+        return toRet;
     }
 }

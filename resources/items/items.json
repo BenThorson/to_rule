@@ -117,6 +117,19 @@
         },
 
         {
+            "itemId":"wood.shield.3",
+            "type":"SHIELD",
+            "slotType":"shield",
+            "name":"wooden tower shield",
+            "price":400,
+            "weight":45,
+            "attributes":{
+                "Armor Class":12,
+                "block chance":6
+            }
+        },
+
+        {
             "itemId":"iron.sword.1",
             "type":"WEAPON",
             "slotType":"weapon",
