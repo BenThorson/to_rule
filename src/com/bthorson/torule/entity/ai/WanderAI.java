@@ -6,6 +6,9 @@ import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.MapConstants;
 import com.bthorson.torule.map.World;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.Random;
 
@@ -28,7 +31,7 @@ public class WanderAI extends CreatureAI {
     public CreatureAI execute() {
 
         if (self.position().divide(MapConstants.LOCAL_SIZE_POINT).equals(
-                World.getInstance().getPlayer().getCreature().position().divide(MapConstants.LOCAL_SIZE_POINT))){
+                World.getInstance().getPlayer().position().divide(MapConstants.LOCAL_SIZE_POINT))){
             Creature toAggro = getTarget();
             if (toAggro != null){
                 AggroAI aggroAI = new AggroAI(self, toAggro);
@@ -69,5 +72,16 @@ public class WanderAI extends CreatureAI {
     @Override
     public void interact(Entity entity) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public JsonElement serialize() {
+        Gson gson = new Gson();
+        JsonObject obj = new JsonObject();
+        obj.addProperty("name", getClass().getSimpleName());
+        obj.addProperty("self", ((Entity)self).id);
+        obj.add("nwBound", gson.toJsonTree(nwBound));
+        obj.add("seBound", gson.toJsonTree(seBound));
+        return obj;
     }
 }

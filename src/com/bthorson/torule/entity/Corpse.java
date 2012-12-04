@@ -1,6 +1,10 @@
 package com.bthorson.torule.entity;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +15,7 @@ import java.util.List;
  * Time: 9:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Corpse extends Entity {
+public class Corpse extends PhysicalEntity {
     public Corpse(Creature creature) {
         super(creature.position(), creature.glyph(), creature.color(), creature.getName());
     }

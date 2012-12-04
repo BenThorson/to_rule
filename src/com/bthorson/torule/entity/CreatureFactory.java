@@ -93,7 +93,7 @@ public enum CreatureFactory {
             name = template.get("name").getAsString();
         }
 
-        Creature creature = new Creature.CreatureBuilder()
+        Creature.CreatureBuilder builder = new Creature.CreatureBuilder()
                 .position(pos)
                 .name(name)
                 .templateName(templateName)
@@ -105,8 +105,14 @@ public enum CreatureFactory {
                 .inventory(equipment)
                 .itemlessAttackValues(itemlessAttack)
                 .corpseGlyph(CreatureImage.valueOf(template.get("corpseImage").getAsString()).num())
-                .innateArmor(template.get("innateArmor").getAsInt())
-                .build();
+                .innateArmor(template.get("innateArmor").getAsInt());
+
+        Creature creature;
+        if (templateName.equalsIgnoreCase("player")){
+            creature = new Player(builder);
+        } else {
+            creature = builder.build();
+        }
 
         EntityManager.getInstance().addCreature(creature);
         creature.optimizeEquippedItems();

@@ -22,7 +22,7 @@ public class PlayerSellScreen implements Screen {
     private Menu confirmation;
     private Item selectedItem;
     private int sellPrice;
-    private Creature player = World.getInstance().getPlayer().getCreature();
+    private Creature player = World.getInstance().getPlayer();
 
     public PlayerSellScreen(ConversationScreen previous, Building shop) {
         this.previous = previous;
@@ -70,7 +70,7 @@ public class PlayerSellScreen implements Screen {
     }
 
     private void completeTransaction() {
-        World.getInstance().getPlayer().getCreature().sellItem(selectedItem, sellPrice);
+        World.getInstance().getPlayer().sellItem(selectedItem, sellPrice);
         selectedItem.setOwnedBy(shop.getOwner());
         shop.addItem(selectedItem);
     }

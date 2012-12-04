@@ -126,4 +126,13 @@ public enum Tile {
     public int moveCost() {
         return moveCost;
     }
+
+    public static Tile valueOf(int i) {
+        for (Tile tile : values()){
+            if (tile.ordinal() == i){
+                return tile;
+            }
+        }
+        return null;
+    }
 }

@@ -37,14 +37,14 @@ public class StatusScreen implements Screen {
         }
         int row = 0;
         terminal.writeText("Turn " + World.getInstance().getTurnCounter(), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
-        terminal.writeText(String.format("%d/%d HP", player.getCreature().getHitpoints(),
-                                         player.getCreature().getMaxHitpoints()), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
-        terminal.writeText(String.format("%d gold", player.getCreature().getGold()), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
+        terminal.writeText(String.format("%d/%d HP", player.getHitpoints(),
+                                         player.getMaxHitpoints()), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
+        terminal.writeText(String.format("%d gold", player.getGold()), new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
         row++;
         terminal.writeText("Equipped Items", new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
-        for (String key : player.getCreature().getEquipmentSlots().keySet()){
+        for (String key : player.getEquipmentSlots().keySet()){
             terminal.writeText(key + ":", new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
-            Item item = player.getCreature().getEquipmentSlots().get(key).getItem();
+            Item item = player.getEquipmentSlots().get(key).getItem();
             String itemName = (item == null) ? "<none>" : item.getName();
             if (itemName.length() > maxStringLength){
                 itemName = itemName.substring(0, maxStringLength);

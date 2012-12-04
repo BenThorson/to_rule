@@ -1,6 +1,8 @@
 package com.bthorson.torule.entity;
 
 import com.bthorson.torule.item.Item;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * User: Ben Thorson
@@ -44,5 +46,16 @@ public class EquipmentSlot {
 
     public void setSlotName(String slotName) {
         this.slotName = slotName;
+    }
+
+    public JsonElement serialize(){
+        JsonObject obj = new JsonObject();
+        obj.addProperty("slotName", slotName);
+        obj.addProperty("itemType", itemType);
+        obj.addProperty("itemPurpose", itemPurpose);
+        if (item != null){
+            obj.addProperty("item", item.id);
+        }
+        return obj;
     }
 }

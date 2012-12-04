@@ -1,5 +1,9 @@
 package com.bthorson.torule.entity;
 
+import com.bthorson.torule.persist.SerializeUtils;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,15 +12,14 @@ import java.util.Set;
  * Date: 9/12/12
  * Time: 4:39 PM
  */
-public class Faction {
+public class Faction extends Entity{
     public static final Faction TEST = new Faction("test");
 
     private Set<Faction> enemies;
     private Set<Faction> allies;
-    private String name;
 
     public Faction(String name){
-        this.name = name;
+        super(name);
         enemies = new HashSet<Faction>();
         allies = new HashSet<Faction>();
     }
@@ -35,5 +38,13 @@ public class Faction {
 
     public void addAllyFaction(Faction ally){
         allies.add(ally);
+    }
+
+    @Override
+    public JsonElement serialize() {
+        JsonObject obj = super.serialize().getAsJsonObject();
+        SerializeUtils.serializeRefCollection(enemies, obj, "enemies");
+        SerializeUtils.serializeRefCollection(allies, obj, "allies");
+        return obj;
     }
 }

@@ -5,6 +5,10 @@ import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.World;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,13 +39,13 @@ public class GroupFollowAI extends CreatureAI {
             return this;
         }
         if (!self.getTarget().equals(lastTarget) || path == null || path.isEmpty()){
-            path = new AStarPathTo().buildPath(self.getWorld(), self.position(), self.getTarget());
+            path = new AStarPathTo().buildPath(World.getInstance(), self.position(), self.getTarget());
             lastTarget = self.getTarget();
         }
         Point next = path.peek();
-        Creature creat = self.getWorld().creature(next);
+        Creature creat = World.getInstance().creature(next);
         if (creat != null && creat.getFaction().equals(self.getFaction())){
-            path = new AStarPathTo().buildPath(self.getWorld(), self.position(), self.getTarget());
+            path = new AStarPathTo().buildPath(World.getInstance(), self.position(), self.getTarget());
             next = path.peek();
         }
         if (self.move(next.subtract(self.position()))){
@@ -61,7 +65,7 @@ public class GroupFollowAI extends CreatureAI {
 
     private Creature getAdjacentToHostile() {
         List<Creature> creatures = new ArrayList<Creature>();
-        Creature facing = self.getWorld().creature(self.position().add(self.getHeading().point()));
+        Creature facing = World.getInstance().creature(self.position().add(self.getHeading().point()));
         if (facing != null  && self.isEnemy(facing)){
             return facing;
         }
@@ -69,7 +73,7 @@ public class GroupFollowAI extends CreatureAI {
             if (d.equals(self.getHeading())){
                 continue;
             }
-            Creature candidate = self.getWorld().creature(self.position().add(d.point()));
+            Creature candidate = World.getInstance().creature(self.position().add(d.point()));
             if (candidate != null && self.isEnemy(candidate)){
                 creatures.add(candidate);
             }
@@ -90,5 +94,13 @@ public class GroupFollowAI extends CreatureAI {
             }
         }
 
+    }
+
+    @Override
+    public JsonElement serialize() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("name", getClass().getSimpleName());
+        obj.addProperty("self", ((Entity) self).id);
+        return obj;
     }
 }

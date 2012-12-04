@@ -23,8 +23,6 @@ public interface AiControllable {
 
     boolean canSee(Point position);
 
-    public World getWorld();
-
     public void attack(Creature entity);
 
     public Point position();

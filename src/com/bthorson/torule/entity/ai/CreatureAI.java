@@ -3,6 +3,7 @@ package com.bthorson.torule.entity.ai;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.NearestComparator;
+import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,4 +46,5 @@ public abstract class CreatureAI {
         return null;
     }
 
+    public abstract JsonElement serialize();
 }

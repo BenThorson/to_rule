@@ -2,7 +2,8 @@ package com.bthorson.torule.entity;
 
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
-import com.bthorson.torule.map.World;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.awt.*;
 import java.util.List;
@@ -16,56 +17,27 @@ import java.util.List;
 public abstract class Entity {
 
     private static int idGen;
+
+    public static void resetIdGen(){
+        idGen = 0;
+    }
     private String name;
 
     public final int id;
-    protected String templateName;
 
     private static int getId() {
         return idGen++;
     }
 
-    private World world = World.getInstance();
-    public World getWorld() {
-        return world;
-    }
-
-    protected Point position;
-    public Point position() {
-        return position;
-    }
-
-    private int glyph;
-    public int glyph(){
-        return glyph;
-    }
-
-    protected Color color;
-    public Color color(){
-        return color;
-    }
-
     public Entity(){
         this.id = getId();
-        this.position = PointUtil.POINT_ORIGIN;
-        this.glyph = 0;
-        this.color = Color.WHITE;
         this.name = "";
     }
 
 
-    public Entity(Point pos, int glyph, Color color, String name) {
+    public Entity(String name) {
         this.id = getId();
-        this.position = pos;
-        this.glyph = glyph;
-        this.color = color;
         this.name = name;
-    }
-
-    public abstract List<String> getDetailedInfo();
-
-    public void setGlyph(int glyph) {
-        this.glyph = glyph;
     }
 
     public String getName() {
@@ -84,5 +56,12 @@ public abstract class Entity {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    public JsonElement serialize(){
+        JsonObject obj = new JsonObject();
+        obj.addProperty("id", id);
+        obj.addProperty("name", getName());
+        return obj;
     }
 }

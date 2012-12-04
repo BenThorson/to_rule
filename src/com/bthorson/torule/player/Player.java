@@ -3,6 +3,10 @@ package com.bthorson.torule.player;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.ai.PlayerAI;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.persist.SerializeUtils;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +18,7 @@ import java.util.List;
  * Time: 1:22 AM
  * To change this template use File | Settings | File Templates.
  */
-public class Player {
-
-    private Creature creature;
+public class Player extends Creature {
 
     private int fame;
 
@@ -24,21 +26,13 @@ public class Player {
 
     private List<Creature> followers = new ArrayList<Creature>();
 
-    public void purchase(int price){}
-
-    public void receive(int amount){}
+    public Player(CreatureBuilder builder) {
+        super(builder);
+        setAi(new PlayerAI(this));
+    }
 
     public int getFame() {
         return 1;
-    }
-
-    public Player(Creature creature){
-        this.creature = creature;
-        creature.setAi(new PlayerAI(creature));
-    }
-
-    public Creature getCreature(){
-        return creature;
     }
 
     public boolean hasExplored(Point point){
@@ -63,5 +57,15 @@ public class Player {
 
     public List<Creature> getFollowers() {
         return new ArrayList<Creature>(followers);
+    }
+
+    @Override
+    public JsonElement serialize() {
+        Gson gson = new Gson();
+        JsonObject object = super.serialize().getAsJsonObject();
+        object.addProperty("fame", fame);
+        object.add("explored", gson.toJsonTree(explored));
+        SerializeUtils.serializeRefCollection(followers, object, "followers");
+        return object;
     }
 }

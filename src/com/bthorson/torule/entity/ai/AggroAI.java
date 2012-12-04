@@ -20,6 +20,5 @@ public class AggroAI extends SeekAI {
         if (entity == target){
             self.attack((Creature)entity);
         }
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

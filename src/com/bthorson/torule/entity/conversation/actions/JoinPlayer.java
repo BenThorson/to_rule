@@ -17,7 +17,7 @@ public class JoinPlayer implements ConversationAction {
     @Override
     public void doAction(ConversationScreen screen, Creature creature) {
         World.getInstance().getPlayer().addFollower(creature);
-        creature.setLeader(World.getInstance().getPlayer().getCreature());
+        creature.setLeader(World.getInstance().getPlayer());
         creature.setAi(new FollowAI(creature));
     }
 }

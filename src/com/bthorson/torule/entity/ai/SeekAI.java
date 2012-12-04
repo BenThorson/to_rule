@@ -6,6 +6,8 @@ import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
 import com.bthorson.torule.entity.ai.pathing.PathTo;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.Stack;
 
@@ -44,10 +46,10 @@ public class SeekAI extends CreatureAI{
         }
         if(target.equals(targetPosition)){
             if (path.empty()){
-                path = pathTo.buildPath(self.getWorld(), self.position(), targetPosition);
+                path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition);
             }
             Point nextMove = path.peek();
-            if (nextMove != null && self.getWorld().isTravelable(nextMove) || nextMove.equals(targetPosition)){
+            if (nextMove != null && World.getInstance().isTravelable(nextMove) || nextMove.equals(targetPosition)){
                 if (self.move(nextMove.subtract(self.position()))){
                     path.pop();
                 } else if (!nextMove.equals(targetPosition)) {
@@ -64,7 +66,7 @@ public class SeekAI extends CreatureAI{
 
     private void calcAndExecutePath() {
         targetPosition = new Point(target.position());
-        path = pathTo.buildPath(self.getWorld(), self.position(), targetPosition);
+        path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition);
         Point nextMove = path.peek();
         if (self.move(nextMove.subtract(self.position()))){
             path.pop();
@@ -74,5 +76,14 @@ public class SeekAI extends CreatureAI{
     @Override
     public void interact(Entity entity) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public JsonElement serialize() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("name", getClass().getSimpleName());
+        obj.addProperty("self", ((Entity)self).id);
+        obj.addProperty("target", target.id);
+        return obj;
     }
 }

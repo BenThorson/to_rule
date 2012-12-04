@@ -13,7 +13,11 @@ import com.bthorson.torule.item.Item;
 import com.bthorson.torule.item.ItemType;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
+import com.bthorson.torule.persist.SerializeUtils;
 import com.bthorson.torule.town.Building;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.awt.*;
 import java.util.*;
@@ -24,7 +28,7 @@ import java.util.List;
  * Date: 9/7/12
  * Time: 12:39 PM
  */
-public class Creature extends Entity implements AiControllable {
+public class Creature extends PhysicalEntity implements AiControllable {
 
     private CreatureAI ai = null;
 
@@ -206,10 +210,10 @@ public class Creature extends Entity implements AiControllable {
             return false;
         }
 
-
+        World world = World.getInstance();
         Point moveTo = position().add(delta);
 
-        if (!moveTo.withinRect(getWorld().topLeft(), getWorld().bottomRight())){
+        if (!moveTo.withinRect(world.topLeft(), world.bottomRight())){
             return false;
         }
 
@@ -219,11 +223,11 @@ public class Creature extends Entity implements AiControllable {
 
         heading = Direction.directionOf(delta) != null ? Direction.directionOf(delta) : heading;
 
-        Creature other = getWorld().creature(moveTo);
+        Creature other = world.creature(moveTo);
         if (other != null && !other.equals(this)){
             ai.interact(other);
             return false;
-        } else if (getWorld().tile(moveTo).passable()){
+        } else if (world.tile(moveTo).passable()){
             position = moveTo;
             return true;
         }
@@ -258,7 +262,7 @@ public class Creature extends Entity implements AiControllable {
             return false;
 
         for (Point p : new Line(position, positionPoint)){
-            if (!getWorld().tile(p).blockSight() || p.equals(positionPoint)){
+            if (!World.getInstance().tile(p).blockSight() || p.equals(positionPoint)){
                 continue;
             }
 
@@ -315,6 +319,7 @@ public class Creature extends Entity implements AiControllable {
             } else {
                 //destroys it
                 removeItem(item);
+                EntityManager.getInstance().removeItem(item);
             }
         }
         List<Item> lootItems = CreatureFactory.INSTANCE.getLootDropsForCreature(templateName);
@@ -672,4 +677,50 @@ public class Creature extends Entity implements AiControllable {
         }
         return worth;
     }
+
+
+    @Override
+    public JsonElement serialize() {
+        Gson gson = new Gson();
+        JsonObject obj = super.serialize().getAsJsonObject();
+        obj.add("ai", ai.serialize());
+        obj.addProperty("corpseGlyph", corpseGlyph);
+        if (leader != null){
+            obj.addProperty("leader", leader.id);
+        }
+        if (group != null){
+            obj.addProperty("group", group.id);
+        }
+        obj.add("heading", gson.toJsonTree(heading));
+        obj.addProperty("visionRadius", visionRadius);
+        obj.add("target", gson.toJsonTree(target));
+        obj.addProperty("hitpoints", hitpoints);
+        obj.addProperty("maxHitpoints", maxHitpoints);
+        obj.addProperty("hpRegenCount", hpRegenCount);
+        obj.addProperty("hpRegenRate", hpRegenRate);
+        obj.addProperty("dead", dead);
+        obj.add("messages", gson.toJsonTree(messages));
+        obj.add("faction", faction.serialize());
+        obj.addProperty("gold",gold);
+        obj.add("profession", gson.toJsonTree(profession));
+        SerializeUtils.serializeRefMap(properties, obj, "properties");
+
+        if (!equipmentSlots.isEmpty()){
+            JsonObject props = new JsonObject();
+            for (Map.Entry<String, EquipmentSlot> set : equipmentSlots.entrySet()){
+                props.add(set.getKey(), set.getValue().serialize());
+            }
+            obj.add("equipmentSlots", props);                
+        }
+
+        if (!itemlessAttackVals.isEmpty()){
+            obj.add("itemlessAttackVals", gson.toJsonTree(itemlessAttackVals));
+        }
+        obj.addProperty("innateArmor", innateArmor);
+        obj.addProperty("strength", strength);
+        obj.addProperty("dexterity", dexterity);
+        obj.addProperty("constitution", constitution);
+        return obj;
+    }
+
 }

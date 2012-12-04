@@ -2,11 +2,13 @@ package com.bthorson.torule.item;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.entity.PhysicalEntity;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
  * Date: 12/1/12
  * Time: 10:39 AM
  */
-public class Item extends Entity {
+public class Item extends PhysicalEntity {
 
     private int price;
     private int weight;
@@ -39,11 +41,7 @@ public class Item extends Entity {
     }
 
     public Item(Item item) {
-        super();
-        super.position = item.position;
-        super.setGlyph(item.glyph());
-        super.color = item.color();
-        super.setName(item.getName());
+        super(item.position, item.glyph(), item.color(), item.getName());
         this.price = item.price;
         this.weight = item.weight;
         this.type = item.type;
@@ -107,5 +105,24 @@ public class Item extends Entity {
             }
         }
         return toRet;
+    }
+
+    @Override
+    public JsonElement serialize() {
+        Gson gson = new Gson();
+        JsonObject obj = super.serialize().getAsJsonObject();
+        obj.addProperty("price", price);
+        obj.addProperty("weight", weight);
+        obj.addProperty("type", type);
+        obj.addProperty("slotType", slotType);
+        if (attributes != null && !attributes.isEmpty()){
+            obj.add("attributes", gson.toJsonTree(attributes));
+        }
+        obj.addProperty("isEquipped", isEquipped);
+        if (ownedBy != null){
+            obj.addProperty("ownedBy", ownedBy.id);
+        }
+
+        return obj;
     }
 }

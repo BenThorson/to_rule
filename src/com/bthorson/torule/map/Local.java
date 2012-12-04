@@ -37,12 +37,12 @@ public class Local {
     }
 
     public void serialize(PrintWriter writer) {
-        writer.println("\t\tdimension w:" + tiles.length + " h: " + tiles[0].length);
-        for (int x = 0; x < tiles.length; x++){
-            for (int y = 0; y < tiles[0].length; y++){
-                writer.println("\t\tT x:" + x + " y:" + y
-                        + " t:" + tiles[x][y].name());
+
+        for (Tile[] tile : tiles) {
+            for (Tile aTile : tile) {
+                writer.print(aTile.ordinal() + " ");
             }
+            writer.println();
         }
     }
 

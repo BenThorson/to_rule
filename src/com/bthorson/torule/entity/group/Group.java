@@ -1,6 +1,7 @@
 package com.bthorson.torule.entity.group;
 
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.entity.Faction;
 import com.bthorson.torule.entity.ai.AiControllable;
@@ -8,7 +9,8 @@ import com.bthorson.torule.entity.group.ai.GroupAI;
 import com.bthorson.torule.entity.group.ai.PlayerGroupAI;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
-import com.bthorson.torule.map.World;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.Set;
  * Date: 9/15/12
  * Time: 1:31 AM
  */
-public class Group implements AiControllable{
+public class Group extends Entity implements AiControllable{
 
 
     private Map<Point, Creature> members = new HashMap<Point, Creature>();
@@ -117,11 +119,6 @@ public class Group implements AiControllable{
     }
 
     @Override
-    public World getWorld() {
-        return squadCommander.getWorld();
-    }
-
-    @Override
     public void attack(Creature entity) { }
 
     @Override
@@ -194,5 +191,10 @@ public class Group implements AiControllable{
                 EntityManager.getInstance().removeGroup(this);
             }
         }
+    }
+
+    @Override
+    public JsonElement serialize() {
+        return super.serialize();
     }
 }

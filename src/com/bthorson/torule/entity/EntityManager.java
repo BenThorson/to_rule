@@ -7,7 +7,12 @@ import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.MapConstants;
 import com.bthorson.torule.town.Building;
 import com.bthorson.torule.town.Town;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,15 +25,23 @@ import java.util.Map;
  */
 public class EntityManager {
 
+    private Map<Integer, Entity> fullCatalog = new HashMap<Integer, Entity>();
     private List<Creature> nonGroupedCreatures;
-    private List<Entity> freeItems;
+    private List<PhysicalEntity> freeItems;
     private Map<Point, Town> towns;
+    private List<Faction> factions;
+
     private List<Group> groups;
     private List<Group> groupToRemove;
     List<Creature> toRemove;
     private Group playerGroup;
-    private Creature player;
 
+    private Faction aggressiveAnimalFaction;
+    private Faction passiveAnimalFaction;
+    private Faction goblinFaction;
+
+
+    private Creature player;
     private static EntityManager INSTANCE = new EntityManager();
 
     public static void destroy(){
@@ -39,10 +52,15 @@ public class EntityManager {
         groupToRemove = new ArrayList<Group>();
         nonGroupedCreatures = new ArrayList<Creature>();
         groups = new ArrayList<Group>();
-        freeItems = new ArrayList<Entity>();
+        freeItems = new ArrayList<PhysicalEntity>();
         toRemove = new ArrayList<Creature>();
         towns = new HashMap<Point, Town>();
+        factions = new ArrayList<Faction>();
+        aggressiveAnimalFaction = new Faction("aggressiveAnimal");
+        passiveAnimalFaction = new Faction("passiveAnimal");
+        goblinFaction = new Faction("goblin");
     }
+
 
     public static EntityManager getInstance(){
         if (INSTANCE == null){
@@ -57,15 +75,7 @@ public class EntityManager {
 
     public void addCreature(Creature creature){
         nonGroupedCreatures.add(creature);
-    }
-
-    public void addGroup(Group group){
-        groups.add(group);
-    }
-
-    public void creatureToGroup(Creature creature, Group group){
-        nonGroupedCreatures.remove(creature);
-        group.addCreature(creature);
+        fullCatalog.put(creature.id, creature);
     }
 
     public void update(){
@@ -110,6 +120,7 @@ public class EntityManager {
             group.remove(dead);
         }
         nonGroupedCreatures.remove(dead);
+        fullCatalog.remove(dead.id);
     }
 
     public List<Creature> getCreaturesInRange(Point p1, Point p2) {
@@ -144,9 +155,9 @@ public class EntityManager {
         return creature.equals(player);
     }
 
-    public List<Entity> item(Point itemPos) {
-        List<Entity> items = new ArrayList<Entity>();
-        for (Entity item : freeItems){
+    public List<PhysicalEntity> item(Point itemPos) {
+        List<PhysicalEntity> items = new ArrayList<PhysicalEntity>();
+        for (PhysicalEntity item : freeItems){
             if (item.position().equals(itemPos)){
                 items.add(item);
             }
@@ -154,16 +165,24 @@ public class EntityManager {
         return items;
     }
 
-    public void addFreeItem(Entity item) {
+    public void addFreeItem(PhysicalEntity item) {
         freeItems.add(item);
     }
 
-    public void removeItem(Item item) {
+    public void removeFreeItem(Item item) {
         freeItems.remove(item);
     }
 
-    public List<Entity> getAllEntites(Point point) {
-        List<Entity> entities = new ArrayList<Entity>();
+    public void addItem(Item item){
+        fullCatalog.put(item.id, item);
+    }
+
+    public void removeItem(Item item){
+        fullCatalog.remove(item.id);
+    }
+
+    public List<PhysicalEntity> getAllEntites(Point point) {
+        List<PhysicalEntity> entities = new ArrayList<PhysicalEntity>();
         Creature creature = creatureAt(point);
         if (creature != null){
             entities.add(creatureAt(point));
@@ -181,6 +200,10 @@ public class EntityManager {
 
     public void addTown(Point localPosition, Town town) {
         towns.put(localPosition, town);
+        for (Building building : town.getBuildings()){
+            fullCatalog.put(building.id, building);
+        }
+        fullCatalog.put(town.id, town);
     }
 
     public Town town(Point pointInLocal){
@@ -189,5 +212,53 @@ public class EntityManager {
 
     public List<Town> getTowns() {
         return new ArrayList<Town>(towns.values());
+    }
+
+    private Entity getById(int id){
+        return fullCatalog.get(id);
+    }
+
+    public Map<String, JsonArray> serialize(){
+        Map<String, JsonArray> itemMap = new HashMap<String, JsonArray>();
+
+        for (Integer id : fullCatalog.keySet()){
+            Entity entity = fullCatalog.get(id);
+            String type = entity.getClass().getSimpleName();
+            if (!itemMap.containsKey(type)){
+                itemMap.put(type, new JsonArray());
+            }
+            itemMap.get(type).add(entity.serialize());
+        }
+        return itemMap;
+    }
+
+    public void setupFactions() {
+        factions.add(aggressiveAnimalFaction);
+        fullCatalog.put(aggressiveAnimalFaction.id, aggressiveAnimalFaction);
+        factions.add(passiveAnimalFaction);
+        fullCatalog.put(passiveAnimalFaction.id, passiveAnimalFaction);
+        factions.add(goblinFaction);
+        fullCatalog.put(goblinFaction.id, goblinFaction);
+
+        for (Town town : getTowns()){
+            Faction faction = town.getFaction();
+            aggressiveAnimalFaction.addEnemyFaction(town.getFaction());
+            town.getFaction().addEnemyFaction(aggressiveAnimalFaction);
+            town.getFaction().addEnemyFaction(goblinFaction);
+            goblinFaction.addEnemyFaction(town.getFaction());
+            fullCatalog.put(faction.id, faction);
+            factions.add(faction);
+        }
+            aggressiveAnimalFaction.addEnemyFaction(goblinFaction);
+            goblinFaction.addEnemyFaction(aggressiveAnimalFaction);
+
+        for (Faction faction : factions){
+        }
+
+
+    }
+
+    public Faction getAggressiveAnimalFaction() {
+        return aggressiveAnimalFaction;
     }
 }

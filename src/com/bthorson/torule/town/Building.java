@@ -1,9 +1,13 @@
 package com.bthorson.torule.town;
 
 import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.entity.PhysicalEntity;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
+import com.bthorson.torule.persist.SerializeUtils;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,7 +18,7 @@ import java.util.List;
  * Date: 11/24/12
  * Time: 11:17 AM
  */
-public class Building extends Entity {
+public class Building extends PhysicalEntity {
 
     private final Point nwCorner;
     private final Point seCorner;
@@ -74,5 +78,19 @@ public class Building extends Entity {
             toRet.add("It is vacant");
         }
         return toRet;
+    }
+
+    @Override
+    public JsonElement serialize() {
+        Gson gson = new Gson();
+        JsonObject obj = super.serialize().getAsJsonObject();
+        obj.add("nwCorner", gson.toJsonTree(nwCorner));
+        obj.add("seCorner", gson.toJsonTree(seCorner));
+        obj.addProperty("building", buildingType.name());
+        if (owner != null){
+            obj.addProperty("owner", owner.id);
+        }
+        SerializeUtils.serializeRefCollection(inventory, obj, "inventory");
+        return obj;
     }
 }

@@ -1,6 +1,7 @@
 package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Entity;
+import com.google.gson.JsonObject;
 
 /**
  * User: ben
@@ -20,5 +21,12 @@ public class DeadAi extends CreatureAI {
 
     @Override
     public void interact(Entity entity) {
+    }
+
+    @Override
+    public JsonObject serialize() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("name", getClass().getSimpleName());
+        return obj;
     }
 }

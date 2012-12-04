@@ -2,6 +2,8 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * User: ben
@@ -32,5 +34,13 @@ public class PlayerAI extends CreatureAI {
 //                        }
         }
 
+    }
+
+    @Override
+    public JsonElement serialize() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("name", getClass().getSimpleName());
+        obj.addProperty("self", ((Entity)self).id);
+        return obj;
     }
 }

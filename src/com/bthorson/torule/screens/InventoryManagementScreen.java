@@ -34,7 +34,7 @@ public class InventoryManagementScreen implements Screen {
     private List<String> choices;
 
     public InventoryManagementScreen(Screen previous) {
-        itemDetailScreen = new ItemDetailScreen(player.getCreature().getInventory(), "Inventory Screen");
+        itemDetailScreen = new ItemDetailScreen(player.getInventory(), "Inventory Screen");
         this.previous = previous;
     }
 
@@ -60,7 +60,7 @@ public class InventoryManagementScreen implements Screen {
                 default:
                     doAction(choices.get(num));
                     itemActionMenu = null;
-                    itemDetailScreen = new ItemDetailScreen(player.getCreature().getInventory(), "Inventory Screen");
+                    itemDetailScreen = new ItemDetailScreen(player.getInventory(), "Inventory Screen");
             }
 
         } else {
@@ -69,7 +69,7 @@ public class InventoryManagementScreen implements Screen {
             if (num == -2) {
                 return previous;
             } else if (num != -1) {
-                selectedItem = player.getCreature().getInventory().get(num);
+                selectedItem = player.getInventory().get(num);
                 itemActionMenu = new Menu(selectedItem.getName(), "What to do with this?", getChoices(selectedItem), Color.YELLOW, Color.BLACK, Color.WHITE);
             }
         }
@@ -79,18 +79,18 @@ public class InventoryManagementScreen implements Screen {
     private void doAction(String value) {
         if (EQUIP.equalsIgnoreCase(value)){
             try {
-                player.getCreature().equip(player.getCreature().getInventory().indexOf(selectedItem));
+                player.equip(player.getInventory().indexOf(selectedItem));
             } catch (CannotEquipException e) {
                 //todo make dialog to disallow equipping of item
             }
         } else if (UNEQUIP.equalsIgnoreCase(value)){
-            player.getCreature().unEquip(player.getCreature().getInventory().indexOf(selectedItem));
+            player.unEquip(player.getInventory().indexOf(selectedItem));
         } else if (CONSUME.equalsIgnoreCase(value)){
             //todo make consume action
         } else if (GIVE.equalsIgnoreCase(value)){
             //todo make give action
         } else if (DROP.equalsIgnoreCase(value)){
-            player.getCreature().dropItem(selectedItem);
+            player.dropItem(selectedItem);
         }
     }
 

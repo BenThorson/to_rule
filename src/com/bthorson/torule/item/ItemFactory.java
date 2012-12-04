@@ -1,5 +1,6 @@
 package com.bthorson.torule.item;
 
+import com.bthorson.torule.entity.EntityManager;
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
 
@@ -38,8 +39,9 @@ public enum ItemFactory {
 
     public Item createItemOfId(String itemId){
         JsonObject obj = catalog.get(itemId);
-        return new Gson().fromJson(obj, Item.class);
-//        return new Item(new Gson().fromJson(obj, Item.class));
+        Item item = new Gson().fromJson(obj, Item.class);
+        EntityManager.getInstance().addItem(item);
+        return item;
     }
 
     public static void main(String[] args) {

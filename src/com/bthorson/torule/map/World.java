@@ -33,16 +33,12 @@ public class World {
     private Point seCorner;
 
 
-    private Region[][] regions;
+    private Local[][] locals;
 
     private Player player;
     private Point playerHomeLocal;
 
     private List<Point> openDoors = new ArrayList<Point>();
-
-    private Faction aggressiveAnimalFaction = new Faction("aggressiveAnimal");
-    private Faction passiveAnimalFaction = new Faction("passiveAnimal");
-    private Faction goblinFaction = new Faction("goblin");
 
     private static World instance;
 
@@ -68,17 +64,20 @@ public class World {
 
         width = params.getWorldSize().x();
         height = params.getWorldSize().y();
-        regions = new Region[params.getWorldSize().x()/REGION_SIZE_X][params.getWorldSize().y()/REGION_SIZE_Y];
-        for (int x = 0; x < params.getWorldSize().x()/REGION_SIZE_X; x++){
-            for (int y = 0; y < params.getWorldSize().y()/REGION_SIZE_Y; y++){
-                regions[x][y] = new Region(x,y);
+        locals = new Local[params.getWorldSize().x()/LOCAL_SIZE_X][params.getWorldSize().y()/LOCAL_SIZE_Y];
+        Random random = new Random();
+        for (int x = 0; x < params.getWorldSize().x()/LOCAL_SIZE_X; x++){
+            for (int y = 0; y < params.getWorldSize().y()/LOCAL_SIZE_Y; y++){
+                locals[x][y] = new LocalBuilder(random.nextInt(5), random.nextInt(5), random.nextInt(5))
+                        .makeGrassland().build(new Point(x * LOCAL_SIZE_X, y * LOCAL_SIZE_Y));
+                locals[x][y].setType(LocalType.WILDERNESS);
             }
         }
         this.seCorner = params.getWorldSize();
 
         initWorld(params);
+        EntityManager.getInstance().setupFactions();
         placeHostileMobs();
-        setupFactions();
         createPlayer(params.getPlayerName());
     }
 
@@ -236,7 +235,7 @@ public class World {
                         if (!isOccupied(candidate)){
                             Creature wolf = CreatureFactory.INSTANCE.createCreature("wolf", candidate);
                             wolf.setAi(new WanderAI(wolf, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT)));
-                            wolf.setFaction(aggressiveAnimalFaction);
+                            wolf.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
                         }  else {
                             i--;
                         }
@@ -246,22 +245,8 @@ public class World {
         }
     }
 
-
-    private void setupFactions() {
-        for (Town town : EntityManager.getInstance().getTowns()){
-            aggressiveAnimalFaction.addEnemyFaction(town.getFaction());
-            town.getFaction().addEnemyFaction(aggressiveAnimalFaction);
-            town.getFaction().addEnemyFaction(goblinFaction);
-            goblinFaction.addEnemyFaction(town.getFaction());
-        }
-        aggressiveAnimalFaction.addEnemyFaction(goblinFaction);
-        goblinFaction.addEnemyFaction(aggressiveAnimalFaction);
-    }
-
-
-    public Local getLocal(Point LocalGridPosition) {
-        return regions[LocalGridPosition.x()/REGION_X_IN_LOCALS][LocalGridPosition.y()/REGION_Y_IN_LOCALS]
-                .getLocal(LocalGridPosition.x() % REGION_X_IN_LOCALS, LocalGridPosition.y() % REGION_Y_IN_LOCALS);
+    public Local getLocal(Point localGridPosition) {
+        return locals[localGridPosition.x()][localGridPosition.y()];
     }
 
     public int width() {
@@ -274,24 +259,24 @@ public class World {
 
 
     public Tile tile(Point tilePoint){
-        return regions[tilePoint.x()/REGION_SIZE_X][tilePoint.y()/REGION_SIZE_Y].tile(tilePoint.x() % REGION_SIZE_X, tilePoint.y() % REGION_SIZE_Y);
+        return locals[tilePoint.x()/LOCAL_SIZE_X][tilePoint.y()/LOCAL_SIZE_Y].tile(tilePoint.x() % LOCAL_SIZE_X, tilePoint.y() % LOCAL_SIZE_Y);
     }
 
     public Creature creature(Point position){
         return EntityManager.getInstance().creatureAt(position);
     }
 
-    public List<Entity> items(Point position){
+    public List<PhysicalEntity> items(Point position){
         return EntityManager.getInstance().item(position);
     }
 
     public void createPlayer(String playerName){
         Town town = EntityManager.getInstance().town(playerHomeLocal);
         Point placement = town.getRegionalPosition().multiply(new Point(MapConstants.LOCAL_SIZE_X, MapConstants.LOCAL_SIZE_Y));
-        player = new Player(CreatureFactory.INSTANCE.createCreature("player", placement.add(new Point(50, 50))));
-        player.getCreature().setFaction(town.getFaction());
-        player.getCreature().setName(playerName);
-        EntityManager.getInstance().setPlayer(player.getCreature());
+        player = (Player)CreatureFactory.INSTANCE.createCreature("player", placement.add(new Point(50, 50)));
+        player.setFaction(town.getFaction());
+        player.setName(playerName);
+        EntityManager.getInstance().setPlayer(player);
     }
 
     public void update() {
@@ -327,19 +312,23 @@ public class World {
     }
 
     public void serialize(PrintWriter writer){
-        writer.println("World file metadata:  Dimension width:" + regions.length + " height: " + regions[0].length);
-        for (int x = 0; x < regions.length; x++){
-            for (int y = 0; y < regions[0].length; y++){
-                writer.println("R x:" + x + " y:" + y + ";");
-                regions[x][y].serialize(writer);
+        writer.println("numberOfChunks " + locals.length + ";" + locals[0].length);
+        for (int x = 0; x < locals.length; x++){
+            for (int y = 0; y < locals[0].length; y++){
+                writer.println("L " + x + ";" + y);
+                locals[x][y].serialize(writer);
             }
         }
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        World world = new World();
+        WorldGenParams params = new WorldGenParams();
+        params.setNumCities(5);
+        params.setWorldSize(new Point(1000,1000));
+        params.setPlayerName("Bob");
+        World.getInstance().loadWorld(params);
         PrintWriter writer = new PrintWriter("testWorld.wo");
-        world.serialize(writer);
+        World.getInstance().serialize(writer);
     }
 
     public boolean isOccupied(Point candidate) {
@@ -369,7 +358,7 @@ public class World {
 
     public void skipTurns(int turnsSkipped) {
         for (int i = 0; i < turnsSkipped; i++){
-            if (player.getCreature().getHitpoints() < player.getCreature().getMaxHitpoints()) {
+            if (player.getHitpoints() < player.getMaxHitpoints()) {
                 update();
             } else {
                 return;

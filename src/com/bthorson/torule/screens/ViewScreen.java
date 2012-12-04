@@ -3,6 +3,7 @@ package com.bthorson.torule.screens;
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.EntityManager;
+import com.bthorson.torule.entity.PhysicalEntity;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.screens.component.Menu;
 
@@ -24,7 +25,7 @@ public class ViewScreen implements ControlCallbackScreen {
     private boolean attemptedSelection = false;
     private Menu infoDialog;
     private Menu multiEntity;
-    private List<Entity> entities;
+    private List<PhysicalEntity> entities;
 
     public ViewScreen(PlayScreen previous, Point position) {
         this.previous = previous;
@@ -95,7 +96,7 @@ public class ViewScreen implements ControlCallbackScreen {
         }
     }
 
-    private String[] getNames(List<Entity> entities) {
+    private String[] getNames(List<PhysicalEntity> entities) {
         List<String> names = new ArrayList<String>();
         for (Entity entity : entities){
             names.add(entity.getName());
