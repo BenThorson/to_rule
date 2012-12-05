@@ -31,14 +31,11 @@ public class WanderAI extends CreatureAI {
     @Override
     public CreatureAI execute() {
 
-        if (self.position().divide(MapConstants.LOCAL_SIZE_POINT).equals(
-                EntityManager.getInstance().getPlayer().position().divide(MapConstants.LOCAL_SIZE_POINT))){
-            Creature toAggro = getTarget();
-            if (toAggro != null){
-                AggroAI aggroAI = new AggroAI(self, toAggro);
-                aggroAI.execute();
-                return aggroAI;
-            }
+        Creature toAggro = getTarget();
+        if (toAggro != null){
+            AggroAI aggroAI = new AggroAI(self, toAggro);
+            aggroAI.execute();
+            return aggroAI;
         }
         int check = new Random().nextInt(10);
 

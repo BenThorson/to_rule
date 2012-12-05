@@ -53,4 +53,9 @@ public class ItemDetailScreen {
     public int respondToUserInput(KeyEvent key) {
         return list.respondToUserInput(key);
     }
+
+    public void updateList(List<Item> items) {
+        this.items = items;
+        list.updateList(getItemNames(items));
+    }
 }

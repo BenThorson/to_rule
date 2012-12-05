@@ -2,6 +2,7 @@ package com.bthorson.torule.screens.component;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.screens.ScreenUtil;
 
@@ -132,5 +133,12 @@ public class ScrollList {
 
     public int getCurrentChoice() {
         return currentChoice;
+    }
+
+    public void updateList(List<String> items) {
+        this.items = items;
+        if (currentChoice >= items.size()){
+            currentChoice--;
+        }
     }
 }

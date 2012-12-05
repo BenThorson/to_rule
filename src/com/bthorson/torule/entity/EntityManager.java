@@ -1,19 +1,15 @@
 package com.bthorson.torule.entity;
 
-import com.bthorson.torule.entity.group.Group;
+import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
-import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.MapConstants;
+import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
 import com.bthorson.torule.town.Building;
 import com.bthorson.torule.town.Town;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,20 +23,21 @@ import java.util.Map;
 public class EntityManager {
 
     private Map<Integer, Entity> fullCatalog = new HashMap<Integer, Entity>();
-    private List<Creature> nonGroupedCreatures;
+    private List<Creature> creatures;
     private List<PhysicalEntity> freeItems;
     private Map<Point, Town> towns;
     private List<Faction> factions;
 
-    private List<Group> groups;
-    private List<Group> groupToRemove;
     List<Creature> toRemove;
-    private Group playerGroup;
 
     private Faction aggressiveAnimalFaction;
     private Faction passiveAnimalFaction;
     private Faction goblinFaction;
 
+    private List<Creature> locallyUpdate;
+    private boolean nextReady;
+    private List<Creature> nextLocalUpdate;
+    private Point lastCheckedPosition;
 
     private Player player;
     private static EntityManager INSTANCE = new EntityManager();
@@ -50,9 +47,7 @@ public class EntityManager {
     }
 
     private EntityManager(){
-        groupToRemove = new ArrayList<Group>();
-        nonGroupedCreatures = new ArrayList<Creature>();
-        groups = new ArrayList<Group>();
+        creatures = new ArrayList<Creature>();
         freeItems = new ArrayList<PhysicalEntity>();
         toRemove = new ArrayList<Creature>();
         towns = new HashMap<Point, Town>();
@@ -77,40 +72,40 @@ public class EntityManager {
     }
 
     public void addCreature(Creature creature){
-        nonGroupedCreatures.add(creature);
+        creatures.add(creature);
         fullCatalog.put(creature.id, creature);
     }
 
     public void update(){
+
 
         for (Creature dead : toRemove){
             remove(dead);
         }
         toRemove.clear();
 
-        for (Group toRemove: groupToRemove){
-            groups.remove(toRemove);
-        }
-        groupToRemove.clear();
-        for (Group group : groups){
-            group.update();
+        if (!player.position().divide(MapConstants.LOCAL_SIZE_POINT).equals(lastCheckedPosition.divide(MapConstants.LOCAL_SIZE_POINT))){
+            nextReady = false;
+            new NewLocalUpdateAction();
         }
 
-        for (Creature creature : nonGroupedCreatures){
-            creature.update();
+        if (nextReady){
+            locallyUpdate = nextLocalUpdate;
+        }
+
+//        System.out.println("in main, updating at " + World.getInstance().getTurnCounter());
+
+        for (Creature creature : locallyUpdate){
+            creature.update(World.getInstance().getTurnCounter());
         }
     }
 
     public Creature creatureAt(Point position){
-        for (Group group : groups){
-            for (Creature creature : group.getMemList()){
-                if (creature.position().equals(position)){
-                    return creature;
-                }
+        for (Creature creature : creatures){
+            if (creature == null){
+                System.out.println("huh?");
+                continue;
             }
-        }
-
-        for (Creature creature : nonGroupedCreatures){
             if (creature.position().equals(position)){
                 return creature;
             }
@@ -119,23 +114,13 @@ public class EntityManager {
     }
 
     public void remove(Creature dead) {
-        for (Group group : groups){
-            group.remove(dead);
-        }
-        nonGroupedCreatures.remove(dead);
+        creatures.remove(dead);
         fullCatalog.remove(dead.id);
     }
 
-    public List<Creature> getCreaturesInRange(Point p1, Point p2) {
+    public List<Creature> getActiveCreaturesInRange(Point p1, Point p2) {
         List<Creature> retList = new ArrayList<Creature>();
-        for (Group group : groups){
-            for (Creature creature : group.getMemList()){
-                if (creature.position().withinRect(p1, p2)){
-                    retList.add(creature);
-                }
-            }
-        }
-        for (Creature c: nonGroupedCreatures){
+        for (Creature c: locallyUpdate){
             if (c.position().withinRect(p1, p2)){
                 retList.add(c);
             }
@@ -143,9 +128,14 @@ public class EntityManager {
         return retList;
     }
 
-    public void removeGroup(Group group) {
-
-        groupToRemove.add(group);
+    private List<Creature> getAllCreaturesInRange(Point p1, Point p2) {
+        List<Creature> retList = new ArrayList<Creature>();
+        for (Creature c: creatures){
+            if (c.position().withinRect(p1, p2)){
+                retList.add(c);
+            }
+        }
+        return retList;
     }
 
     public void creatureDead(Creature creature){
@@ -186,7 +176,7 @@ public class EntityManager {
         fullCatalog.remove(item.id);
     }
 
-    public List<PhysicalEntity> getAllEntites(Point point) {
+    public List<PhysicalEntity> getAllEntities(Point point) {
         List<PhysicalEntity> entities = new ArrayList<PhysicalEntity>();
         Creature creature = creatureAt(point);
         if (creature != null){
@@ -253,5 +243,82 @@ public class EntityManager {
             }
             fullCatalog.put(faction.id, faction);
         }
+    }
+
+    public void start() {
+
+        new NewLocalUpdateAction();
+
+        while (!nextReady){
+
+        }
+        locallyUpdate = nextLocalUpdate;
+        lastCheckedPosition = player.position();
+    }
+
+    private class NewLocalUpdateAction implements Runnable {
+
+        public NewLocalUpdateAction(){
+            Thread thread = new Thread(this);
+            thread.start();
+        }
+
+
+        @Override
+        public void run() {
+            Point origin = player.position();
+            Point toRegion = origin.divide(MapConstants.LOCAL_SIZE_POINT);
+            Point nwRegion = correctNwCorner(toRegion).multiply(MapConstants.LOCAL_SIZE_POINT);
+            Point seRegion = correctSeCorner(toRegion).multiply(MapConstants.LOCAL_SIZE_POINT);
+            List<Creature> newUpdate = getAllCreaturesInRange(nwRegion, seRegion);
+
+            List<Creature> doStuff = new ArrayList<Creature>();
+
+            long startTime = Long.MAX_VALUE;
+            for (Creature creature : newUpdate){
+                if (locallyUpdate != null && !locallyUpdate.contains(creature)){
+                    doStuff.add(creature);
+                    if (creature.getLastUpdate() < startTime){
+                        startTime = creature.getLastUpdate();
+                    }
+                }
+            }
+
+            for (;startTime < World.getInstance().getTurnCounter(); startTime++){
+//                System.out.println("in thread, updating at " + startTime);
+                for (Creature creature : doStuff){
+                    if (creature.getLastUpdate() < startTime){
+                        creature.update(startTime);
+                    }
+                }
+            }
+
+            nextReady = true;
+            lastCheckedPosition = player.position();
+            nextLocalUpdate = newUpdate;
+        }
+
+        private Point correctSeCorner(Point toRegion) {
+            Point seRegion = toRegion.add(Direction.SOUTHEAST.point().add(Direction.SOUTHEAST.point()));
+            if (seRegion.x() > World.getInstance().bottomRight().divide(MapConstants.LOCAL_SIZE_POINT).x()){
+                seRegion.add(Direction.WEST.point());
+            }
+            if (seRegion.y() > World.getInstance().bottomRight().divide(MapConstants.LOCAL_SIZE_POINT).y()){
+                seRegion.add(Direction.NORTH.point());
+            }
+            return seRegion;
+        }
+
+        private Point correctNwCorner(Point toRegion) {
+            Point nwRegion = toRegion.add(Direction.NORTHWEST.point());
+            if (nwRegion.x() < 0){
+                nwRegion.add(Direction.EAST.point());
+            }
+            if (nwRegion.y() < 0){
+                nwRegion.add(Direction.SOUTH.point());
+            }
+            return nwRegion;
+        }
+
     }
 }

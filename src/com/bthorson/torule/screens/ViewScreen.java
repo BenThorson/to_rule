@@ -85,7 +85,7 @@ public class ViewScreen implements ControlCallbackScreen {
             return;
         }
         attemptedSelection = true;
-        entities = EntityManager.getInstance().getAllEntites(point.add(previous.getOffset()));
+        entities = EntityManager.getInstance().getAllEntities(point.add(previous.getOffset()));
         if (entities.isEmpty()){
             return;
         }

@@ -99,9 +99,15 @@ public class LoadAction {
             JsonObject object = items.get(key).getJsonObject();
             Item item = items.get(key).getEntity();
             if (object.has("ownedBy")){
-                item.setOwnedBy(creatures.get(object.get("ownedBy").getAsInt()).getEntity());
+                item.setOwnedBy(getEntityOrNull(creatures, object.get("ownedBy").getAsInt()));
             }
         }
+    }
+
+    private static <T extends Entity> T getEntityOrNull(Map<Integer, JsonObjectEntityPair<T>> map, int number){
+        if (map.containsKey(number)){
+            return map.get(number).getEntity();
+        } else return null;
     }
 
     private void relinkPlayer() {
@@ -124,10 +130,10 @@ public class LoadAction {
             }
 
             if(json.has("leader")){
-                creature.setLeader(creatures.get(json.get("leader").getAsInt()).getEntity());
+                creature.setLeader(getEntityOrNull(creatures, json.get("leader").getAsInt()));
             }
             if(json.has("faction")){
-                creature.setFaction(factions.get(json.get("faction").getAsInt()).getEntity());
+                creature.setFaction(getEntityOrNull(factions, json.get("faction").getAsInt()));
             }
             if (json.has("properties")){
                 JsonObject object = json.get("properties").getAsJsonObject();
@@ -202,14 +208,8 @@ public class LoadAction {
                     town.registerBuilding(buildings.get(element.getAsInt()).getEntity());
                 }
             }
-            if(json.has("citizens")){
-                JsonArray array = json.get("citizens").getAsJsonArray();
-                for (JsonElement element : array) {
-                    town.registerCitizen(creatures.get(element.getAsInt()).getEntity());
-                }
-            }
-            if(json.has("faction")){
-                town.setFaction(factions.get(json.get("faction").getAsInt()).getEntity());
+            if(json.has("faction")) {
+                town.setFaction(getEntityOrNull(factions, json.get("faction").getAsInt()));
             }
         }
     }
@@ -219,7 +219,7 @@ public class LoadAction {
             Building building = buildings.get(key).getEntity();
             JsonObject json = buildings.get(key).getJsonObject();
             if (json.has("owner")) {
-                building.setOwner(creatures.get(json.get("owner").getAsInt()).getEntity());
+                building.setOwner(getEntityOrNull(creatures, json.get("owner").getAsInt()));
             }
             if (json.has("inventory")){
                 JsonArray array = json.get("inventory").getAsJsonArray();

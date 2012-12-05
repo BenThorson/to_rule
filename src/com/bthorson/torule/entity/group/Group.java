@@ -9,6 +9,7 @@ import com.bthorson.torule.entity.group.ai.GroupAI;
 import com.bthorson.torule.entity.group.ai.PlayerGroupAI;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.World;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -74,7 +75,7 @@ public class Group extends Entity implements AiControllable{
             return;
         }
         members.get(point).setTarget(point.add(offset));
-        members.get(point).update();
+        members.get(point).update(World.getInstance().getTurnCounter());
     }
 
     public void update(){
@@ -181,16 +182,16 @@ public class Group extends Entity implements AiControllable{
     }
 
     public void remove(Creature dead) {
-        if (memList.remove(dead)){
-            reformOnUpdate = true;
-            if(!memList.isEmpty()){
-                if (dead.equals(squadCommander)){
-                    squadCommander = memList.get(0);
-                }
-            } else {
-                EntityManager.getInstance().removeGroup(this);
-            }
-        }
+//        if (memList.remove(dead)){
+//            reformOnUpdate = true;
+//            if(!memList.isEmpty()){
+//                if (dead.equals(squadCommander)){
+//                    squadCommander = memList.get(0);
+//                }
+//            } else {
+//                EntityManager.getInstance().removeGroup(this);
+//            }
+//        }
     }
 
     @Override

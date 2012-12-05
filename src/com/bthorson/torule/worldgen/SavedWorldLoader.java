@@ -57,7 +57,7 @@ public class SavedWorldLoader implements WorldLoader {
         registerEntities();
 
         World.getInstance().startWorld(this);
-
+        EntityManager.getInstance().start();
 
 
     }

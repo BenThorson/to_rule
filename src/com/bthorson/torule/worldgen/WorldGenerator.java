@@ -51,6 +51,7 @@ public class WorldGenerator implements WorldLoader {
         World.destroy();
         World.getInstance().startWorld(this);
         populateWorld(params);
+        EntityManager.getInstance().start();
 
 
     }

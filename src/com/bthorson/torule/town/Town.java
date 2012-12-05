@@ -22,7 +22,6 @@ import java.util.List;
 public class Town extends Entity {
 
     private List<Building> buildings = new ArrayList<Building>();
-    private List<Creature> citizens = new ArrayList<Creature>();
     private WealthLevel wealthLevel;
     private Point regionalPosition;
     private Faction faction;
@@ -39,14 +38,6 @@ public class Town extends Entity {
         }
         buildings.add(building);
     }
-
-    public void registerCitizen(Creature citizen){
-        if (citizens == null){
-            citizens = new ArrayList<Creature>();
-        }
-        citizens.add(citizen);
-    }
-
 
     public void setRegionalPosition(Point regionalPosition) {
         this.regionalPosition = regionalPosition;
@@ -90,7 +81,6 @@ public class Town extends Entity {
         Gson gson = new Gson();
         JsonObject obj = super.serialize().getAsJsonObject();
         SerializeUtils.serializeRefCollection(buildings, obj, "buildings");
-        SerializeUtils.serializeRefCollection(citizens, obj, "citizens");
         obj.add("wealthLevel", gson.toJsonTree(wealthLevel));
         obj.add("regionalPosition", gson.toJsonTree(regionalPosition));
         obj.addProperty("faction", faction.id);

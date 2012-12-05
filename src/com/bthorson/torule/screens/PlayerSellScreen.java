@@ -47,15 +47,11 @@ public class PlayerSellScreen implements Screen {
 
         if (confirmation != null){
             int option = confirmation.respondToUserInput(key);
-            if (option == -1){
-                return this;
-            } else if (option == 0){
+            if (option == 0){
                 completeTransaction();
-            } else if (option == 1){
+            }
                 selectedItem = null;
                 confirmation = null;
-                return this;
-            }
         } else {
             int itemNum = itemDetailScreen.respondToUserInput(key);
             if (itemNum == -2){
@@ -64,22 +60,22 @@ public class PlayerSellScreen implements Screen {
             if (itemNum != -1){
                 prepareTransaction(itemNum);
             }
-            return this;
         }
 
-        return previous;
+        return this;
     }
 
     private void completeTransaction() {
         EntityManager.getInstance().getPlayer().sellItem(selectedItem, sellPrice);
         selectedItem.setOwnedBy(shop.getOwner());
         shop.addItem(selectedItem);
+        itemDetailScreen.updateList(player.getInventory());
     }
 
     private void prepareTransaction(int itemNum) {
         selectedItem = player.getInventory().get(itemNum);
         sellPrice = selectedItem.getPrice() / 3;
-        confirmation = new com.bthorson.torule.screens.component.Menu("Confirm Sale", "Sell " + selectedItem.getName() + " for " + sellPrice + " gold?",
+        confirmation = new Menu("Confirm Sale", "Sell " + selectedItem.getName() + " for " + sellPrice + " gold?",
                                 new String[]{"Yes", "No"}, Color.YELLOW, Color.BLACK, Color.WHITE);
     }
 

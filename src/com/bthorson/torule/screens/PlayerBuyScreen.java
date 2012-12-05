@@ -56,15 +56,11 @@ public class PlayerBuyScreen implements Screen {
 
         if (confirmation != null){
             int option = confirmation.respondToUserInput(key);
-            if (option == -1){
-                return this;
-            } else if (option == 0){
+            if (option == 0){
                 completeTransaction();
-            } else if (option == 1){
+            }
                 selectedItem = null;
                 confirmation = null;
-                return this;
-            }
         } else {
             int itemNum = itemDetailScreen.respondToUserInput(key);
             if (itemNum == -2){
@@ -73,10 +69,8 @@ public class PlayerBuyScreen implements Screen {
             if (itemNum != -1){
                 prepareTransaction(itemNum);
             }
-            return this;
         }
-
-        return previous;
+        return this;
     }
 
     private void completeTransaction() {

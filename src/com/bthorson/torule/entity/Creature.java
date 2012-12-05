@@ -33,6 +33,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
     private CreatureAI ai = null;
 
     private int corpseGlyph;
+    private long lastUpdate;
 
     private Creature leader;
     private Group group;
@@ -243,12 +244,17 @@ public class Creature extends PhysicalEntity implements AiControllable {
     }
 
 
-    public void update() {
+    public void update(long turnCounter) {
         hpRegenCount = ++hpRegenCount % HP_REGEN_RESET;
         if (hpRegenCount == 0){
             adjustHitpoint(hpRegenRate);
         }
+        lastUpdate = turnCounter;
         ai = ai.execute();
+    }
+
+    public long getLastUpdate() {
+        return lastUpdate;
     }
 
     public boolean dead() {
@@ -418,7 +424,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
 
     public List<Creature> getVisibleCreatures() {
         Point vis = new Point(visionRadius, visionRadius);
-        List<Creature> inApproxRange = EntityManager.getInstance().getCreaturesInRange(position().subtract(vis), position().add(vis));
+        List<Creature> inApproxRange = EntityManager.getInstance().getActiveCreaturesInRange(position().subtract(vis), position().add(vis));
         List<Creature> visible = new ArrayList<Creature>();
         for (Creature c : inApproxRange){
             if (this != c && canSee(c.position())){
@@ -711,6 +717,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
         obj.addProperty("visionRadius", visionRadius);
         obj.add("target", gson.toJsonTree(target));
         obj.addProperty("hitpoints", hitpoints);
+        obj.addProperty("lastUpdate", lastUpdate);
         obj.addProperty("maxHitpoints", maxHitpoints);
         obj.addProperty("hpRegenCount", hpRegenCount);
         obj.addProperty("hpRegenRate", hpRegenRate);

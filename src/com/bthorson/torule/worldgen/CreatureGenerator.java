@@ -62,7 +62,6 @@ public class CreatureGenerator {
             if (!World.getInstance().isOccupied(candidate) && !candidate.equals(new Point(50,50))){
                 Creature villager = CreatureFactory.INSTANCE.createCreature("villager", candidate);
                 villager.setFaction(town.getFaction());
-                town.registerCitizen(villager);
                 villager.setAi(new WanderAI(villager, town.getLocal().getNwBoundWorldCoord(), town.getLocal().getSeBoundWorldBound()));
             } else {
                 i--;
@@ -86,7 +85,6 @@ public class CreatureGenerator {
 
     public void createShopOwners(Town town, Building building){
         Creature shopOwner = CreatureFactory.INSTANCE.createCreature("merchant", building.getNwCorner().add(new Point(1, 1)));
-        town.registerCitizen(shopOwner);
         shopOwner.setFaction(town.getFaction());
         shopOwner.setAi(new WanderAI(shopOwner,
                                      building.getNwCorner().add(Direction.SOUTHEAST.point()),
