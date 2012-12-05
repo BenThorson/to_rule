@@ -29,6 +29,14 @@ public abstract class Entity {
         return idGen++;
     }
 
+    public static int getCurrentId() {
+        return idGen;
+    }
+
+    public static void setCurrentId(int idGen){
+        Entity.idGen = idGen;
+    }
+
     public Entity(){
         this.id = getId();
         this.name = "";

@@ -1,10 +1,12 @@
 package com.bthorson.torule.persist;
 
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.worldgen.WorldGenParams;
+import com.bthorson.torule.worldgen.WorldGenerator;
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
 
@@ -49,6 +51,13 @@ public class SaveAction {
                 writer.close();
             }
 
+            writer = new PrintWriter(subDirectory.getPath() + "/metadata.eo");
+            JsonObject obj = new JsonObject();
+            obj.addProperty("turn", World.getInstance().getTurnCounter());
+            obj.addProperty("idSerialGen", Entity.getCurrentId());
+            writer.append(gson.toJson(obj));
+            writer.close();
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IOException e) {
@@ -61,7 +70,7 @@ public class SaveAction {
         params.setNumCities(5);
         params.setWorldSize(new Point(1000,1000));
         params.setPlayerName("Bob");
-        World.getInstance().loadWorld(params);
+        new WorldGenerator().generateWorld(params);
         new SaveAction().save("blah");
 
     }

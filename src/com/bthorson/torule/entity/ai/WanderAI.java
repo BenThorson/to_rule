@@ -2,6 +2,7 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.MapConstants;
@@ -31,7 +32,7 @@ public class WanderAI extends CreatureAI {
     public CreatureAI execute() {
 
         if (self.position().divide(MapConstants.LOCAL_SIZE_POINT).equals(
-                World.getInstance().getPlayer().position().divide(MapConstants.LOCAL_SIZE_POINT))){
+                EntityManager.getInstance().getPlayer().position().divide(MapConstants.LOCAL_SIZE_POINT))){
             Creature toAggro = getTarget();
             if (toAggro != null){
                 AggroAI aggroAI = new AggroAI(self, toAggro);

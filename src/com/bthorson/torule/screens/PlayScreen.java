@@ -27,7 +27,7 @@ public class PlayScreen implements Screen {
     private int yBorder = 30;
 
     public PlayScreen() {
-        this.player = world.getPlayer();
+        this.player = EntityManager.getInstance().getPlayer();
         this.statusScreen = new StatusScreen(xBorder, yBorder);
         this.messageScreen = new MessageScreen(world, yBorder);
     }
@@ -90,9 +90,7 @@ public class PlayScreen implements Screen {
             return new DeadScreen(this);
         }
         switch (key.getKeyCode()){
-            case KeyEvent.VK_Q:
-                World.destroy();
-                return new StartScreen();
+            case KeyEvent.VK_Q: return new SaveScreen(this);
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_NUMPAD4: player.move(Direction.WEST.point()); break;
             case KeyEvent.VK_RIGHT:

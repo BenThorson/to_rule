@@ -2,6 +2,7 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.StringUtil;
+import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.exception.CannotEquipException;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
@@ -29,7 +30,7 @@ public class InventoryManagementScreen implements Screen {
     private Screen previous;
     private ItemDetailScreen itemDetailScreen;
     private Item selectedItem;
-    private Player player = World.getInstance().getPlayer();
+    private Player player = EntityManager.getInstance().getPlayer();
     private Menu itemActionMenu;
     private List<String> choices;
 
@@ -105,7 +106,7 @@ public class InventoryManagementScreen implements Screen {
         if (selectedItem.isEquipped()){
             choices.add(UNEQUIP);
         }
-        if (!player.getFollowers().isEmpty()){
+        if (player.getFollowers() != null && !player.getFollowers().isEmpty()){
             choices.add(GIVE);
         }
         choices.add(DROP);

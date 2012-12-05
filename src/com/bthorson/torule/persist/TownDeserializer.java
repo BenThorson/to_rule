@@ -44,7 +44,7 @@ public class TownDeserializer {
     private class TownDeserializeExclude implements ExclusionStrategy {
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
-            return false;
+            return Arrays.asList("buildings", "citizens").contains(f.getName());
         }
 
         @Override

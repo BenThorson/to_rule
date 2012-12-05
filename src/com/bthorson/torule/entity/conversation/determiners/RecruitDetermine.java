@@ -1,6 +1,7 @@
 package com.bthorson.torule.entity.conversation.determiners;
 
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
 
@@ -27,11 +28,11 @@ public class RecruitDetermine implements Determiner {
         if (haveAsked.containsKey(creature) && haveAsked.get(creature) + REASK_TIME > World.getInstance().getTurnCounter()){
             return 1;
         }
-        if (World.getInstance().getPlayer().getFollowers().contains(creature)){
+        if (EntityManager.getInstance().getPlayer().getFollowers().contains(creature)){
             return 3;
         }
         Random random = new Random();
-        int value = random.nextInt(10) + World.getInstance().getPlayer().getFame();
+        int value = random.nextInt(10) + EntityManager.getInstance().getPlayer().getFame();
         if (value > 7){
             value = 0;
         } else {

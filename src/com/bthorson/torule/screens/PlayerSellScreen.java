@@ -2,6 +2,7 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.screens.component.Menu;
@@ -22,7 +23,7 @@ public class PlayerSellScreen implements Screen {
     private Menu confirmation;
     private Item selectedItem;
     private int sellPrice;
-    private Creature player = World.getInstance().getPlayer();
+    private Creature player = EntityManager.getInstance().getPlayer();
 
     public PlayerSellScreen(ConversationScreen previous, Building shop) {
         this.previous = previous;
@@ -70,7 +71,7 @@ public class PlayerSellScreen implements Screen {
     }
 
     private void completeTransaction() {
-        World.getInstance().getPlayer().sellItem(selectedItem, sellPrice);
+        EntityManager.getInstance().getPlayer().sellItem(selectedItem, sellPrice);
         selectedItem.setOwnedBy(shop.getOwner());
         shop.addItem(selectedItem);
     }

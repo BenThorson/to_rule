@@ -95,6 +95,14 @@ public class Creature extends PhysicalEntity implements AiControllable {
         }
     }
 
+    public void setEquipmentSlots(Map<String, EquipmentSlot> equipmentSlots) {
+        this.equipmentSlots = equipmentSlots;
+    }
+
+    public void setItemlessAttackVals(Map<String, Integer> itemlessAttackVals){
+        this.itemlessAttackVals = itemlessAttackVals;
+    }
+
     public static class CreatureBuilder{
         private Point position;
         private int glyph;
@@ -312,6 +320,11 @@ public class Creature extends PhysicalEntity implements AiControllable {
 
     private void dropLoot() {
         Random random = new Random();
+
+        if (inventory == null){
+            inventory = new ArrayList<Item>();
+        }
+
         for (Item item: inventory){
             if (random.nextBoolean()){
                 //puts it on the ground
@@ -539,6 +552,9 @@ public class Creature extends PhysicalEntity implements AiControllable {
 
     public void addItem(Item selectedItem) {
         selectedItem.setOwnedBy(this);
+        if (inventory == null){
+            inventory = new ArrayList<Item>();
+        }
         inventory.add(selectedItem);
     }
 
@@ -700,10 +716,14 @@ public class Creature extends PhysicalEntity implements AiControllable {
         obj.addProperty("hpRegenRate", hpRegenRate);
         obj.addProperty("dead", dead);
         obj.add("messages", gson.toJsonTree(messages));
-        obj.add("faction", faction.serialize());
+        obj.addProperty("faction", faction.id);
         obj.addProperty("gold",gold);
         obj.add("profession", gson.toJsonTree(profession));
         SerializeUtils.serializeRefMap(properties, obj, "properties");
+
+        if (inventory != null && !inventory.isEmpty()){
+            SerializeUtils.serializeRefCollection(inventory, obj, "inventory");
+        }
 
         if (!equipmentSlots.isEmpty()){
             JsonObject props = new JsonObject();

@@ -13,15 +13,12 @@ import java.util.Set;
  * Time: 4:39 PM
  */
 public class Faction extends Entity{
-    public static final Faction TEST = new Faction("test");
 
-    private Set<Faction> enemies;
-    private Set<Faction> allies;
+    private Set<Faction> enemies = new HashSet<Faction>();
+    private Set<Faction> allies = new HashSet<Faction>();
 
     public Faction(String name){
         super(name);
-        enemies = new HashSet<Faction>();
-        allies = new HashSet<Faction>();
     }
 
     public Set<Faction> getEnemies() {
@@ -33,10 +30,16 @@ public class Faction extends Entity{
     }
 
     public void addEnemyFaction(Faction enemy){
+        if (enemies == null){
+            enemies = new HashSet<Faction>();
+        }
         enemies.add(enemy);
     }
 
     public void addAllyFaction(Faction ally){
+        if (allies == null){
+            allies = new HashSet<Faction>();
+        }
         allies.add(ally);
     }
 

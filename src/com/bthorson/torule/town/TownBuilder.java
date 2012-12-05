@@ -60,15 +60,7 @@ public class TownBuilder {
         Building b = new Building(toBuildOn.getNwBoundWorldCoord().add(new Point(x, y)), toBuildOn.getNwBoundWorldCoord().add(new Point(x + w, y + h)),
                                   buildingType);
         if (BuildingType.isShop(buildingType)){
-            Creature shopOwner = CreatureFactory.INSTANCE.createCreature("merchant", b.getNwCorner().add(new Point(1, 1)));
-            town.registerCitizen(shopOwner);
-            shopOwner.setFaction(town.getFaction());
-            shopOwner.setAi(new WanderAI(shopOwner,
-                                         b.getNwCorner().add(Direction.SOUTHEAST.point()),
-                                         b.getSeCorner().add(Direction.NORTHWEST.point())));
             BuildingInventoryFactory.INSTANCE.createItemsForShop(b, town.getWealthLevel());
-            shopOwner.addOwnedProperty("shop", b);
-            b.setOwner(shopOwner);
         }
         town.registerBuilding(b);
         switch (doorDir) {
@@ -103,37 +95,6 @@ public class TownBuilder {
             fillRect(startX, startY - width / 2, endX - startX, width, Tile.ROAD);
         } else {
             fillRect(startX - width / 2, startY, width, endY - startY, Tile.ROAD);
-        }
-        return this;
-    }
-
-    public TownBuilder makeTownsmen(int numberOfTownsmen){
-        for (int i = 0; i < numberOfTownsmen; i++){
-            Point candidate = PointUtil.randomPoint(toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound());
-            if (!World.getInstance().isOccupied(candidate) && !candidate.equals(new Point(50,50))){
-                Creature villager = CreatureFactory.INSTANCE.createCreature("villager", candidate);
-                villager.setFaction(town.getFaction());
-                town.registerCitizen(villager);
-                villager.setAi(new WanderAI(villager, toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound()));
-            } else {
-                i--;
-            }
-
-        }
-        return this;
-    }
-
-    public TownBuilder makePuppies(int numberOfTownsmen){
-        for (int i = 0; i < numberOfTownsmen; i++){
-            Point candidate = PointUtil.randomPoint(toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound());
-            if (!World.getInstance().isOccupied(candidate) && !candidate.equals(new Point(50,50))){
-                Creature puppy = CreatureFactory.INSTANCE.createCreature("puppy", candidate);
-                puppy.setFaction(town.getFaction());
-                puppy.setAi(new WanderAI(puppy, toBuildOn.getNwBoundWorldCoord(), toBuildOn.getSeBoundWorldBound()));
-            } else {
-                i--;
-            }
-
         }
         return this;
     }
@@ -203,7 +164,7 @@ public class TownBuilder {
                 .buildBuilding(38, 63, 8, 8, Direction.NORTH, BuildingType.GENERAL_SHOP)
                 .buildBuilding(53, 63, 8, 8, Direction.NORTH, BuildingType.GENERAL_SHOP)
                 .buildBuilding(70, 70, 28, 28, Direction.NORTH, BuildingType.KEEP)
-                .makeTownsmen(20).makePuppies(10).regionalPosition(localPoint).build();
+                .regionalPosition(localPoint).build();
 
 
     }

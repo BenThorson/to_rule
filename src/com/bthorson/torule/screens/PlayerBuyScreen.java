@@ -1,6 +1,7 @@
 package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
+import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.World;
@@ -79,13 +80,13 @@ public class PlayerBuyScreen implements Screen {
     }
 
     private void completeTransaction() {
-        World.getInstance().getPlayer().purchaseItem(selectedItem, selectedItem.getPrice());
+        EntityManager.getInstance().getPlayer().purchaseItem(selectedItem, selectedItem.getPrice());
         shop.removeItem(selectedItem);
     }
 
     private void prepareTransaction(int itemNum) {
         selectedItem = shop.getInventory().get(itemNum);
-        if (World.getInstance().getPlayer().getGold() >= selectedItem.getPrice()){
+        if (EntityManager.getInstance().getPlayer().getGold() >= selectedItem.getPrice()){
             confirmation = new Menu("Confirm Purchase", "Purchase " + selectedItem.getName() + " for " + selectedItem.getPrice() + " gold?",
                                     new String[]{"Yes", "No"}, Color.YELLOW, Color.BLACK, Color.WHITE);
 

@@ -57,6 +57,12 @@ public class Building extends PhysicalEntity {
     }
 
     public void addItem(Item item){
+        if (inventory == null){
+            inventory = new ArrayList<Item>();
+        }
+        if (owner != null){
+            item.setOwnedBy(owner);
+        }
         inventory.add(item);
     }
 

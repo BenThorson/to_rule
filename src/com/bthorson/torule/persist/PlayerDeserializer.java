@@ -24,8 +24,7 @@ import java.util.List;
  */
 public class PlayerDeserializer {
 
-    public Map<Integer, JsonObjectEntityPair<Player>> deserialize(File file) throws IOException{
-        Map<Integer, JsonObjectEntityPair<Player>> players = new HashMap<Integer, com.bthorson.torule.persist.JsonObjectEntityPair<Player>>();
+    public JsonObjectEntityPair<Player> deserialize(File file) throws IOException{
 
         JsonArray array = new JsonParser().parse(new JsonReader(new FileReader(file))).getAsJsonArray();
         for (JsonElement element : array){
@@ -36,10 +35,9 @@ public class PlayerDeserializer {
 
             JsonObject object = element.getAsJsonObject();
             Player player = gson.fromJson(object, Player.class);
-            players.put(player.id, new JsonObjectEntityPair<Player>(object, player));
+            return new JsonObjectEntityPair<Player>(object, player);
         }
-        return players;
-
+        return null;
     }
 
 

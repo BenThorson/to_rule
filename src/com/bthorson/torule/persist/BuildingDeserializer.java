@@ -43,7 +43,7 @@ public class BuildingDeserializer {
     private class BuildingDeserializeExclude implements ExclusionStrategy {
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
-            return false;  //To change body of implemented methods use File | Settings | File Templates.
+            return "inventory".equalsIgnoreCase(f.getName());
         }
 
         @Override

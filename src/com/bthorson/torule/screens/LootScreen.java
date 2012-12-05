@@ -55,12 +55,12 @@ public class LootScreen implements Screen {
                 return this;
             default:
                 if (val == items.size()){
-                    World.getInstance().getPlayer().addItems(items);
+                    EntityManager.getInstance().getPlayer().addItems(items);
                     for (Item item: items){
                         EntityManager.getInstance().removeFreeItem(item);
                     }
                 } else {
-                    World.getInstance().getPlayer().addItem(items.get(val));
+                    EntityManager.getInstance().getPlayer().addItem(items.get(val));
                     EntityManager.getInstance().removeFreeItem(items.get(val));
                 }
                 return previous;

@@ -1,6 +1,7 @@
 package com.bthorson.torule;
 
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.EntityManager;
 
 /**
  * User: ben
@@ -9,16 +10,16 @@ import com.bthorson.torule.entity.Creature;
  */
 public class Message {
 
-    Creature origin;
+    int originatingEntityId;
     String message;
 
     public Message(Creature origin, String message) {
-        this.origin = origin;
+        this.originatingEntityId = origin.id;
         this.message = message;
     }
 
     public Creature getOrigin() {
-        return origin;
+        return (Creature)EntityManager.getInstance().getById(originatingEntityId);
     }
 
     public String getMessage() {

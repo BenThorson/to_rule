@@ -34,10 +34,16 @@ public class Town extends Entity {
     }
 
     public void registerBuilding(Building building){
+        if (buildings == null){
+            buildings = new ArrayList<Building>();
+        }
         buildings.add(building);
     }
 
     public void registerCitizen(Creature citizen){
+        if (citizens == null){
+            citizens = new ArrayList<Creature>();
+        }
         citizens.add(citizen);
     }
 

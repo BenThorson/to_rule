@@ -34,6 +34,8 @@ public class StartScreen implements Screen {
         switch (startMenu.respondToUserInput(key)){
             case 0:
                 return new WorldParamScreen();
+            case 1:
+                return new LoadScreen();
             case 2:
                 System.exit(0);
                 break;

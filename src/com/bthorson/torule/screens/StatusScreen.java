@@ -1,6 +1,7 @@
 package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
+import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.entity.EquipmentSlot;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
@@ -30,7 +31,7 @@ public class StatusScreen implements Screen {
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        Player player = World.getInstance().getPlayer();
+        Player player = EntityManager.getInstance().getPlayer();
         String blank = ScreenUtil.blankString(SCREEN_WIDTH - xOffset);
         for (int i = 0; i < height; i++){
             terminal.write(Tile.WALL_VERT.glyph(), new Point(xOffset, i), Color.WHITE, Color.blue);

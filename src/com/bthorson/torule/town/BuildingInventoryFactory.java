@@ -2,6 +2,7 @@ package com.bthorson.torule.town;
 
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
+import com.bthorson.torule.item.Item;
 import com.bthorson.torule.item.ItemFactory;
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
@@ -52,7 +53,8 @@ public enum BuildingInventoryFactory {
                 for (JsonElement item : itemsToGen){
                     JsonObject toGen = item.getAsJsonObject();
                     for(int i = 0; i < toGen.get("quantity").getAsInt(); i++){
-                        building.addItem(ItemFactory.INSTANCE.createItemOfId(toGen.get("refId").getAsString()));
+                        Item it = ItemFactory.INSTANCE.createItemOfId(toGen.get("refId").getAsString());
+                        building.addItem(it);
                     }
                 }
             }

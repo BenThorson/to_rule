@@ -2,6 +2,7 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.Message;
+import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
@@ -29,7 +30,7 @@ public class MessageScreen implements Screen{
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        List<Message> msg = world.getPlayer().getMessages();
+        List<Message> msg = EntityManager.getInstance().getPlayer().getMessages();
         String border = ScreenUtil.solidLine(SCREEN_WIDTH, Tile.WALL_HORIZ.glyph());
         terminal.write(border, new Point(0, yOffset), Color.WHITE, Color.BLACK);
 

@@ -48,15 +48,25 @@ public class Player extends Creature {
 
 
     public void addFollower(Creature creature) {
+        if (followers == null){
+            followers = new ArrayList<Creature>();
+        }
         followers.add(creature);
     }
 
     public void removeFollower(Creature creature){
-        followers.remove(creature);
+        if (followers != null){
+            followers.remove(creature);
+        }
     }
 
     public List<Creature> getFollowers() {
-        return new ArrayList<Creature>(followers);
+        if (followers != null){
+            return new ArrayList<Creature>(followers);
+        } else {
+            return null;
+        }
+
     }
 
     @Override

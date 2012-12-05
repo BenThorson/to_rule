@@ -5,6 +5,7 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.MapConstants;
+import com.bthorson.torule.player.Player;
 import com.bthorson.torule.town.Building;
 import com.bthorson.torule.town.Town;
 import com.google.gson.Gson;
@@ -41,7 +42,7 @@ public class EntityManager {
     private Faction goblinFaction;
 
 
-    private Creature player;
+    private Player player;
     private static EntityManager INSTANCE = new EntityManager();
 
     public static void destroy(){
@@ -56,9 +57,6 @@ public class EntityManager {
         toRemove = new ArrayList<Creature>();
         towns = new HashMap<Point, Town>();
         factions = new ArrayList<Faction>();
-        aggressiveAnimalFaction = new Faction("aggressiveAnimal");
-        passiveAnimalFaction = new Faction("passiveAnimal");
-        goblinFaction = new Faction("goblin");
     }
 
 
@@ -69,8 +67,13 @@ public class EntityManager {
         return INSTANCE;
     }
 
-    public void setPlayer(Creature creature){
+    public void setPlayer(Player creature){
         this.player = creature;
+    }
+
+
+    public Player getPlayer() {
+        return player;
     }
 
     public void addCreature(Creature creature){
@@ -148,7 +151,9 @@ public class EntityManager {
     public void creatureDead(Creature creature){
 
         toRemove.add(creature);
-        EntityManager.getInstance().addFreeItem(new Corpse(creature));
+        Corpse corpse = new Corpse(creature);
+        addFreeItem(corpse);
+        fullCatalog.put(corpse.id, corpse);
     }
 
     public boolean isPlayer(Creature creature) {
@@ -214,7 +219,7 @@ public class EntityManager {
         return new ArrayList<Town>(towns.values());
     }
 
-    private Entity getById(int id){
+    public Entity getById(int id){
         return fullCatalog.get(id);
     }
 
@@ -232,33 +237,21 @@ public class EntityManager {
         return itemMap;
     }
 
-    public void setupFactions() {
-        factions.add(aggressiveAnimalFaction);
-        fullCatalog.put(aggressiveAnimalFaction.id, aggressiveAnimalFaction);
-        factions.add(passiveAnimalFaction);
-        fullCatalog.put(passiveAnimalFaction.id, passiveAnimalFaction);
-        factions.add(goblinFaction);
-        fullCatalog.put(goblinFaction.id, goblinFaction);
-
-        for (Town town : getTowns()){
-            Faction faction = town.getFaction();
-            aggressiveAnimalFaction.addEnemyFaction(town.getFaction());
-            town.getFaction().addEnemyFaction(aggressiveAnimalFaction);
-            town.getFaction().addEnemyFaction(goblinFaction);
-            goblinFaction.addEnemyFaction(town.getFaction());
-            fullCatalog.put(faction.id, faction);
-            factions.add(faction);
-        }
-            aggressiveAnimalFaction.addEnemyFaction(goblinFaction);
-            goblinFaction.addEnemyFaction(aggressiveAnimalFaction);
-
-        for (Faction faction : factions){
-        }
-
-
-    }
-
     public Faction getAggressiveAnimalFaction() {
         return aggressiveAnimalFaction;
+    }
+
+    public void setFactions(List<Faction> factns) {
+        this.factions = factns;
+        for (Faction faction : factns){
+            if (faction.getName().equals("aggressiveAnimal")){
+                aggressiveAnimalFaction = faction;
+            } else if (faction.getName().equals("passiveAnimal")) {
+                passiveAnimalFaction = faction;
+            } else if (faction.getName().equals("goblin")){
+                goblinFaction = faction;
+            }
+            fullCatalog.put(faction.id, faction);
+        }
     }
 }

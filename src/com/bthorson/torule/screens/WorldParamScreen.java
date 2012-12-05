@@ -4,6 +4,7 @@ import asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.worldgen.WorldGenParams;
+import com.bthorson.torule.worldgen.WorldGenerator;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -80,7 +81,7 @@ public class WorldParamScreen implements Screen {
                 if (s != null){
                     params.setPlayerName(s);
                     World.destroy();
-                    World.getInstance().loadWorld(params);
+                    new WorldGenerator().generateWorld(params);
                     return new PlayScreen();
                 }
         }
