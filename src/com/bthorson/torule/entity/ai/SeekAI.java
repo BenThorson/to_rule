@@ -5,6 +5,7 @@ import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
 import com.bthorson.torule.entity.ai.pathing.PathTo;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.World;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -33,32 +34,35 @@ public class SeekAI extends CreatureAI{
 
     @Override
     public CreatureAI execute() {
-        target = getTarget();
         if (target == null || target.dead()){
             WanderAI ai = new WanderAI(self, World.NW_CORNER, World.getInstance().seCorner());
             return ai;
         }
 
-        targetPosition = target.position().add(target.getHeading().point());
+        targetPosition = target.position();
 
         if (!self.canSee(target.position())){
-            return this;
-        }
-        if(target.equals(targetPosition)){
-            if (path.empty()){
-                path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition);
+            if (!path.empty()){
+                self.move(path.pop());
             }
-            Point nextMove = path.peek();
-            if (nextMove != null && World.getInstance().isTravelable(nextMove) || nextMove.equals(targetPosition)){
-                if (self.move(nextMove.subtract(self.position()))){
-                    path.pop();
-                } else if (!nextMove.equals(targetPosition)) {
-                    if (++stuckCount % stuckCountMax == 0){
-                        calcAndExecutePath();
-                    }
+        }
+        if (path.empty()){
+            path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition);
+        }
+
+        Point nextMove = path.peek();
+        if (nextMove != null && PointUtil.getDiagDist(nextMove, targetPosition) <
+                                PointUtil.getDiagDist(self.position(), targetPosition) &&
+                (World.getInstance().isTravelable(nextMove) ||
+                        nextMove.equals(targetPosition))){
+            if (self.move(nextMove.subtract(self.position()))){
+                path.pop();
+            } else if (!nextMove.equals(targetPosition)) {
+                if (++stuckCount % stuckCountMax == 0){
+                    calcAndExecutePath();
                 }
             }
-        } else {           //todo optimize by only modifying the end of the path instead of recalcing
+        } else {
             calcAndExecutePath();
         }
         return this;
