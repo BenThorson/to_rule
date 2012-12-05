@@ -80,13 +80,17 @@ public class Building extends PhysicalEntity {
         return toRet;
     }
 
+    public void setBuildingType(BuildingType buildingType) {
+        this.buildingType = buildingType;
+    }
+
     @Override
     public JsonElement serialize() {
         Gson gson = new Gson();
         JsonObject obj = super.serialize().getAsJsonObject();
         obj.add("nwCorner", gson.toJsonTree(nwCorner));
         obj.add("seCorner", gson.toJsonTree(seCorner));
-        obj.addProperty("building", buildingType.name());
+        obj.addProperty("buildingType", buildingType.name());
         if (owner != null){
             obj.addProperty("owner", owner.id);
         }

@@ -46,6 +46,7 @@ public abstract class PhysicalEntity extends Entity {
         obj.add("position", gson.toJsonTree(position()));
         obj.addProperty("glyph", glyph());
         obj.addProperty("color", color().getRGB());
+        obj.addProperty("templateName", templateName);
         return obj;
     }
 }

@@ -1,12 +1,21 @@
 package com.bthorson.torule.persist;
 
+import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.EntityManager;
+import com.bthorson.torule.entity.Faction;
+import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.World;
+import com.bthorson.torule.player.Player;
+import com.bthorson.torule.town.Building;
+import com.bthorson.torule.town.Town;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,19 +32,22 @@ public class LoadAction {
             WorldParser parser = new WorldParser();
             parser.parse(new BufferedReader(new FileReader(prefix + "/world.wo")));
 
-//            JsonElement element = new JsonParser().parse(new JsonReader(new FileReader()))
-//            Bu writer = new PrintWriter(directory.getPath() + "/" + name + ".wo");
-//            World.getInstance().serialize(writer);
-//            writer.close();
-//
-//            Map<String, JsonArray> lists = EntityManager.getInstance().serialize();
-//            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//
-//            for (String key : lists.keySet()){
-//                writer = new PrintWriter(directory.getPath() + "\\" + key + ".eo");
-//                writer.append(gson.toJson(lists.get(key)));
-//                writer.close();
-//            }
+
+            Map<Integer, JsonObjectEntityPair<Building>> buildings = new BuildingDeserializer().deserialize(new File(prefix + "/Building.eo"));
+            Map<Integer, JsonObjectEntityPair<Town>> towns = new TownDeserializer().deserialize(new File(prefix + "/Town.eo"));
+            Map<Integer, JsonObjectEntityPair<Creature>> creatures = new CreatureDeserializer().deserialize(new File(prefix + "/Creature.eo"));
+            Map<Integer, JsonObjectEntityPair<Player>> players = new PlayerDeserializer().deserialize(new File(prefix + "/Player.eo"));
+            Map<Integer, JsonObjectEntityPair<Item>> items = new ItemDeserializer().deserialize(new File(prefix + "/Item.eo"));
+            Map<Integer, JsonObjectEntityPair<Faction>> factions = new FactionDeserializer().deserialize(new File(prefix + "/Faction.eo"));
+
+            for (Integer key : buildings.keySet()){
+
+            }
+
+            System.out.println();
+
+
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
