@@ -20,6 +20,7 @@ import com.bthorson.torule.town.Town;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import static com.bthorson.torule.map.MapConstants.LOCAL_SIZE_POINT;
 import static com.bthorson.torule.map.MapConstants.LOCAL_SIZE_X;
@@ -33,12 +34,60 @@ import static com.bthorson.torule.map.MapConstants.LOCAL_SIZE_Y;
 public class CreatureGenerator {
 
     public void createHostileMobs(){
+
+        //todo ripe for refactoring
         Point localAmounts = World.getInstance().seCorner().divide(LOCAL_SIZE_POINT);
+        Random random = new Random();
         for (int x = 0; x < localAmounts.x(); x++){
             for (int y = 0; y < localAmounts.y(); y++) {
                 Point local = new Point(x,y);
-                if (LocalType.WILDERNESS.equals(World.getInstance().getLocal(local).getType())) {
-                    for (int i = 0; i < 20; i++){
+                int distToNearestTown = getTownDistance(local);
+                if (distToNearestTown == 0){
+                    continue;
+                }
+                else if (distToNearestTown == 1){
+                    int numGentle = random.nextInt(15);
+                    for (int i = 0; i < numGentle; i++){
+                        Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
+                        Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                        if (!World.getInstance().isOccupied(candidate)){
+                            Creature cow = CreatureFactory.INSTANCE.createCreature("cow", candidate);
+                            cow.setAi(new WanderAI(cow, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT)));
+                            cow.setFaction(EntityManager.getInstance().getPassiveAnimalFaction());
+                        }  else {
+                            i--;
+                        }
+                    }
+                }
+                else if (distToNearestTown == 2){
+                    int numGentle = random.nextInt(7);
+                    for (int i = 0; i < numGentle; i++){
+                        Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
+                        Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                        if (!World.getInstance().isOccupied(candidate)){
+                            Creature cow = CreatureFactory.INSTANCE.createCreature("cow", candidate);
+                            cow.setAi(new WanderAI(cow, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT)));
+                            cow.setFaction(EntityManager.getInstance().getPassiveAnimalFaction());
+                        }  else {
+                            i--;
+                        }
+                    }
+                    int numAggressive = random.nextInt(7);
+                    for (int i = 0; i < numAggressive; i++){
+                        Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
+                        Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                        if (!World.getInstance().isOccupied(candidate)){
+                            Creature boar = CreatureFactory.INSTANCE.createCreature("boar", candidate);
+                            boar.setAi(new WanderAI(boar, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT)));
+                            boar.setFaction(EntityManager.getInstance().getPassiveAnimalFaction());
+                        }  else {
+                            i--;
+                        }
+                    }
+                }
+                else if (distToNearestTown == 3){
+                    int numAggressive = random.nextInt(10);
+                    for (int i = 0; i < numAggressive; i++){
                         Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
                         Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
                         if (!World.getInstance().isOccupied(candidate)){
@@ -49,9 +98,34 @@ public class CreatureGenerator {
                             i--;
                         }
                     }
+                } else {
+                    int numAggressive = random.nextInt(distToNearestTown * 3);
+                     for (int i = 0; i < numAggressive; i++){
+                         Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
+                         Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                         if (!World.getInstance().isOccupied(candidate)){
+                             Creature honeyBadger = CreatureFactory.INSTANCE.createCreature("honeyBadger", candidate);
+                             honeyBadger.setAi(new WanderAI(honeyBadger, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT)));
+                             honeyBadger.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
+                         }  else {
+                             i--;
+                         }
+                     }
+                    
                 }
             }
         }
+    }
+
+    private int getTownDistance(Point local) {
+        int min = Integer.MAX_VALUE;
+        for (Town town : EntityManager.getInstance().getTowns()){
+            int dist = PointUtil.manhattanDist(town.getRegionalPosition(), local);
+            if (dist < min){
+                min = dist;
+            }
+        }
+        return min;
     }
 
 
@@ -62,7 +136,6 @@ public class CreatureGenerator {
         player.setName(playerName);
         EntityManager.getInstance().setPlayer(player);
     }
-
 
     public void makeTownsmen(Town town, int numberOfTownsmen){
         for (int i = 0; i < numberOfTownsmen; i++){
@@ -75,6 +148,13 @@ public class CreatureGenerator {
                 i--;
             }
         }
+    }
+
+    public void createMayor(Town town){
+        Point nwCorner = town.getRegionalPosition().multiply(MapConstants.LOCAL_SIZE_POINT);
+        Creature mayor = CreatureFactory.INSTANCE.createCreature("mayor", nwCorner.add(84, 97));
+        mayor.setAi(new GuardAI(mayor, mayor.position()));
+        mayor.setFaction(town.getFaction());
     }
 
     public void makePuppies(Town town, int numberOfTownsmen){
@@ -108,30 +188,43 @@ public class CreatureGenerator {
 
         Point nwCorner = town.getRegionalPosition().multiply(MapConstants.LOCAL_SIZE_POINT);
         String templateName = "city.guard";
-        Point westGate = new Point(0, LOCAL_SIZE_Y/2).add(nwCorner);
-        createGateGuards(town, westGate, templateName, true);
-        Point eastGate = new Point(LOCAL_SIZE_X - 1, LOCAL_SIZE_Y/2).add(nwCorner);
-        createGateGuards(town, eastGate, templateName, true);
-        Point northGate = new Point(LOCAL_SIZE_X / 2, 0).add(nwCorner);
-        createGateGuards(town, northGate, templateName, false);
-        Point southGate = new Point(LOCAL_SIZE_X / 2, LOCAL_SIZE_Y - 1).add(nwCorner);
-        createGateGuards(town, southGate, templateName, false);
 
+        for (Direction d : Direction.values()){
+            if (town.getGates().get(d) != null){
+                createGateGuards(town, town.getGates().get(d).add(nwCorner),
+                                 templateName,
+                                 Arrays.asList(Direction.EAST, Direction.WEST).contains(d));
+            }
+        }
         createPatrollers(town, templateName);
+
+        createKeepGuards(town, templateName, nwCorner);
 
     }
 
-    private void createGateGuards(Town town, Point gate, String templateName, boolean eastWest) {
-        Point offset1 = eastWest ? new Point(0,-2) : new Point(-2, 0);
-        Point offset2 = eastWest ? new Point(0,1) : new Point(1, 0);
-        if (World.getInstance().tile(gate).equals(Tile.ROAD)){
-            Creature guard1 = CreatureFactory.INSTANCE.createCreature(templateName, gate.add(offset1));
-            Creature guard2 = CreatureFactory.INSTANCE.createCreature(templateName, gate.add(offset2));
+    private void createKeepGuards(Town town, String templateName, Point offset) {
+        Point row1 = offset.add(82, 74);
+        Point row2 = offset.add(86, 74);
+
+        for (int i = 0; i < 20; i+= 2){
+            Creature guard1 = CreatureFactory.INSTANCE.createCreature(templateName, row1.add(0,i));
+            Creature guard2 = CreatureFactory.INSTANCE.createCreature(templateName, row2.add(0,i));
             guard1.setAi(new GuardAI(guard1, guard1.position()));
             guard1.setFaction(town.getFaction());
             guard2.setAi(new GuardAI(guard2, guard2.position()));
             guard2.setFaction(town.getFaction());
         }
+    }
+
+    private void createGateGuards(Town town, Point gate, String templateName, boolean eastWest) {
+        Point offset1 = eastWest ? new Point(0,-2) : new Point(-2, 0);
+        Point offset2 = eastWest ? new Point(0,1) : new Point(1, 0);
+        Creature guard1 = CreatureFactory.INSTANCE.createCreature(templateName, gate.add(offset1));
+        Creature guard2 = CreatureFactory.INSTANCE.createCreature(templateName, gate.add(offset2));
+        guard1.setAi(new GuardAI(guard1, guard1.position()));
+        guard1.setFaction(town.getFaction());
+        guard2.setAi(new GuardAI(guard2, guard2.position()));
+        guard2.setFaction(town.getFaction());
     }
 
     private void createPatrollers(Town town, String templateName){
@@ -145,6 +238,7 @@ public class CreatureGenerator {
                 nwCorner.add(new Point(84, 50)),
                 nwCorner.add(new Point(60, 50)),
                 nwCorner.add(new Point(60, 60)),
+                nwCorner.add(new Point(39, 60)),
                 nwCorner.add(new Point(39, 39)),
                 nwCorner.add(new Point(60, 39)),
                 nwCorner.add(new Point(48, 48)));

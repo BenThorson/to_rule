@@ -2,8 +2,6 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 /**
  * User: ben
@@ -18,10 +16,12 @@ public class AggroAI extends SeekAI {
     }
 
     @Override
-    public void interact(Entity entity) {
+    public boolean interact(Entity entity) {
         if (entity == target){
             self.attack((Creature)entity);
+            return true;
         }
+        return false;
     }
 
 }

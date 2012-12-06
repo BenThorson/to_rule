@@ -25,7 +25,7 @@ public class NearestComparator implements Comparator<Creature> {
         int diff = PointUtil.getDiagDist(point, o1.position()) -
                 PointUtil.getDiagDist(point, o2.position());
         if (diff == 0) {
-            return PointUtil.diagMoves(point, o1.position()) - PointUtil.diagMoves(point, o2.position());
+            return PointUtil.getDiagDist(point, o1.position()) - PointUtil.getDiagDist(point, o2.position());
         } else {
             return diff;
         }

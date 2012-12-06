@@ -18,6 +18,8 @@ public enum ItemFactory {
 
     INSTANCE;
 
+    private Gson gson = new Gson();
+
     private Map<String, JsonObject> catalog = new HashMap<String, JsonObject>();
 
     private ItemFactory(){
@@ -39,7 +41,15 @@ public enum ItemFactory {
 
     public Item createItemOfId(String itemId){
         JsonObject obj = catalog.get(itemId);
-        Item item = new Gson().fromJson(obj, Item.class);
+        Item item = gson.fromJson(obj, Item.class);
+        EntityManager.getInstance().addItem(item);
+        return item;
+    }
+
+    public Item createGoldDrop(int quantity){
+        JsonObject obj = catalog.get("gold");
+        Item item = gson.fromJson(obj, Item.class);
+        item.getAttributes().put("quantity", quantity);
         EntityManager.getInstance().addItem(item);
         return item;
     }

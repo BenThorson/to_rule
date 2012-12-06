@@ -4,6 +4,7 @@ import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.Faction;
 import com.bthorson.torule.entity.NameGenerator;
+import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.Local;
 import com.bthorson.torule.persist.SerializeUtils;
@@ -13,6 +14,7 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Ben Thorson
@@ -26,6 +28,7 @@ public class Town extends Entity {
     private Point regionalPosition;
     private Faction faction;
     private Local local;
+    private Map<Direction, Point> gates;
 
     public Town(){
         super(NameGenerator.getInstance().genTownName());
@@ -76,6 +79,14 @@ public class Town extends Entity {
         return new ArrayList<Building>(buildings);
     }
 
+    public Map<Direction, Point> getGates() {
+        return gates;
+    }
+
+    public void setGates(Map<Direction, Point> gates) {
+        this.gates = gates;
+    }
+
     @Override
     public JsonElement serialize() {
         Gson gson = new Gson();
@@ -84,6 +95,7 @@ public class Town extends Entity {
         obj.add("wealthLevel", gson.toJsonTree(wealthLevel));
         obj.add("regionalPosition", gson.toJsonTree(regionalPosition));
         obj.addProperty("faction", faction.id);
+        obj.add("gates", gson.toJsonTree(gates));
         return obj;
     }
 }

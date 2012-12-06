@@ -8,6 +8,8 @@ import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.Local;
 import com.bthorson.torule.map.LocalBuilder;
 import com.bthorson.torule.map.LocalType;
+import com.bthorson.torule.map.MapConstants;
+import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.town.Building;
 import com.bthorson.torule.town.BuildingType;
@@ -19,8 +21,10 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -46,11 +50,17 @@ public class WorldGenerator implements WorldLoader {
 
     public void generateWorld(WorldGenParams params){
 
+        System.out.println("attempting to destroy the entity manager");
         EntityManager.destroy();
+        System.out.println("building new map");
         createMap(params);
+        System.out.println("attempting to destroy current world");
         World.destroy();
+        System.out.println("loading new map into new world");
         World.getInstance().startWorld(this);
+        System.out.println("creating creatures for world");
         populateWorld(params);
+        System.out.println("starting the entity manager");
         EntityManager.getInstance().start();
 
 
@@ -88,6 +98,7 @@ public class WorldGenerator implements WorldLoader {
                 generator.createPlayer(params.getPlayerName(), town);
             }
 
+            generator.createMayor(town);
             generator.createMilitia(town);
 
             for (Building building : town.getBuildings()){
@@ -219,6 +230,34 @@ public class WorldGenerator implements WorldLoader {
         lastDirection = cursorDirection;
         cursorDirection = null;
         buildConnectingRoad(lastDirection, cursorDirection, cursor);
+        
+        for (Town town : towns){
+            determineGates(town);
+        }
+    }
+
+    private void determineGates(Town town) {
+        
+        Map<Direction, Point> directions = new EnumMap<Direction, Point>(Direction.class);
+        Point westGate = new Point(0, LOCAL_SIZE_Y/2);
+        Point eastGate = new Point(LOCAL_SIZE_X - 1, LOCAL_SIZE_Y/2);
+        Point northGate = new Point(LOCAL_SIZE_X / 2, 0);
+        Point southGate = new Point(LOCAL_SIZE_X / 2, LOCAL_SIZE_Y - 1);
+        Local local = locals[town.getRegionalPosition().x()][town.getRegionalPosition().y()];
+        if(local.getTiles()[westGate.x()][westGate.y()].equals(Tile.ROAD)){
+            directions.put(Direction.WEST, westGate);
+        }
+        if(local.getTiles()[eastGate.x()][eastGate.y()].equals(Tile.ROAD)){
+            directions.put(Direction.EAST, eastGate);
+        }
+        if(local.getTiles()[northGate.x()][northGate.y()].equals(Tile.ROAD)){
+            directions.put(Direction.NORTH, northGate);
+        }
+        if(local.getTiles()[southGate.x()][southGate.y()].equals(Tile.ROAD)){
+            directions.put(Direction.SOUTH, southGate);
+        }
+        town.setGates(directions);
+        
     }
 
     private void buildConnectingRoad(Direction lastDirection, Direction cursorDirection, Point cursor) {

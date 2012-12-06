@@ -20,7 +20,8 @@ public class DeadAi extends CreatureAI {
     }
 
     @Override
-    public void interact(Entity entity) {
+    public boolean interact(Entity entity) {
+        return false;
     }
 
     @Override

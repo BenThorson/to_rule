@@ -67,8 +67,24 @@ public class Point {
         return new Point(x + other.x, y + other.y, other.z);
     }
 
+    public Point add(int x, int y){
+        return new Point(this.x + x, this.y + y);
+    }
+
+    public Point add(int d){
+        return new Point(x + d, y + d);
+    }
+
     public Point subtract(Point other){
         return new Point(x-other.x, y() -other.y);
+    }
+
+    public Point subtract(int x, int y){
+        return new Point(this.x - x, this.y - y);
+    }
+
+    public Point subtract(int d){
+        return new Point(x - d, y - d);
     }
 
     public boolean withinRect(Point topLeft, Point bottomRight){
@@ -107,8 +123,24 @@ public class Point {
         return new Point(x*other.x, y*other.y);
     }
 
+    public Point multiply(int x, int y){
+        return new Point(this.x * x, this.y * y);
+    }
+
+    public Point multiply(int d){
+        return new Point(x * d, y * d);
+    }
+
     public Point divide(Point other) {
         return new Point(x/other.x, y/other.y);
+    }
+
+    public Point divide(int x, int y){
+        return new Point(this.x / x, this.y / y);
+    }
+
+    public Point divide(int d){
+        return new Point(x / d, y / d);
     }
 
     public Point invertY() {
@@ -117,5 +149,27 @@ public class Point {
 
     public Point cloneDeep() {
         return new Point(x,y);
+    }
+
+    public Point normalize() {
+        int retx = x;
+        int rety = y;
+        if (x > 1){
+            retx = 1;
+        }
+        if (x < -1){
+            retx = -1;
+        }
+        if (y > 1){
+            rety = 1;
+        }
+        if (y < -1){
+            rety = -1;
+        }
+        return new Point(retx, rety);
+    }
+
+    public int absSumOfValues() {
+        return Math.abs(x) + Math.abs(y);
     }
 }

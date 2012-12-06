@@ -208,6 +208,59 @@
             "name":"wolf meat",
             "price":20,
             "weight":4
+        },
+        {
+            "itemId":"hide.cow",
+            "type":"LOOT",
+            "name":"cow hide",
+            "price":100,
+            "weight":40
+        },
+        {
+            "itemId":"meat.cow",
+            "type":"LOOT",
+            "name":"cow meat",
+            "price":40,
+            "weight":4
+        },
+        {
+            "itemId":"tusk.boar",
+            "type":"LOOT",
+            "name":"boar tusk",
+            "price":125,
+            "weight":40
+        },
+        {
+            "itemId":"meat.boar",
+            "type":"LOOT",
+            "name":"boar meat",
+            "price":40,
+            "weight":4
+        },
+        {
+            "itemId":"hide.badger",
+            "type":"LOOT",
+            "name":"badger hide",
+            "price":100,
+            "weight":40
+        },
+        {
+            "itemId":"meat.badger",
+            "type":"LOOT",
+            "name":"badger meat",
+            "price":40,
+            "weight":4
+        },
+        {
+            "itemId":"gold",
+            "type":"LOOT",
+            "name":"gold",
+            "price":"0",
+            "weight":"0",
+            "attributes":{
+                "quantity":"0"
+            }
         }
+            
     ]
 }

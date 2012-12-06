@@ -18,28 +18,44 @@ import java.util.Stack;
  * Date: 12/5/12
  * Time: 6:04 PM
  */
-public class MoveToAI extends CreatureAI {
+public class MoveToAI extends AggroableAI {
 
     private Point point;
     private CreatureAI previous;
     private Stack<Point> path = new Stack<Point>();
-    private PathTo pathTo = new AStarPathTo();
+    private PathTo pathTo;
+    private boolean shouldAggro;
+    private int stuckCount = 0;
+    private int stuckCountMax = 5;
 
     public MoveToAI(Point point, CreatureAI previous) {
+        this(point, previous, false);
+    }
+
+    public MoveToAI(Point point, CreatureAI previous, boolean shouldAggro) {
         super(previous.self);
         this.point = point;
         this.previous = previous;
-        path = pathTo.buildPath(World.getInstance(), self.position(), point);
+        pathTo = new AStarPathTo();
+        this.shouldAggro = shouldAggro;
     }
 
     @Override
     public CreatureAI execute() {
 
+        if (shouldAggro) {
+
+            CreatureAI ai = super.execute();
+            if (ai instanceof AggroAI) {
+                return ai;
+            }
+        }
+
         if (self.position().equals(point)) {
             return previous;
         }
 
-        if (path.empty()) {
+        if (path == null || path.empty()) {
             path = pathTo.buildPath(World.getInstance(), self.position(), point);
         }
 
@@ -47,8 +63,15 @@ public class MoveToAI extends CreatureAI {
         if (nextMove != null) {
             Point delta = nextMove.subtract(self.position());
             if (World.getInstance().isTravelable(nextMove) || PointUtil.getDiagDist(self.position(), point) != 1) {
-                self.move(delta);
-                path.pop();
+                self.move(delta.normalize());
+                if (self.position().equals(nextMove)) {
+                    path.pop();
+                } else if (!nextMove.equals(point)) {
+                    if (++stuckCount % stuckCountMax == 0) {
+                        path = pathTo.buildPath(World.getInstance(), self.position(), point);
+                        return this;
+                    }
+                }
             } else {
                 Direction[] alternates = Direction.directionOf(delta).neighboringDirections();
                 if (!World.getInstance().isOccupied(alternates[0].point())) {
@@ -64,14 +87,15 @@ public class MoveToAI extends CreatureAI {
     }
 
     @Override
-    public void interact(Entity entity) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public boolean interact(Entity entity) {
+        return false;
     }
 
     @Override
     public JsonElement serialize() {
         Gson gson = new Gson();
         JsonObject obj = new JsonObject();
+        obj.addProperty("name", getClass().getSimpleName());
         obj.add("point", gson.toJsonTree(point));
         obj.add("previous", previous.serialize());
         return obj;

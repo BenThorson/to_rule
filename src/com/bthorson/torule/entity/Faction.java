@@ -22,11 +22,17 @@ public class Faction extends Entity{
     }
 
     public Set<Faction> getEnemies() {
-        return enemies;
+        if (enemies == null){
+            enemies = new HashSet<Faction>();
+        }
+        return new HashSet<Faction>(enemies);
     }
 
     public Set<Faction> getAllies() {
-        return allies;
+        if (allies == null){
+            allies = new HashSet<Faction>();
+        }
+        return new HashSet<Faction>(allies);
     }
 
     public void addEnemyFaction(Faction enemy){

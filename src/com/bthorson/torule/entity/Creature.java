@@ -11,6 +11,7 @@ import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Line;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
+import com.bthorson.torule.item.ItemFactory;
 import com.bthorson.torule.item.ItemType;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
@@ -36,6 +37,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
 
     private int corpseGlyph;
     private long lastUpdate;
+    private boolean hasMovedThisUpdate;
 
     private Creature leader;
     private Group group;
@@ -222,6 +224,14 @@ public class Creature extends PhysicalEntity implements AiControllable {
 
     public boolean move(Point delta){
 
+        if (hasMovedThisUpdate){
+            throw new RuntimeException("already attempted a move update");
+        }
+
+        if (Math.abs(delta.x()) > 1 || Math.abs(delta.y()) > 1){
+            throw new RuntimeException("too large of a move");
+        }
+
         if (Point.BLANK.equals(delta)){
             return false;
         }
@@ -241,23 +251,29 @@ public class Creature extends PhysicalEntity implements AiControllable {
 
         Creature other = world.creature(moveTo);
         if (other != null && !other.equals(this)){
-            ai.interact(other);
-            return false;
+            hasMovedThisUpdate = ai.interact(other);
+            return hasMovedThisUpdate;
         } else if (world.tile(moveTo).passable()){
             position = moveTo;
-            return true;
+            hasMovedThisUpdate = true;
         }
-        return false;
+        return hasMovedThisUpdate;
     }
 
 
     public void update(long turnCounter) {
+
+        if (lastUpdate == turnCounter){
+            throw new RuntimeException("already attempted an update this turn");
+        }
+
         hpRegenCount = ++hpRegenCount % HP_REGEN_RESET;
         if (hpRegenCount == 0){
             adjustHitpoint(hpRegenRate);
         }
         lastUpdate = turnCounter;
         ai = ai.execute();
+        hasMovedThisUpdate = false;
     }
 
     public long getLastUpdate() {
@@ -319,16 +335,20 @@ public class Creature extends PhysicalEntity implements AiControllable {
         }
         hitpoints += dHp;
         if (hitpoints <= 0){
-            hitpoints = 0;
-            dead = true;
-            ai = new DeadAi();
-            super.setGlyph(corpseGlyph);
-            dropLoot();
-            EntityManager.getInstance().creatureDead(this);
+            die();
         }
         if (hitpoints > maxHitpoints){
             hitpoints = maxHitpoints;
         }
+    }
+
+    private void die() {
+        hitpoints = 0;
+        dead = true;
+        ai = new DeadAi();
+        super.setGlyph(corpseGlyph);
+        dropLoot();
+        EntityManager.getInstance().creatureDead(this);
     }
 
     private void dropLoot() {
@@ -338,6 +358,10 @@ public class Creature extends PhysicalEntity implements AiControllable {
             inventory = new ArrayList<Item>();
         }
 
+        Item goldDrop = ItemFactory.INSTANCE.createGoldDrop(gold);
+        gold = 0;
+        EntityManager.getInstance().addFreeItem(goldDrop);
+
         for (Item item: inventory){
             if (random.nextBoolean()){
                 //puts it on the ground
@@ -345,7 +369,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
             } else {
                 //destroys it
                 removeItem(item);
-                EntityManager.getInstance().removeItem(item);
+                EntityManager.getInstance().destroyItem(item);
             }
         }
         List<Item> lootItems = CreatureFactory.INSTANCE.getLootDropsForCreature(templateName);
@@ -564,6 +588,12 @@ public class Creature extends PhysicalEntity implements AiControllable {
     }
 
     public void addItem(Item selectedItem) {
+
+        if (selectedItem.getName().equals("gold")){
+            gold += selectedItem.getAttributes().get("quantity");
+            EntityManager.getInstance().destroyItem(selectedItem);
+        }
+
         selectedItem.setOwnedBy(this);
         if (inventory == null){
             inventory = new ArrayList<Item>();

@@ -24,6 +24,18 @@
                     "mouth",
                     "claw"
             ]
+        },
+        {
+            "creature":"mammalGrazer",
+            "slots":[
+                    "hoof"
+            ]
+        },
+        {
+            "creature":"tuskedAnimal",
+            "slots":[
+                    "tusk"
+            ]
         }
     ]
 }

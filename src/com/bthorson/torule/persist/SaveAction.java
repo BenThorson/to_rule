@@ -68,7 +68,7 @@ public class SaveAction {
     public static void main(String[] args) {
         WorldGenParams params = new WorldGenParams();
         params.setNumCities(5);
-        params.setWorldSize(new Point(1000,1000));
+        params.setWorldSize(new Point(2000,2000));
         params.setPlayerName("Bob");
         new WorldGenerator().generateWorld(params);
         new SaveAction().save("blah");

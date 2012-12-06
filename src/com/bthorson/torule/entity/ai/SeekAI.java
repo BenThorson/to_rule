@@ -41,14 +41,15 @@ public class SeekAI extends CreatureAI{
             return previous;
         }
 
-        targetPosition = target.position();
 
-        if (!self.canSee(target.position())){
-            if (!path.empty()){
-                self.move(path.pop());
-            }
+        if (self.canSee(target.position())){
+            targetPosition = target.position();
         }
+
         if (path.empty()){
+            if (targetPosition.equals(self.position())){
+                return this;
+            }
             path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition);
         }
 
@@ -80,8 +81,8 @@ public class SeekAI extends CreatureAI{
     }
 
     @Override
-    public void interact(Entity entity) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public boolean interact(Entity entity) {
+        return false;
     }
 
     @Override

@@ -21,8 +21,8 @@ public class PointUtil {
 
     public static int diagMoves(Point p1, Point p2) {
         int xDiags = Math.abs(p1.x() - p2.x());
-        int yDiags = Math.abs(p2.x() - p2.y());
-        return xDiags + yDiags;
+        int yDiags = Math.abs(p1.y() - p2.y());
+        return Math.min(xDiags, yDiags);
     }
 
     public static int manhattanDist(Point p1, Point p2){

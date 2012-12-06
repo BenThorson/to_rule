@@ -23,17 +23,18 @@ public class PlayerAI extends CreatureAI {
     }
 
     @Override
-    public void interact(Entity entity) {
+    public boolean interact(Entity entity) {
         if (entity instanceof Creature) {
             Creature other = (Creature)entity;
             if (self.isHostile(other)){
                 self.attack(other);
+                return true;
             }
-//            else if (other.getLeader().equals(self)){
-//                            ((Creature)self).swapPlaces(other);
-//                        }
+            else if (other.getLeader() != null && other.getLeader().equals(self)){
+                            ((Creature)self).swapPlaces(other);
+            }
         }
-
+        return false;
     }
 
     @Override

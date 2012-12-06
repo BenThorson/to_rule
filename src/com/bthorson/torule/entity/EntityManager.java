@@ -173,7 +173,8 @@ public class EntityManager {
         fullCatalog.put(item.id, item);
     }
 
-    public void removeItem(Item item){
+    public void destroyItem(Item item){
+        freeItems.remove(item);
         fullCatalog.remove(item.id);
     }
 
@@ -259,6 +260,11 @@ public class EntityManager {
         locallyUpdate = nextLocalUpdate;
         lastCheckedPosition = player.position();
     }
+
+    public Faction getPassiveAnimalFaction() {
+        return passiveAnimalFaction;
+    }
+
 
     private class NewLocalUpdateAction implements Runnable {
 

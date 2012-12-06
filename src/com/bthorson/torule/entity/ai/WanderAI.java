@@ -2,11 +2,8 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
-import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
-import com.bthorson.torule.map.MapConstants;
-import com.bthorson.torule.map.World;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -22,7 +19,7 @@ public class WanderAI extends AggroableAI {
 
     private Point nwBound;
     private Point seBound;
-    public WanderAI(Creature self, Point nwBound, Point seBound){
+    public WanderAI(AiControllable self, Point nwBound, Point seBound){
         super(self);
         this.nwBound = nwBound;
         this.seBound = seBound;
@@ -67,8 +64,8 @@ public class WanderAI extends AggroableAI {
     }
 
     @Override
-    public void interact(Entity entity) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public boolean interact(Entity entity) {
+        return false;
     }
 
     @Override

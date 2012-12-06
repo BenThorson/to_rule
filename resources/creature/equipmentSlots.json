@@ -29,6 +29,16 @@
             "slotName":"claw",
             "itemType":"NONE",
             "itemPurpose":"OFFENSE"
+        },
+        {
+            "slotName":"hoof",
+            "itemType":"NONE",
+            "itemPurpose":"OFFENSE"
+        },
+        {
+            "slotName":"tusk",
+            "itemType":"NONE",
+            "itemPurpose":"OFFENSE"
         }
     ]
 }

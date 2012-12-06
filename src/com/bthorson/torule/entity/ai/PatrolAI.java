@@ -48,8 +48,9 @@ public class PatrolAI extends AggroableAI {
     public JsonElement serialize() {
         Gson gson = new Gson();
         JsonObject obj = new JsonObject();
+        obj.addProperty("name", getClass().getSimpleName());
         obj.addProperty("self", ((Entity)self).id);
-        obj.add("guardPoint", gson.toJsonTree(patrolPath));
+        obj.add("patrolPath", gson.toJsonTree(patrolPath));
         obj.addProperty("current", current);
         return obj;
     }

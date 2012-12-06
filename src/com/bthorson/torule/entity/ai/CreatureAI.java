@@ -29,7 +29,7 @@ public abstract class CreatureAI {
 
     public abstract CreatureAI execute();
 
-    public abstract void interact(Entity entity);
+    public abstract boolean interact(Entity entity);
 
     public abstract JsonElement serialize();
 }

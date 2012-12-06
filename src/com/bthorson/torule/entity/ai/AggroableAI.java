@@ -11,7 +11,7 @@ import com.google.gson.JsonElement;
  */
 public abstract class AggroableAI extends CreatureAI {
 
-    public AggroableAI(Creature self) {
+    public AggroableAI(AiControllable self) {
         super(self);
     }
 
@@ -27,8 +27,8 @@ public abstract class AggroableAI extends CreatureAI {
     }
 
     @Override
-    public void interact(Entity entity) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public boolean interact(Entity entity) {
+        return false;
     }
 
     @Override

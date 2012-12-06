@@ -8,7 +8,6 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,13 +85,15 @@ public class GroupFollowAI extends CreatureAI {
     }
 
     @Override
-    public void interact(Entity entity) {
+    public boolean interact(Entity entity) {
         if (entity instanceof Creature){
             Creature creat = (Creature)entity;
             if (self.isEnemy(creat)){
                 self.attack(creat);
+                return true;
             }
         }
+        return false;
 
     }
 

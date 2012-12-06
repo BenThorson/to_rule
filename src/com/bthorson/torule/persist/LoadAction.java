@@ -125,13 +125,14 @@ public class LoadAction {
             Creature creature = creatures.get(key).getEntity();
             JsonObject json = creatures.get(key).getJsonObject();
 
+            if(json.has("leader")){
+                creature.setLeader(getEntityOrNull(creatures, json.get("leader").getAsInt()));
+            }
+
             if (json.has("ai")){
                 creature.setAi(getAiAndInstantiate(json.get("ai").getAsJsonObject()));
             }
 
-            if(json.has("leader")){
-                creature.setLeader(getEntityOrNull(creatures, json.get("leader").getAsInt()));
-            }
             if(json.has("faction")){
                 creature.setFaction(getEntityOrNull(factions, json.get("faction").getAsInt()));
             }
@@ -208,9 +209,17 @@ public class LoadAction {
                                 getAiAndInstantiate(ai.get("previous").getAsJsonObject()));
         } else if ("PatrolAI".equalsIgnoreCase(name)){
             return new PatrolAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
-                                gson.fromJson(ai.get("patrolPath"), List.class), ai.get("current").getAsInt());
+                                deserializePointList(gson, ai.get("patrolPath").getAsJsonArray()), ai.get("current").getAsInt());
         }
         return null;
+    }
+
+    private List<Point> deserializePointList(Gson gson, JsonArray array) {
+        List<Point> pts = new ArrayList<Point>();
+        for (JsonElement element : array){
+            pts.add(gson.fromJson(element, Point.class));
+        }
+        return pts;
     }
 
     private void relinkTowns() {

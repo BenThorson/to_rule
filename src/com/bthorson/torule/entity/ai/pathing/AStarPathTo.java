@@ -23,14 +23,14 @@ public class AStarPathTo implements PathTo {
         List<Node> closedList = new ArrayList<Node>();
         PriorityQueue<Node> openList = new PriorityQueue<Node>(PointUtil.getDiagDist(start, target) * PointUtil.getDiagDist(start, target) + 1,
                 new NodeCompare());
-
+        int maxOpenList = 0;
         openList.add(new Node(start));
 
         while (!openList.isEmpty()){
 
             Node current = openList.poll();
             if (current.getPnt().equals(target)){
-//                System.out.println("built path");
+                System.out.println(String.format("built path ending with %d,%d.  Open list size had a maximum of %d nodes", current.getPnt().x(), current.getPnt().y(), maxOpenList));
                 return constructPath(current);
             }
             closedList.add(current);
@@ -41,16 +41,21 @@ public class AStarPathTo implements PathTo {
                 if(closedList.contains(n)){
                     continue;
                 }
-                int g = current.getG() + world.tile(n.getPnt()).moveCost();
-                if (world.creature(n.getPnt()) != null){
+                int g = current.getG() + world.tile(n.getPnt()).moveCost() + PointUtil.diagMoves(n.getPnt(), target) * 2;
+                if (world.creature(n.getPnt()) != null && !n.getPnt().equals(target)){
                     g += 30;
                 }
 
                 if (!openList.contains(n)){
                     n.setParent(current);
                     n.setG(g);
-                    n.setH(PointUtil.diagMoves(n.getPnt(), target) * 4);
+                    int h = PointUtil.diagMoves(n.getPnt(), target) + PointUtil.getDiagDist(n.getPnt(), target);
+                    n.setH(h);
+//                    System.out.println(String.format("adding point = %d,%d g=%d h=%d parent %d,%d", n.getPnt().x(), n.getPnt().y(), n.getG(), n.getH(), n.getParent().getPnt().x(), n.getParent().getPnt().y() ));
                     openList.add(n);
+                    if (openList.size() > maxOpenList){
+                        maxOpenList = openList.size();
+                    }
                 } else if (g < current.getG()){
                     updateVals = true;
                 } else {
@@ -60,7 +65,10 @@ public class AStarPathTo implements PathTo {
                 if (updateVals){
                     n.setParent(current);
                     n.setG(g);
-                    n.setH(PointUtil.diagMoves(n.getPnt(), target) * 4);
+                    int h = PointUtil.diagMoves(n.getPnt(), target) + PointUtil.getDiagDist(n.getPnt(), target);
+                    n.setH(h);
+//                    System.out.println(String.format("updating point = %d,%d g=%d h=%d parent %d,%d", n.getPnt().x(), n.getPnt().y(), n.getG(), n.getH(), n.getParent(), n.getParent().getPnt().y()));
+
                 }
             }
         }

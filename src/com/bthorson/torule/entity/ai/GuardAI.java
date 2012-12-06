@@ -35,14 +35,15 @@ public class GuardAI extends AggroableAI {
     }
 
     @Override
-    public void interact(Entity entity) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public boolean interact(Entity entity) {
+        return true;
     }
 
     @Override
     public JsonElement serialize() {
         Gson gson = new Gson();
         JsonObject obj = new JsonObject();
+        obj.addProperty("name", getClass().getSimpleName());
         obj.addProperty("self", ((Entity)self).id);
         obj.add("guardPoint", gson.toJsonTree(guardPoint));
         return obj;
