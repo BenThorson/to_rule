@@ -123,6 +123,13 @@
                 "id":"intro.1",
                 "text":"(It's not talking...)"
             }
+        },
+        {
+            "profession":"soldier",
+            "introduction":{
+                "id":"intro.1",
+                "text":"Always on the lookout!"
+            }
         }
     ]
 }

@@ -26,7 +26,7 @@ public class PlayerAI extends CreatureAI {
     public void interact(Entity entity) {
         if (entity instanceof Creature) {
             Creature other = (Creature)entity;
-            if (shouldHostile(other)){
+            if (self.isHostile(other)){
                 self.attack(other);
             }
 //            else if (other.getLeader().equals(self)){

@@ -49,10 +49,10 @@ public class SelectScreen implements Screen{
             case KeyEvent.VK_NUMPAD8: cursor = cursor.add(Direction.NORTH.point()); break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_NUMPAD2: cursor = cursor.add(Direction.SOUTH.point()); break;
-            case KeyEvent.VK_NUMPAD7: cursor = cursor.add(Direction.NORTHWEST.point()); break;
-            case KeyEvent.VK_NUMPAD9: cursor = cursor.add(Direction.NORTHEAST.point()); break;
-            case KeyEvent.VK_NUMPAD1: cursor = cursor.add(Direction.SOUTHWEST.point()); break;
-            case KeyEvent.VK_NUMPAD3: cursor = cursor.add(Direction.SOUTHEAST.point()); break;
+            case KeyEvent.VK_NUMPAD7: cursor = cursor.add(Direction.NORTH_WEST.point()); break;
+            case KeyEvent.VK_NUMPAD9: cursor = cursor.add(Direction.NORTH_EAST.point()); break;
+            case KeyEvent.VK_NUMPAD1: cursor = cursor.add(Direction.SOUTH_WEST.point()); break;
+            case KeyEvent.VK_NUMPAD3: cursor = cursor.add(Direction.SOUTH_EAST.point()); break;
             default:
                 break;
         }

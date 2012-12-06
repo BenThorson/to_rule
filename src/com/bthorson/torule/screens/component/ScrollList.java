@@ -140,5 +140,8 @@ public class ScrollList {
         if (currentChoice >= items.size()){
             currentChoice--;
         }
+        if (lastDisplayed >= items.size()){
+            lastDisplayed--;
+        }
     }
 }

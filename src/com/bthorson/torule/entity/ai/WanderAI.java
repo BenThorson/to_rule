@@ -18,11 +18,11 @@ import java.util.Random;
  * Date: 9/7/12
  * Time: 8:51 PM
  */
-public class WanderAI extends CreatureAI {
+public class WanderAI extends AggroableAI {
 
     private Point nwBound;
     private Point seBound;
-    public WanderAI(AiControllable self, Point nwBound, Point seBound){
+    public WanderAI(Creature self, Point nwBound, Point seBound){
         super(self);
         this.nwBound = nwBound;
         this.seBound = seBound;
@@ -31,12 +31,11 @@ public class WanderAI extends CreatureAI {
     @Override
     public CreatureAI execute() {
 
-        Creature toAggro = getTarget();
-        if (toAggro != null){
-            AggroAI aggroAI = new AggroAI(self, toAggro);
-            aggroAI.execute();
-            return aggroAI;
+        CreatureAI ai = super.execute();
+        if (ai instanceof AggroAI){
+            return ai;
         }
+
         int check = new Random().nextInt(10);
 
         switch (check){

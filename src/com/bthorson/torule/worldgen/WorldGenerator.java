@@ -88,6 +88,8 @@ public class WorldGenerator implements WorldLoader {
                 generator.createPlayer(params.getPlayerName(), town);
             }
 
+            generator.createMilitia(town);
+
             for (Building building : town.getBuildings()){
                 if (BuildingType.isShop(building.getBuildingType())){
                     generator.createShopOwners(town, building);

@@ -23,8 +23,8 @@ public class InPlaceCommander implements MovementCommander {
         List<Point> points = new ArrayList<Point>(group.getFormation().getPositions());
         switch (dir){
             case NORTH:
-            case NORTHWEST:
-            case NORTHEAST:
+            case NORTH_WEST:
+            case NORTH_EAST:
                 Collections.sort(points, new SortByY());
                 break;
             case EAST:
@@ -32,8 +32,8 @@ public class InPlaceCommander implements MovementCommander {
                 Collections.reverse(points);
                 break;
             case SOUTH:
-            case SOUTHWEST:
-            case SOUTHEAST:
+            case SOUTH_WEST:
+            case SOUTH_EAST:
                 Collections.sort(points, new SortByY());
                 Collections.reverse(points);
                 break;

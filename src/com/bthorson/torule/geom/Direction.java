@@ -12,11 +12,21 @@ public enum Direction {
         public Direction opposite() {
             return SOUTH;
         }
+
+        @Override
+        public Direction[] neighboringDirections() {
+            return new Direction[]{NORTH_WEST,NORTH_EAST};
+        }
     },
-    NORTHEAST(1,-1){
+    NORTH_EAST(1,-1){
         @Override
         public Direction opposite() {
-            return SOUTHWEST;
+            return SOUTH_WEST;
+        }
+
+        @Override
+        public Direction[] neighboringDirections() {
+            return new Direction[]{NORTH, EAST};
         }
     },
     EAST(1,0){
@@ -24,11 +34,21 @@ public enum Direction {
         public Direction opposite() {
             return WEST;
         }
+
+        @Override
+        public Direction[] neighboringDirections() {
+            return new Direction[]{NORTH_EAST, SOUTH_EAST};
+        }
     },
-    SOUTHEAST(1,1){
+    SOUTH_EAST(1,1){
         @Override
         public Direction opposite() {
-            return NORTHWEST;
+            return NORTH_WEST;
+        }
+
+        @Override
+        public Direction[] neighboringDirections() {
+            return new Direction[]{SOUTH, EAST};
         }
     },
     SOUTH(0,1){
@@ -36,11 +56,21 @@ public enum Direction {
         public Direction opposite() {
             return NORTH;
         }
+
+        @Override
+        public Direction[] neighboringDirections() {
+            return new Direction[]{SOUTH_EAST, SOUTH_WEST};
+        }
     },
-    SOUTHWEST(-1,1){
+    SOUTH_WEST(-1,1){
         @Override
         public Direction opposite() {
-            return NORTHEAST;
+            return NORTH_EAST;
+        }
+
+        @Override
+        public Direction[] neighboringDirections() {
+            return new Direction[]{SOUTH, WEST};
         }
     },
     WEST(-1,0){
@@ -48,11 +78,21 @@ public enum Direction {
         public Direction opposite() {
             return EAST;
         }
+
+        @Override
+        public Direction[] neighboringDirections() {
+            return new Direction[]{SOUTH_WEST, NORTH_WEST};
+        }
     },
-    NORTHWEST(-1,-1){
+    NORTH_WEST(-1,-1){
         @Override
         public Direction opposite() {
-            return SOUTHEAST;
+            return SOUTH_EAST;
+        }
+
+        @Override
+        public Direction[] neighboringDirections() {
+            return new Direction[]{NORTH_WEST};
         }
     };
 
@@ -64,6 +104,8 @@ public enum Direction {
 
     public abstract Direction opposite();
 
+    public abstract Direction[] neighboringDirections();
+    
     public Point point(){
         return pnt;
     }

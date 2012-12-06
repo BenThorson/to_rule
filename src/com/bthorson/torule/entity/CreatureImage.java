@@ -9,7 +9,7 @@ public enum CreatureImage {
 
     H_KNIGHT(84),
     H_PEASANT(48),
-    H_SWORDMAN(74),
+    H_SWORDSMAN(74),
     H_MERCHANT(55),
     H_SKELETON(58),
     G_SWORDMAN(38),

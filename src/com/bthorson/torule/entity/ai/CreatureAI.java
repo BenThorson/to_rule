@@ -23,28 +23,13 @@ public abstract class CreatureAI {
         this.self = self;
     }
 
+    protected Creature getTarget(){
+        return self.closestVisibleHostile();
+    }
+
     public abstract CreatureAI execute();
 
     public abstract void interact(Entity entity);
-
-    protected boolean shouldHostile(Creature other) {
-        return self.getFactionEnemies().contains(other.getFaction()) || other.getFactionEnemies().contains(self.getFactionEnemies());
-    }
-
-    protected Creature getTarget() {
-        List<Creature> visibleCreatures = self.getVisibleCreatures();
-        List<Creature> hostilable = new ArrayList<Creature>();
-        for (Creature other: visibleCreatures){
-            if (shouldHostile(other)){
-                hostilable.add(other);
-            }
-        }
-        if (hostilable.size() > 0){
-            Collections.sort(hostilable, new NearestComparator(self.position()));
-            return hostilable.get(0);
-        }
-        return null;
-    }
 
     public abstract JsonElement serialize();
 }

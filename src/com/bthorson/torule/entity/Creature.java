@@ -4,6 +4,7 @@ import com.bthorson.torule.Message;
 import com.bthorson.torule.entity.ai.AiControllable;
 import com.bthorson.torule.entity.ai.CreatureAI;
 import com.bthorson.torule.entity.ai.DeadAi;
+import com.bthorson.torule.entity.ai.FollowAI;
 import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.exception.CannotEquipException;
 import com.bthorson.torule.geom.Direction;
@@ -14,6 +15,7 @@ import com.bthorson.torule.item.ItemType;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.persist.SerializeUtils;
+import com.bthorson.torule.player.Player;
 import com.bthorson.torule.town.Building;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -104,10 +106,15 @@ public class Creature extends PhysicalEntity implements AiControllable {
         this.itemlessAttackVals = itemlessAttackVals;
     }
 
+    public void follow(Player player) {
+        leader = player;
+        ai = new FollowAI(this, ai);
+    }
+
     public static class CreatureBuilder{
         private Point position;
         private int glyph;
-        private int visionRadius = 20;
+        private int visionRadius = 16;
         private int hitPoints;
         private Profession profession;
         private int gold = 0;
@@ -699,6 +706,28 @@ public class Creature extends PhysicalEntity implements AiControllable {
         }
         return worth;
     }
+
+    public Creature closestVisibleHostile() {
+        List<Creature> visibleCreatures = getVisibleCreatures();
+        List<Creature> hostilable = new ArrayList<Creature>();
+        for (Creature other: visibleCreatures){
+            if (isHostile(other)){
+                hostilable.add(other);
+            }
+        }
+        if (hostilable.size() > 0){
+            Collections.sort(hostilable, new NearestComparator(position()));
+            return hostilable.get(0);
+        }
+        return null;
+    }
+
+
+    public boolean isHostile(Creature other) {
+        return getFactionEnemies().contains(other.getFaction()) || other.getFactionEnemies().contains(getFactionEnemies());
+    }
+
+
 
 
     @Override

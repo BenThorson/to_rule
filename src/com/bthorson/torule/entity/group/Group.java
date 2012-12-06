@@ -181,6 +181,16 @@ public class Group extends Entity implements AiControllable{
         reformOnUpdate = true;
     }
 
+    @Override
+    public Creature closestVisibleHostile() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean isHostile(Creature other) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public void remove(Creature dead) {
 //        if (memList.remove(dead)){
 //            reformOnUpdate = true;

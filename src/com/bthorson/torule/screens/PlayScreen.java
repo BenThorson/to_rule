@@ -99,10 +99,10 @@ public class PlayScreen implements Screen {
             case KeyEvent.VK_NUMPAD8: player.move(Direction.NORTH.point()); break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_NUMPAD2: player.move(Direction.SOUTH.point()); break;
-            case KeyEvent.VK_NUMPAD7: player.move(Direction.NORTHWEST.point()); break;
-            case KeyEvent.VK_NUMPAD9: player.move(Direction.NORTHEAST.point()); break;
-            case KeyEvent.VK_NUMPAD1: player.move(Direction.SOUTHWEST.point()); break;
-            case KeyEvent.VK_NUMPAD3: player.move(Direction.SOUTHEAST.point()); break;
+            case KeyEvent.VK_NUMPAD7: player.move(Direction.NORTH_WEST.point()); break;
+            case KeyEvent.VK_NUMPAD9: player.move(Direction.NORTH_EAST.point()); break;
+            case KeyEvent.VK_NUMPAD1: player.move(Direction.SOUTH_WEST.point()); break;
+            case KeyEvent.VK_NUMPAD3: player.move(Direction.SOUTH_EAST.point()); break;
             case KeyEvent.VK_NUMPAD5: break;
             case KeyEvent.VK_I: return new InventoryManagementScreen(this);
 //            case KeyEvent.VK_PERIOD: player.getGroup().rotateTest(); break;

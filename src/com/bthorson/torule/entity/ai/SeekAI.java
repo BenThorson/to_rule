@@ -25,18 +25,20 @@ public class SeekAI extends CreatureAI{
     private int stuckCount;
     private int stuckCountMax = 5;
 
+    private CreatureAI previous;
 
-    public SeekAI(AiControllable self, Creature target){
+
+    public SeekAI(AiControllable self, Creature target, CreatureAI previous){
         super(self);
         this.target = target;
+        this.previous = previous;
         targetPosition = new Point(target.position());
     }
 
     @Override
     public CreatureAI execute() {
         if (target == null || target.dead()){
-            WanderAI ai = new WanderAI(self, World.NW_CORNER, World.getInstance().seCorner());
-            return ai;
+            return previous;
         }
 
         targetPosition = target.position();
@@ -88,6 +90,7 @@ public class SeekAI extends CreatureAI{
         obj.addProperty("name", getClass().getSimpleName());
         obj.addProperty("self", ((Entity)self).id);
         obj.addProperty("target", target.id);
+        obj.add("previous", previous.serialize());
         return obj;
     }
 }

@@ -54,6 +54,9 @@ public class StatusScreen implements Screen {
             terminal.writeText(itemName, new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
             row++;
         }
+        terminal.writeText("Position", new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
+        terminal.writeText(String.format("(%d,%d)", player.position().x(), player.position().y()),
+                           new Point(xOffset + 1, row++), Color.WHITE, Color.BLACK);
 
     }
 

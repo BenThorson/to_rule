@@ -2,6 +2,8 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * User: ben
@@ -10,9 +12,9 @@ import com.bthorson.torule.entity.Entity;
  */
 public class AggroAI extends SeekAI {
 
+    public AggroAI(AiControllable self, Creature target, CreatureAI previous) {
 
-    public AggroAI(AiControllable self, Creature target){
-        super(self, target);
+        super(self, target, previous);
     }
 
     @Override
@@ -21,4 +23,5 @@ public class AggroAI extends SeekAI {
             self.attack((Creature)entity);
         }
     }
+
 }

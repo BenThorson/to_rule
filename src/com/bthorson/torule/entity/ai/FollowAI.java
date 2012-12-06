@@ -13,8 +13,8 @@ import com.google.gson.JsonObject;
 public class FollowAI extends SeekAI {
 
 
-    public FollowAI(AiControllable self) {
-        super(self, self.getLeader());
+    public FollowAI(AiControllable self, CreatureAI previous) {
+        super(self, self.getLeader(), previous);
     }
 
     @Override
@@ -22,11 +22,4 @@ public class FollowAI extends SeekAI {
         return self.getLeader();
     }
 
-    @Override
-    public JsonElement serialize() {
-        JsonObject obj = new JsonObject();
-        obj.addProperty("name", getClass().getSimpleName());
-        obj.addProperty("self", ((Entity)self).id);
-        return obj;
-    }
 }

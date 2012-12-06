@@ -168,7 +168,8 @@ public class World {
 
     public void skipTurns(int turnsSkipped) {
         for (int i = 0; i < turnsSkipped; i++){
-            if (EntityManager.getInstance().getPlayer().getHitpoints() < EntityManager.getInstance().getPlayer().getMaxHitpoints()) {
+            if (EntityManager.getInstance().getPlayer().getHitpoints() < EntityManager.getInstance().getPlayer().getMaxHitpoints() &&
+                                EntityManager.getInstance().getPlayer().closestVisibleHostile() == null) {
                 update();
             } else {
                 return;

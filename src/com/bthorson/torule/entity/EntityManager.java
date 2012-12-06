@@ -116,6 +116,7 @@ public class EntityManager {
     public void remove(Creature dead) {
         creatures.remove(dead);
         fullCatalog.remove(dead.id);
+        locallyUpdate.remove(dead);
     }
 
     public List<Creature> getActiveCreaturesInRange(Point p1, Point p2) {
@@ -183,11 +184,14 @@ public class EntityManager {
             entities.add(creatureAt(point));
         }
         entities.addAll(item(point));
-        for (Building building : town(point.divide(MapConstants.LOCAL_SIZE_POINT)).getBuildings()){
-            if (point.withinRect(building.getNwCorner(), building.getSeCorner().add(new Point(1,1)))){
-                entities.add(building);
-                break;
+        if (town(point.divide(MapConstants.LOCAL_SIZE_POINT)) != null){
+            for (Building building : town(point.divide(MapConstants.LOCAL_SIZE_POINT)).getBuildings()){
+                if (point.withinRect(building.getNwCorner(), building.getSeCorner().add(new Point(1,1)))){
+                    entities.add(building);
+                    break;
+                }
             }
+
         }
         return entities;
 
@@ -299,7 +303,7 @@ public class EntityManager {
         }
 
         private Point correctSeCorner(Point toRegion) {
-            Point seRegion = toRegion.add(Direction.SOUTHEAST.point().add(Direction.SOUTHEAST.point()));
+            Point seRegion = toRegion.add(Direction.SOUTH_EAST.point().add(Direction.SOUTH_EAST.point()));
             if (seRegion.x() > World.getInstance().bottomRight().divide(MapConstants.LOCAL_SIZE_POINT).x()){
                 seRegion.add(Direction.WEST.point());
             }
@@ -310,7 +314,7 @@ public class EntityManager {
         }
 
         private Point correctNwCorner(Point toRegion) {
-            Point nwRegion = toRegion.add(Direction.NORTHWEST.point());
+            Point nwRegion = toRegion.add(Direction.NORTH_WEST.point());
             if (nwRegion.x() < 0){
                 nwRegion.add(Direction.EAST.point());
             }

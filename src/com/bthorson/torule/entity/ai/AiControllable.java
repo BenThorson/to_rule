@@ -36,4 +36,8 @@ public interface AiControllable {
     Direction getHeading();
 
     boolean isEnemy(Creature facing);
+
+    Creature closestVisibleHostile();
+
+    boolean isHostile(Creature other);
 }

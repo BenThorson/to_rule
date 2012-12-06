@@ -6,7 +6,7 @@
             "type":"ARMOR",
             "slotType":"torso",
             "name":"padded chest",
-            "price":25,
+            "price":50,
             "weight":10,
             "attributes":{
                 "Armor Class":4
@@ -17,7 +17,7 @@
             "type":"ARMOR",
             "slotType":"torso",
             "name":"leather chest",
-            "price":75,
+            "price":125,
             "weight":15,
             "attributes":{
                 "Armor Class":10
@@ -28,7 +28,7 @@
             "type":"ARMOR",
             "slotType":"torso",
             "name":"studded chest",
-            "price":125,
+            "price":225,
             "weight":20,
             "attributes":{
                 "Armor Class":15
@@ -39,7 +39,7 @@
             "type":"ARMOR",
             "slotType":"torso",
             "name":"chain chest",
-            "price":300,
+            "price":600,
             "weight":50,
             "attributes":{
                 "Armor Class":30
@@ -61,7 +61,7 @@
             "type":"ARMOR",
             "slotType":"head",
             "name":"leather cap",
-            "price":75,
+            "price":50,
             "weight":15,
             "attributes":{
                 "Armor Class":4
@@ -72,7 +72,7 @@
             "type":"ARMOR",
             "slotType":"head",
             "name":"studded cap",
-            "price":125,
+            "price":100,
             "weight":20,
             "attributes":{
                 "Armor Class":6
@@ -83,7 +83,7 @@
             "type":"ARMOR",
             "slotType":"head",
             "name":"chain coif",
-            "price":300,
+            "price":225,
             "weight":40,
             "attributes":{
                 "Armor Class":10
@@ -99,7 +99,7 @@
             "weight":10,
             "attributes":{
                 "Armor Class":4,
-                "block chance":3
+                "block chance":2
             }
         },
 
@@ -112,7 +112,7 @@
             "weight":25,
             "attributes":{
                 "Armor Class":8,
-                "block chance":5
+                "block chance":4
             }
         },
 

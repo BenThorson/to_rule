@@ -69,10 +69,10 @@
 
         },
         {
-            "templateName":"city militia",
+            "templateName":"city.guard",
             "creatureType":"human",
             "startingGold":200,
-            "hitPoints":80,
+            "hitPoints":50,
             "profession":"SOLDIER",
             "image":"H_SWORDSMAN",
             "corpseImage":"H_SKELETON",
