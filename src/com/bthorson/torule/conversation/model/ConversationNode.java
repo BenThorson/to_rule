@@ -1,4 +1,4 @@
-package com.bthorson.torule.entity.conversation.model;
+package com.bthorson.torule.conversation.model;
 
 import java.util.ArrayList;
 import java.util.List;

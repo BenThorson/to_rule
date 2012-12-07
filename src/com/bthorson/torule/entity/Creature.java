@@ -1,10 +1,12 @@
 package com.bthorson.torule.entity;
 
 import com.bthorson.torule.Message;
+import com.bthorson.torule.entity.ai.AggroAI;
 import com.bthorson.torule.entity.ai.AiControllable;
 import com.bthorson.torule.entity.ai.CreatureAI;
 import com.bthorson.torule.entity.ai.DeadAi;
 import com.bthorson.torule.entity.ai.FollowAI;
+import com.bthorson.torule.entity.ai.PlayerAI;
 import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.exception.CannotEquipException;
 import com.bthorson.torule.geom.Direction;
@@ -108,13 +110,26 @@ public class Creature extends PhysicalEntity implements AiControllable {
         this.itemlessAttackVals = itemlessAttackVals;
     }
 
-    public void follow(Player player) {
-        leader = player;
-        ai = new FollowAI(this, ai);
+    public void follow(Creature leader) {
+        if (this.leader != null && this.leader.equals(leader) && ai instanceof FollowAI){
+            //do nothing
+        } else {
+            this.leader = leader;
+            if (ai instanceof FollowAI){
+                ai = new FollowAI(this, ai.getPrevious());
+            } else {
+                ai = new FollowAI(this, ai);
+            }
+        }
     }
 
     public void addGold(int gold) {
         this.gold += gold;
+    }
+
+    public CreatureAI getAi() {
+
+        return ai;
     }
 
     public static class CreatureBuilder{
@@ -229,7 +244,8 @@ public class Creature extends PhysicalEntity implements AiControllable {
     public boolean move(Point delta){
 
         if (hasMovedThisUpdate){
-            throw new RuntimeException("already attempted a move update");
+            System.out.println(getName() + "tried to move twice in one turn");
+            return false;
         }
 
         if (Math.abs(delta.x()) > 1 || Math.abs(delta.y()) > 1){
@@ -325,10 +341,25 @@ public class Creature extends PhysicalEntity implements AiControllable {
         heading = Direction.directionOf(other.position().subtract(position()));
         if (doesHit(other)){
             int dmg = determineDmg(other);
-            other.adjustHitpoint(-dmg);
+            other.processAttack(this, -dmg);
             messages.add(new Message(this, String.format("You hit %s for %d damage", other.getName(), dmg)));
             if (other.dead()){
                 messages.add(new Message(this, String.format("You killed %s!", other.getName())));
+            }
+        }
+    }
+
+    private void processAttack(Creature attacker, int damage){
+        adjustHitpoint(damage);
+
+        if (ai instanceof PlayerAI){
+            return;
+        }
+
+        if (!dead){
+            Random random = new Random();
+            if (!(ai instanceof AggroAI) || random.nextInt(10) > 5){
+                setAi(new AggroAI(this, attacker, ai.getPrevious()));
             }
         }
     }
@@ -362,14 +393,17 @@ public class Creature extends PhysicalEntity implements AiControllable {
             inventory = new ArrayList<Item>();
         }
 
-        Item goldDrop = ItemFactory.INSTANCE.createGoldDrop(gold);
-        goldDrop.setPosition(position);
-        gold = 0;
-        EntityManager.getInstance().addFreeItem(goldDrop);
+        if (gold > 0){
+            Item goldDrop = ItemFactory.INSTANCE.createGoldDrop(gold);
+            goldDrop.setPosition(position);
+            gold = 0;
+            EntityManager.getInstance().addFreeItem(goldDrop);
+        }
+
 
         for (Item item: inventory){
             if (random.nextBoolean()){
-                //puts it on the ground
+                item.setPosition(position);
                 EntityManager.getInstance().addFreeItem(item);
             } else {
                 //destroys it

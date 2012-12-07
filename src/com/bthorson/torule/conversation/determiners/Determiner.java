@@ -1,4 +1,4 @@
-package com.bthorson.torule.entity.conversation.determiners;
+package com.bthorson.torule.conversation.determiners;
 
 import com.bthorson.torule.entity.Creature;
 

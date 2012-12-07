@@ -27,8 +27,8 @@ public class GroupFollowAI extends CreatureAI {
     private Stack<Point> path;
 
 
-    public GroupFollowAI(AiControllable self) {
-        super(self);
+    public GroupFollowAI(AiControllable self, CreatureAI previous) {
+        super(self, previous);
     }
 
     @Override
@@ -95,13 +95,5 @@ public class GroupFollowAI extends CreatureAI {
         }
         return false;
 
-    }
-
-    @Override
-    public JsonElement serialize() {
-        JsonObject obj = new JsonObject();
-        obj.addProperty("name", getClass().getSimpleName());
-        obj.addProperty("self", ((Entity) self).id);
-        return obj;
     }
 }

@@ -21,14 +21,14 @@ public class WanderAI extends AggroableAI {
 
     private Point nwBound;
     private Point seBound;
-    public WanderAI(AiControllable self, Point nwBound, Point seBound){
-        super(self);
+    public WanderAI(AiControllable self, Point nwBound, Point seBound, CreatureAI previous){
+        super(self, previous);
         this.nwBound = nwBound;
         this.seBound = seBound;
     }
 
-    public WanderAI(Creature creature) {
-        this(creature, PointUtil.POINT_ORIGIN, World.getInstance().seCorner());
+    public WanderAI(Creature creature, CreatureAI previous) {
+        this(creature, PointUtil.POINT_ORIGIN, World.getInstance().seCorner(), previous);
     }
 
     @Override
@@ -77,9 +77,7 @@ public class WanderAI extends AggroableAI {
     @Override
     public JsonElement serialize() {
         Gson gson = new Gson();
-        JsonObject obj = new JsonObject();
-        obj.addProperty("name", getClass().getSimpleName());
-        obj.addProperty("self", ((Entity)self).id);
+        JsonObject obj = super.serialize().getAsJsonObject();
         obj.add("nwBound", gson.toJsonTree(nwBound));
         obj.add("seBound", gson.toJsonTree(seBound));
         return obj;

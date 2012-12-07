@@ -1,12 +1,12 @@
-package com.bthorson.torule.entity.conversation;
+package com.bthorson.torule.conversation;
 
 import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.conversation.actions.ActionMap;
-import com.bthorson.torule.entity.conversation.actions.ConversationAction;
-import com.bthorson.torule.entity.conversation.determiners.DetermineMap;
-import com.bthorson.torule.entity.conversation.model.ConversationNode;
-import com.bthorson.torule.entity.conversation.model.ConversationScript;
-import com.bthorson.torule.entity.conversation.model.ConversationTextAndOptions;
+import com.bthorson.torule.conversation.actions.ActionMap;
+import com.bthorson.torule.conversation.actions.ConversationAction;
+import com.bthorson.torule.conversation.determiners.DetermineMap;
+import com.bthorson.torule.conversation.model.ConversationNode;
+import com.bthorson.torule.conversation.model.ConversationScript;
+import com.bthorson.torule.conversation.model.ConversationTextAndOptions;
 import com.bthorson.torule.screens.ConversationScreen;
 
 import java.util.ArrayList;

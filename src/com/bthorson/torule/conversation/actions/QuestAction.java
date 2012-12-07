@@ -1,4 +1,4 @@
-package com.bthorson.torule.entity.conversation.actions;
+package com.bthorson.torule.conversation.actions;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.quest.Quest;

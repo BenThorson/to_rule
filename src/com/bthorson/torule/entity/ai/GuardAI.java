@@ -16,8 +16,8 @@ public class GuardAI extends AggroableAI {
 
     private Point guardPoint;
 
-    public GuardAI(Creature self, Point point) {
-        super(self);
+    public GuardAI(Creature self, Point point, CreatureAI previous) {
+        super(self, previous);
         guardPoint = point;
     }
 
@@ -42,9 +42,7 @@ public class GuardAI extends AggroableAI {
     @Override
     public JsonElement serialize() {
         Gson gson = new Gson();
-        JsonObject obj = new JsonObject();
-        obj.addProperty("name", getClass().getSimpleName());
-        obj.addProperty("self", ((Entity)self).id);
+        JsonObject obj = super.serialize().getAsJsonObject();
         obj.add("guardPoint", gson.toJsonTree(guardPoint));
         return obj;
     }

@@ -33,7 +33,7 @@ public class MoveToAI extends AggroableAI {
     }
 
     public MoveToAI(Point point, CreatureAI previous, boolean shouldAggro) {
-        super(previous.self);
+        super(previous.self, previous);
         this.point = point;
         this.previous = previous;
         pathTo = new AStarPathTo();
@@ -94,10 +94,8 @@ public class MoveToAI extends AggroableAI {
     @Override
     public JsonElement serialize() {
         Gson gson = new Gson();
-        JsonObject obj = new JsonObject();
-        obj.addProperty("name", getClass().getSimpleName());
+        JsonObject obj = super.serialize().getAsJsonObject();
         obj.add("point", gson.toJsonTree(point));
-        obj.add("previous", previous.serialize());
         return obj;
     }
 }

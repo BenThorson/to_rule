@@ -208,36 +208,44 @@ public class LoadAction {
     private CreatureAI getAiAndInstantiate(JsonObject ai) {
         Gson gson = new Gson();
         String name = ai.get("name").getAsString();
+        boolean nullPrevious = !ai.get("previous").isJsonObject();
+        JsonObject prevObj = nullPrevious ? null : ai.get("previous").getAsJsonObject();
+        CreatureAI previous = nullPrevious ? null : getAiAndInstantiate(prevObj);
+
         if ("DeadAI".equalsIgnoreCase(name)){
             return new DeadAi();
         } else if ("FollowAI".equalsIgnoreCase(name)){
             return new FollowAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
                                 getAiAndInstantiate(ai.get("previous").getAsJsonObject()));
         } else if ("GroupFollowAI".equalsIgnoreCase(name)){
-                    return new GroupFollowAI(creatures.get(ai.get("self").getAsInt()).getEntity());
+                    return new GroupFollowAI(creatures.get(ai.get("self").getAsInt()).getEntity(), previous);
         } else if ("PlayerAI".equalsIgnoreCase(name)){
                     return new PlayerAI(creatures.get(ai.get("self").getAsInt()).getEntity());
         } else if ("SeekAI".equalsIgnoreCase(name)){
                             return new SeekAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
                                               creatures.get(ai.get("target").getAsInt()).getEntity(),
-                                              getAiAndInstantiate(ai.get("previous").getAsJsonObject()));
+                                              previous);
         } else if ("AggroAI".equalsIgnoreCase(name)){
                             return new AggroAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
                                               creatures.get(ai.get("target").getAsInt()).getEntity(),
-                                              getAiAndInstantiate(ai.get("previous").getAsJsonObject()));
+                                              previous);
         } else if ("WanderAI".equalsIgnoreCase(name)){
             return new WanderAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
                                 gson.fromJson(ai.get("nwBound"), Point.class),
-                                gson.fromJson(ai.get("seBound"), Point.class));
+                                gson.fromJson(ai.get("seBound"), Point.class), previous);
         } else if ("GuardAI".equalsIgnoreCase(name)){
             return new GuardAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
-                               gson.fromJson(ai.get("guardPoint"), Point.class));
+                               gson.fromJson(ai.get("guardPoint"), Point.class), previous);
         } else if ("MoveToAI".equalsIgnoreCase(name)) {
             return new MoveToAI(gson.fromJson(ai.get("point"), Point.class),
-                                getAiAndInstantiate(ai.get("previous").getAsJsonObject()));
+                                previous);
         } else if ("PatrolAI".equalsIgnoreCase(name)){
             return new PatrolAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
-                                deserializePointList(gson, ai.get("patrolPath").getAsJsonArray()), ai.get("current").getAsInt());
+                                deserializePointList(gson, ai.get("patrolPath").getAsJsonArray()), ai.get("current").getAsInt(), previous);
+        } else if ("AttackAI".equalsIgnoreCase(name)){
+            return new AttackAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
+                                creatures.get(ai.get("creature").getAsInt()).getEntity(),
+                                previous);
         }
         return null;
     }

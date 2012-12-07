@@ -11,8 +11,8 @@ import com.google.gson.JsonElement;
  */
 public abstract class AggroableAI extends CreatureAI {
 
-    public AggroableAI(AiControllable self) {
-        super(self);
+    public AggroableAI(AiControllable self, CreatureAI previous) {
+        super(self, previous);
     }
 
     @Override
@@ -31,8 +31,4 @@ public abstract class AggroableAI extends CreatureAI {
         return false;
     }
 
-    @Override
-    public JsonElement serialize() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 }

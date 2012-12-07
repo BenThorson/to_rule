@@ -106,6 +106,7 @@ public class PlayScreen implements Screen {
             case KeyEvent.VK_NUMPAD5: break;
             case KeyEvent.VK_I: return new InventoryManagementScreen(this);
 //            case KeyEvent.VK_PERIOD: player.getGroup().rotateTest(); break;
+            case KeyEvent.VK_F: return new FollowerCommandScreen(this, player.position().subtract(getOffset()));
             case KeyEvent.VK_T: return new ConversationScreen(this, player.position().subtract(getOffset()));
             case KeyEvent.VK_H: World.getInstance().skipTurns(500); break;
             case KeyEvent.VK_V: return new ViewScreen(this, player.position().subtract(getOffset()));

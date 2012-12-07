@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 public class DeadAi extends CreatureAI {
 
     public DeadAi() {
-        super(null);
+        super(null, null);
     }
 
     @Override
@@ -22,12 +22,5 @@ public class DeadAi extends CreatureAI {
     @Override
     public boolean interact(Entity entity) {
         return false;
-    }
-
-    @Override
-    public JsonObject serialize() {
-        JsonObject obj = new JsonObject();
-        obj.addProperty("name", getClass().getSimpleName());
-        return obj;
     }
 }

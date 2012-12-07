@@ -1,7 +1,6 @@
-package com.bthorson.torule.entity.conversation.model;
+package com.bthorson.torule.conversation.model;
 
-import com.bthorson.torule.entity.conversation.actions.ConversationAction;
-import com.bthorson.torule.screens.Screen;
+import com.bthorson.torule.conversation.actions.ConversationAction;
 
 /**
  * User: Ben Thorson

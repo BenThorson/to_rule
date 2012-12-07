@@ -19,13 +19,13 @@ public class PatrolAI extends AggroableAI {
     private List<Point> patrolPath;
     private int current = 0;
 
-    public PatrolAI(Creature self, List<Point> patrolPath){
-        super(self);
+    public PatrolAI(Creature self, List<Point> patrolPath, CreatureAI previous){
+        super(self, previous);
         this.patrolPath = patrolPath;
     }
 
-    public PatrolAI(Creature self, List<Point> patrolPath, int start){
-        super(self);
+    public PatrolAI(Creature self, List<Point> patrolPath, int start, CreatureAI previous){
+        super(self, previous);
         this.patrolPath = patrolPath;
         current = start;
     }
@@ -47,11 +47,9 @@ public class PatrolAI extends AggroableAI {
     @Override
     public JsonElement serialize() {
         Gson gson = new Gson();
-        JsonObject obj = new JsonObject();
-        obj.addProperty("name", getClass().getSimpleName());
-        obj.addProperty("self", ((Entity)self).id);
-        obj.add("patrolPath", gson.toJsonTree(patrolPath));
+        JsonObject obj = super.serialize().getAsJsonObject();
         obj.addProperty("current", current);
+        obj.add("patrolPath", gson.toJsonTree(patrolPath));
         return obj;
     }
 }

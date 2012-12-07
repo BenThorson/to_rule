@@ -1,4 +1,4 @@
-package com.bthorson.torule.entity.conversation.actions;
+package com.bthorson.torule.conversation.actions;
 
 import java.util.HashMap;
 

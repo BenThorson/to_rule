@@ -1,10 +1,7 @@
-package com.bthorson.torule.entity.conversation.actions;
+package com.bthorson.torule.conversation.actions;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.EntityManager;
-import com.bthorson.torule.entity.ai.FollowAI;
-import com.bthorson.torule.map.World;
-import com.bthorson.torule.player.Player;
 import com.bthorson.torule.screens.ConversationScreen;
 
 /**

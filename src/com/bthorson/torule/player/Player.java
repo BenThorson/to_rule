@@ -24,6 +24,8 @@ public class Player extends Creature {
 
     private int fame;
 
+    private int commandableRange;
+
     private ExploredMap explored = new ExploredMap();
 
     private List<Creature> followers = new ArrayList<Creature>();
@@ -32,6 +34,7 @@ public class Player extends Creature {
     public Player(CreatureBuilder builder) {
         super(builder);
         setAi(new PlayerAI(this));
+        commandableRange = visionRadius();
     }
 
     public int getFame() {
@@ -64,7 +67,7 @@ public class Player extends Creature {
     }
 
     public List<Creature> getFollowers() {
-        if (followers != null){
+        if (followers == null){
             return new ArrayList<Creature>(followers);
         } else {
             return null;
@@ -108,4 +111,19 @@ public class Player extends Creature {
         return object;
     }
 
+    public List<Creature> getFollowersInCommandableRange() {
+        List<Creature> commandable = new ArrayList<Creature>(followers.size());
+        for (Creature follower : followers){
+            if (isCommandable(follower.position())){
+                commandable.add(follower);
+            }
+        }
+        return commandable;
+    }
+
+    private boolean isCommandable(Point point){
+        Point product = position().subtract(point).squared();
+
+        return !(product.x() + product.y() > commandableRange*commandableRange);
+    }
 }

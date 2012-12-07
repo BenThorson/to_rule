@@ -2,13 +2,12 @@ package com.bthorson.torule.screens;
 
 import asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.conversation.SampleConversation;
-import com.bthorson.torule.entity.conversation.model.ConversationTextAndOptions;
+import com.bthorson.torule.conversation.SampleConversation;
+import com.bthorson.torule.conversation.model.ConversationTextAndOptions;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.screens.component.Menu;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**

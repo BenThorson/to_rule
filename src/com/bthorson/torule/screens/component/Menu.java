@@ -31,6 +31,10 @@ public class Menu {
     private Color background;
     private Color textColor;
 
+    public Menu(String title, String[] choices){
+        this(title, (String)null, choices);
+    }
+
     public Menu(String title, String additionalDetails, String[] choices) {
         this (title, additionalDetails, choices, Color.YELLOW, Color.BLACK, Color.WHITE);
     }

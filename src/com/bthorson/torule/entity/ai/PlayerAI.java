@@ -13,7 +13,7 @@ import com.google.gson.JsonObject;
 public class PlayerAI extends CreatureAI {
 
     public PlayerAI(AiControllable self) {
-        super(self);
+        super(self, null);
     }
 
     @Override
@@ -37,11 +37,4 @@ public class PlayerAI extends CreatureAI {
         return false;
     }
 
-    @Override
-    public JsonElement serialize() {
-        JsonObject obj = new JsonObject();
-        obj.addProperty("name", getClass().getSimpleName());
-        obj.addProperty("self", ((Entity)self).id);
-        return obj;
-    }
 }

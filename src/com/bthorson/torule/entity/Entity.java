@@ -19,7 +19,7 @@ public abstract class Entity {
     private static int idGen;
 
     public static void resetIdGen(){
-        idGen = 0;
+        idGen = 1;
     }
     private String name;
 

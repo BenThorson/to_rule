@@ -25,11 +25,8 @@ public class SeekAI extends CreatureAI{
     private int stuckCount;
     private int stuckCountMax = 5;
 
-    private CreatureAI previous;
-
-
     public SeekAI(AiControllable self, Creature target, CreatureAI previous){
-        super(self);
+        super(self, previous);
         this.target = target;
         this.previous = previous;
         targetPosition = new Point(target.position());
@@ -87,11 +84,8 @@ public class SeekAI extends CreatureAI{
 
     @Override
     public JsonElement serialize() {
-        JsonObject obj = new JsonObject();
-        obj.addProperty("name", getClass().getSimpleName());
-        obj.addProperty("self", ((Entity)self).id);
+        JsonObject obj = super.serialize().getAsJsonObject();
         obj.addProperty("target", target.id);
-        obj.add("previous", previous.serialize());
         return obj;
     }
 }

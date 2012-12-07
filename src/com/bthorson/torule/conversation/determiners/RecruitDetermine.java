@@ -1,14 +1,12 @@
-package com.bthorson.torule.entity.conversation.determiners;
+package com.bthorson.torule.conversation.determiners;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.map.World;
-import com.bthorson.torule.player.Player;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
