@@ -1,6 +1,6 @@
 package com.bthorson.torule.screens;
 
-import asciiPanel.AsciiPanel;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 

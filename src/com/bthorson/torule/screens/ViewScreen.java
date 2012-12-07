@@ -1,13 +1,12 @@
 package com.bthorson.torule.screens;
 
-import asciiPanel.AsciiPanel;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.entity.PhysicalEntity;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.screens.component.Menu;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;

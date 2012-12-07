@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -270,8 +271,8 @@ public class AsciiPanel extends JPanel {
     
     private void loadCharacters(){
         try {
-            humanoidsSprite = ImageIO.read(AsciiPanel.class.getResource("humanoids2.png"));
-            crittersSprite = ImageIO.read(AsciiPanel.class.getResource("critters2.png"));
+            humanoidsSprite = ImageIO.read(new File("resources/images/humanoids2.png"));
+            crittersSprite = ImageIO.read(new File("resources/images/critters2.png"));
         } catch (IOException e) {
             System.err.println("loadCharacters() " + e.getMessage());
         }
@@ -295,7 +296,7 @@ public class AsciiPanel extends JPanel {
     private void loadGlyphs(Color fg, Color bg) {
         Image glyphSprite = null;
         try {
-            glyphSprite = ImageIO.read(AsciiPanel.class.getResource("ironhand.png"));
+            glyphSprite = ImageIO.read(new File("resources/images/ironhand.png"));
         } catch (IOException e) {
             System.err.println("loadGlyphs(): " + e.getMessage());
         }
@@ -317,7 +318,7 @@ public class AsciiPanel extends JPanel {
     private void loadText(Color fg, Color bg) {
         Image textSprite = null;
         try {
-            textSprite = ImageIO.read(AsciiPanel.class.getResource("text.png"));
+            textSprite = ImageIO.read(new File("resources/images/text.png"));
         } catch (IOException e) {
             System.err.println("loadText(): " + e.getMessage());
         }

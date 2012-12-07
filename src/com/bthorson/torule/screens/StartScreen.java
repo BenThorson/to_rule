@@ -1,10 +1,9 @@
 package com.bthorson.torule.screens;
 
-import asciiPanel.AsciiPanel;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.screens.component.Menu;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**

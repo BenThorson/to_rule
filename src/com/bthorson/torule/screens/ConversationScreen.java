@@ -1,6 +1,6 @@
 package com.bthorson.torule.screens;
 
-import asciiPanel.AsciiPanel;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.conversation.SampleConversation;
 import com.bthorson.torule.conversation.model.ConversationTextAndOptions;

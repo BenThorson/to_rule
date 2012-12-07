@@ -1,6 +1,6 @@
 package com.bthorson.torule.item;
 
-import asciiPanel.AsciiPanel;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.PhysicalEntity;
 import com.bthorson.torule.geom.Point;

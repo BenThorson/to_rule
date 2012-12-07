@@ -18,7 +18,7 @@ public class GroupAI {
 
     public GroupAI(Group self) {
         this.self = self;
-        underlyingAI = new WanderAI(self,World.NW_CORNER, World.getInstance().seCorner());
+        underlyingAI = new WanderAI(self,World.NW_CORNER, World.getInstance().seCorner(), null);
     }
 
     public void execute() {

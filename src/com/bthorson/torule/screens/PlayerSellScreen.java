@@ -1,14 +1,12 @@
 package com.bthorson.torule.screens;
 
-import asciiPanel.AsciiPanel;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.item.Item;
-import com.bthorson.torule.map.World;
 import com.bthorson.torule.screens.component.Menu;
 import com.bthorson.torule.town.Building;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**

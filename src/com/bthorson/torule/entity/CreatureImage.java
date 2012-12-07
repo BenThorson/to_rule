@@ -18,7 +18,7 @@ public enum CreatureImage {
     PUPPY(1 + getCritterOffset()),
     DEAD_DOG(3 + getCritterOffset()),
     WOLF(0x1EB + getCritterOffset()),
-    DEAD_WOLF(0x1EE + getCritterOffset()),
+    DEAD_WOLF(0x1EC + getCritterOffset()),
     COW(0xA0 + getCritterOffset()),
     DEAD_COW(0xA2 + getCritterOffset()),
     BOAR(0x184 + getCritterOffset()),

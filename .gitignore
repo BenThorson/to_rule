@@ -3,5 +3,7 @@
 *.iml
 *.class
 /out/*
+/save/*
+/lib/*
 
 

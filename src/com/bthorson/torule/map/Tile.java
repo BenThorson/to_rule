@@ -1,6 +1,6 @@
 package com.bthorson.torule.map;
 
-import asciiPanel.AsciiPanel;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 
 import java.awt.*;
 import java.util.Random;

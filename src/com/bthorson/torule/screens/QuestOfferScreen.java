@@ -1,6 +1,6 @@
 package com.bthorson.torule.screens;
 
-import asciiPanel.AsciiPanel;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
@@ -65,7 +65,7 @@ public class QuestOfferScreen implements Screen {
 
     private String formatText(Quest quest) {
         if (quest.getTextParams() != null && quest.getTextParams().size() > 0){
-            List params = new ArrayList();
+            List<String> params = new ArrayList<String>();
             for (String param : quest.getTextParams()){
                 if (param.equals("direction")){
                     params.add(quest.getDirection().prettyName());

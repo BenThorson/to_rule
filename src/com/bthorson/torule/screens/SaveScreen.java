@@ -1,12 +1,10 @@
 package com.bthorson.torule.screens;
 
-import asciiPanel.AsciiPanel;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.persist.SaveAction;
 import com.bthorson.torule.screens.component.Menu;
-import sun.net.idn.StringPrep;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
