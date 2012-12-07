@@ -25,7 +25,7 @@ public class ItemDeserializer {
         Map<Integer, JsonObjectEntityPair<Item>> items = new HashMap<Integer, JsonObjectEntityPair<Item>>();
 
         JsonArray array = new JsonParser().parse(new JsonReader(new FileReader(file))).getAsJsonArray();
-        for (JsonElement element : array){
+        for (JsonElement element : array) {
             Gson gson = new GsonBuilder()
                     .addDeserializationExclusionStrategy(new ItemDeserializeExclude())
                     .registerTypeAdapter(Color.class, new ColorDeserializer())
@@ -39,17 +39,16 @@ public class ItemDeserializer {
     }
 
     private class ItemDeserializeExclude implements ExclusionStrategy {
-            @Override
-            public boolean shouldSkipField(FieldAttributes f) {
-                return false;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-
-                @Override
-            public boolean shouldSkipClass(Class<?> clazz) {
-                return Arrays.asList(Creature.class).contains(clazz);
-            }
+        @Override
+        public boolean shouldSkipField(FieldAttributes f) {
+            return false;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
+        @Override
+        public boolean shouldSkipClass(Class<?> clazz) {
+            return Arrays.asList(Creature.class).contains(clazz);
+        }
+    }
 
 
 }

@@ -7,6 +7,7 @@ import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.Local;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
+import com.bthorson.torule.quest.ActiveQuest;
 import com.bthorson.torule.town.Building;
 import com.bthorson.torule.town.Town;
 import com.bthorson.torule.worldgen.SavedWorldLoader;
@@ -33,6 +34,7 @@ public class LoadAction {
     private Map<Integer, JsonObjectEntityPair<Town>> towns;
     private Map<Integer, JsonObjectEntityPair<Creature>> creatures;
     private JsonObjectEntityPair<Player> player;
+    private Map<Integer, JsonObjectEntityPair<ActiveQuest>> activeQuests;
     private Map<Integer, JsonObjectEntityPair<Item>> items;
     private Map<Integer, JsonObjectEntityPair<Faction>> factions;
     private long turn;
@@ -48,6 +50,7 @@ public class LoadAction {
             towns = new TownDeserializer().deserialize(new File(prefix + "/Town.eo"));
             creatures = new CreatureDeserializer().deserialize(new File(prefix + "/Creature.eo"));
             player = new PlayerDeserializer().deserialize(new File(prefix + "/Player.eo"));
+            activeQuests = new ActiveQuestDeserializer().deserialize(new File(prefix + "/ActiveQuest.eo"));
             items = new ItemDeserializer().deserialize(new File(prefix + "/Item.eo"));
             factions = new FactionDeserializer().deserialize(new File(prefix + "/Faction.eo"));
 
@@ -63,6 +66,7 @@ public class LoadAction {
             relinkCreatures();
             relinkItems();
             relinkFactions();
+            relinkQuests();
 
 
         } catch (FileNotFoundException e) {
@@ -73,6 +77,24 @@ public class LoadAction {
 
         return new SavedWorldLoader(world, buildings, towns, creatures, player, items, factions, turn, idSerialGen);
 
+    }
+
+    private void relinkQuests() {
+        for (Integer key : activeQuests.keySet()){
+            JsonObject object = activeQuests.get(key).getJsonObject();
+            ActiveQuest activeQuest = activeQuests.get(key).getEntity();
+            if (object.has("questGiver")){
+                activeQuest.setQuestGiver(creatures.get(object.get("questGiver").getAsInt()).getEntity());
+            }
+            List<Creature> creats = new ArrayList<Creature>();
+            if (object.has("creatures")){
+                JsonArray array = object.get("creatures").getAsJsonArray();
+                for (JsonElement element : array) {
+                    creats.add(getEntityOrNull(creatures, element.getAsInt()));
+                }
+            }
+            activeQuest.setCreatures(creats);
+        }
     }
 
     private void relinkFactions() {
@@ -117,6 +139,12 @@ public class LoadAction {
                 player.getEntity().addFollower(creatures.get(element.getAsInt()).getEntity());
             }
 
+        }
+        if (player.getJsonObject().has("quests")){
+            JsonArray array = player.getJsonObject().get("quests").getAsJsonArray();
+            for (JsonElement element : array) {
+                player.getEntity().addQuest(activeQuests.get(element.getAsInt()).getEntity());
+            }
         }
     }
 

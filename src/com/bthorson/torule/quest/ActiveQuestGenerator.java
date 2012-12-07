@@ -21,12 +21,12 @@ import static com.bthorson.torule.map.MapConstants.LOCAL_SIZE_POINT;
  * Date: 12/6/12
  * Time: 5:36 PM
  */
-public class KillQuestGenerator {
+public class ActiveQuestGenerator {
     public void generate(Quest quest, Creature giver) {
         Player player = EntityManager.getInstance().getPlayer();
 
-        KillQuest killQuest = new KillQuest(quest.getName(), quest.getObjective(), giver, createQuestCreatures(quest, giver), quest.getReward());
-        player.addQuest(killQuest);
+        ActiveQuest activeQuest = new ActiveQuest(quest.getName(), quest.getText(), giver, createQuestCreatures(quest, giver), quest.getReward());
+        player.addQuest(activeQuest);
     }
 
     private List<Creature> createQuestCreatures(Quest quest, Creature giver) {

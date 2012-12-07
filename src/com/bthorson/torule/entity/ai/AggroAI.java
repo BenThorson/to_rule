@@ -15,6 +15,7 @@ public class AggroAI extends SeekAI {
         super(self, target, previous);
     }
 
+
     @Override
     public boolean interact(Entity entity) {
         if (entity == target){

@@ -44,7 +44,7 @@ public class PlayerDeserializer {
     private class PlayerDeserializeExclude implements ExclusionStrategy {
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
-            return Arrays.asList("ai", "group", "leader", "inventory", "equipmentSlots", "followers").contains(f.getName());
+            return Arrays.asList("ai", "group", "leader", "inventory", "equipmentSlots", "followers", "quests").contains(f.getName());
         }
 
         @Override

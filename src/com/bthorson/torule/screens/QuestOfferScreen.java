@@ -8,7 +8,7 @@ import com.bthorson.torule.map.Local;
 import com.bthorson.torule.map.LocalType;
 import com.bthorson.torule.map.MapConstants;
 import com.bthorson.torule.map.World;
-import com.bthorson.torule.quest.KillQuestGenerator;
+import com.bthorson.torule.quest.ActiveQuestGenerator;
 import com.bthorson.torule.quest.Quest;
 import com.bthorson.torule.screens.component.Confirmation;
 import com.bthorson.torule.screens.component.Menu;
@@ -71,7 +71,8 @@ public class QuestOfferScreen implements Screen {
                     params.add(quest.getDirection().prettyName());
                 }
             }
-            return String.format(quest.getText(), params.toArray(new Object[params.size()]));
+            quest.setText(String.format(quest.getText(), params.toArray(new Object[params.size()])));
+            return quest.getText();
         }
         return quest.getText();
     }
@@ -98,7 +99,7 @@ public class QuestOfferScreen implements Screen {
                 case -1:
                     return this;
                 case 0:
-                    new KillQuestGenerator().generate(quest, creature);
+                    new ActiveQuestGenerator().generate(quest, creature);
                     return parent;
             }
         } else {

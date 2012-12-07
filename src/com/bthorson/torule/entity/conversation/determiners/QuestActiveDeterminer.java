@@ -3,9 +3,7 @@ package com.bthorson.torule.entity.conversation.determiners;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.quest.ActiveQuest;
-import com.bthorson.torule.quest.KillQuest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

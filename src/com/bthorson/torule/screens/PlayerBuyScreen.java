@@ -76,7 +76,7 @@ public class PlayerBuyScreen implements Screen {
     private void completeTransaction() {
         EntityManager.getInstance().getPlayer().purchaseItem(selectedItem, selectedItem.getPrice());
         shop.removeItem(selectedItem);
-        itemDetailScreen.updateList(EntityManager.getInstance().getPlayer().getInventory());
+        itemDetailScreen.updateList(shop.getInventory());
     }
 
     private void prepareTransaction(int itemNum) {

@@ -5,8 +5,8 @@ import com.bthorson.torule.entity.ai.PlayerAI;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.persist.SerializeUtils;
 import com.bthorson.torule.quest.ActiveQuest;
-import com.bthorson.torule.quest.KillQuest;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -72,16 +72,6 @@ public class Player extends Creature {
 
     }
 
-    @Override
-    public JsonElement serialize() {
-        Gson gson = new Gson();
-        JsonObject object = super.serialize().getAsJsonObject();
-        object.addProperty("fame", fame);
-        object.add("explored", gson.toJsonTree(explored));
-        SerializeUtils.serializeRefCollection(followers, object, "followers");
-        return object;
-    }
-
     public void addQuest(ActiveQuest quest) {
         if (quests == null){
             quests = new ArrayList<ActiveQuest>();
@@ -97,10 +87,25 @@ public class Player extends Creature {
     }
 
     public List<ActiveQuest> getQuests() {
+        if (quests == null){
+            quests = new ArrayList<ActiveQuest>();
+        }
         return quests;
     }
 
     public void addFame(int fame) {
         this.fame += fame;
     }
+
+    @Override
+    public JsonElement serialize() {
+        Gson gson = new Gson();
+        JsonObject object = super.serialize().getAsJsonObject();
+        object.addProperty("fame", fame);
+        object.add("explored", gson.toJsonTree(explored));
+        SerializeUtils.serializeRefCollection(followers, object, "followers");
+        SerializeUtils.serializeRefCollection(quests, object, "quests");
+        return object;
+    }
+
 }

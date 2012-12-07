@@ -6,6 +6,7 @@ import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.MapConstants;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
+import com.bthorson.torule.quest.ActiveQuest;
 import com.bthorson.torule.town.Building;
 import com.bthorson.torule.town.Town;
 import com.google.gson.JsonArray;
@@ -220,7 +221,11 @@ public class EntityManager {
 
     public Map<String, JsonArray> serialize(){
         Map<String, JsonArray> itemMap = new HashMap<String, JsonArray>();
-
+        JsonArray qArr = new JsonArray();
+        for (ActiveQuest quest : player.getQuests()){
+            qArr.add(quest.serialize());
+        }
+        itemMap.put(ActiveQuest.class.getSimpleName(), qArr);
         for (Integer id : fullCatalog.keySet()){
             Entity entity = fullCatalog.get(id);
             String type = entity.getClass().getSimpleName();
@@ -254,8 +259,13 @@ public class EntityManager {
 
         new NewLocalUpdateAction();
 
-        while (!nextReady){
 
+        while (!nextReady){
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         locallyUpdate = nextLocalUpdate;
         lastCheckedPosition = player.position();
