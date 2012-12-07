@@ -1,4 +1,4 @@
-package asciiPanel;
+package com.bthorson.torule.graphics.asciiPanel;
 
 import java.awt.*;
 import java.awt.image.RGBImageFilter;

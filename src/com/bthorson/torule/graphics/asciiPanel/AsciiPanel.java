@@ -1,4 +1,4 @@
-package asciiPanel;
+package com.bthorson.torule.graphics.asciiPanel;
 
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
