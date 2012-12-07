@@ -87,6 +87,10 @@ public class Point {
         return new Point(x - d, y - d);
     }
 
+    public boolean withinRect(Point bottomRight){
+        return withinRect(PointUtil.POINT_ORIGIN, bottomRight);
+    }
+
     public boolean withinRect(Point topLeft, Point bottomRight){
         return x() >= topLeft.x() &&
                 x() < bottomRight.x() &&

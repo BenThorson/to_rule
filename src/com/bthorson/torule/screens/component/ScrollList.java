@@ -32,6 +32,10 @@ public class ScrollList {
 
     private int currentChoice;
 
+    public ScrollList(List<String> items, int width, int height){
+        this(items, width, height, Color.YELLOW, Color.BLACK, Color.WHITE);
+    }
+
     public ScrollList(List<String> items, int width, int height, Color foreground, Color background, Color textColor){
         this.items = items;
         this.textColor = textColor;

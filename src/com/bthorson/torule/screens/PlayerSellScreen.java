@@ -76,7 +76,7 @@ public class PlayerSellScreen implements Screen {
         selectedItem = player.getInventory().get(itemNum);
         sellPrice = selectedItem.getPrice() / 3;
         confirmation = new Menu("Confirm Sale", "Sell " + selectedItem.getName() + " for " + sellPrice + " gold?",
-                                new String[]{"Yes", "No"}, Color.YELLOW, Color.BLACK, Color.WHITE);
+                                Menu.YES_NO);
     }
 
     @Override

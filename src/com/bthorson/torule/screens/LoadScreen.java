@@ -24,7 +24,7 @@ public class LoadScreen implements Screen {
 
     public LoadScreen(){
         choices = getChoices();
-        choose = new Menu("Load a game", (String)null, choices, Color.YELLOW, Color.BLACK, Color.WHITE);
+        choose = new Menu("Load a game", (String)null, choices);
     }
     @Override
     public void displayOutput(AsciiPanel terminal) {

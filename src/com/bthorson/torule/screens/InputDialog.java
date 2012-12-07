@@ -24,6 +24,10 @@ public class InputDialog {
     private Color background;
     private Color textColor;
 
+    public InputDialog(String title){
+        this(title, Color.YELLOW, Color.BLACK, Color.WHITE);
+    }
+
     public InputDialog(String title, Color foreground, Color background, Color textColor) {
         this.title = title;
         this.foreground = foreground;

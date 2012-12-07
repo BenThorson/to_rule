@@ -67,7 +67,7 @@ public class ViewScreen implements ControlCallbackScreen {
                 case -1:
                     return this;
                 default:
-                    infoDialog = new Menu("Info", entities.get(val).getDetailedInfo(), new String[]{"OK"}, Color.YELLOW, Color.BLACK, Color.WHITE);
+                    infoDialog = new Menu("Info", entities.get(val).getDetailedInfo(), new String[]{"OK"});
                     return this;
             }
         } else if (attemptedSelection){
@@ -90,9 +90,9 @@ public class ViewScreen implements ControlCallbackScreen {
             return;
         }
         if (entities.size() == 1){
-            infoDialog = new Menu("Info", entities.get(0).getDetailedInfo(), new String[]{"OK"}, Color.YELLOW, Color.BLACK, Color.WHITE);
+            infoDialog = new Menu("Info", entities.get(0).getDetailedInfo(), new String[]{"OK"});
         } else {
-            multiEntity = new Menu("Look at what?", (String)null, getNames(entities), Color.YELLOW, Color.BLACK, Color.WHITE);
+            multiEntity = new Menu("Look at what?", (String)null, getNames(entities));
         }
     }
 

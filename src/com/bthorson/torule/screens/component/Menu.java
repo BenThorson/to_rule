@@ -18,6 +18,7 @@ import java.util.List;
 public class Menu {
 
     private static int MAX_WIDTH = 48;
+    public static final String[] YES_NO = new String[]{"Yes", "No"};
 
     private String title;
     private List<String> splitDetails = new ArrayList<String>();
@@ -30,6 +31,10 @@ public class Menu {
     private Color background;
     private Color textColor;
 
+    public Menu(String title, String additionalDetails, String[] choices) {
+        this (title, additionalDetails, choices, Color.YELLOW, Color.BLACK, Color.WHITE);
+    }
+
     public Menu(String title, String additionalDetails, String[] choices, Color foreground, Color background, Color textColor) {
         this.title = title;
         this.choices = choices;
@@ -41,6 +46,10 @@ public class Menu {
         splitDetails(additionalDetails);
 
         init();
+    }
+
+    public Menu(String title, List<String> detailedInfo, String[] choices){
+        this (title, detailedInfo, choices, Color.YELLOW, Color.BLACK, Color.WHITE);
     }
 
     public Menu(String title, List<String> detailedInfo, String[] choices, Color foreground, Color background, Color textColor) {

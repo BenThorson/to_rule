@@ -19,6 +19,8 @@ public enum ActionMap {
         actions.put("joinPlayer", new JoinPlayer());
         actions.put("playerBuy", new PlayerBuyAction());
         actions.put("playerSell", new PlayerSellAction());
+        actions.put("offerQuest", new QuestAction());
+        actions.put("questReward", new QuestCompleteAction());
     }
 
     public ConversationAction get(String key){

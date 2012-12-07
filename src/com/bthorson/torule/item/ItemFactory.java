@@ -35,7 +35,7 @@ public enum ItemFactory {
                 catalog.put(item.getAsJsonObject().get("itemId").getAsString(), item.getAsJsonObject());
             }
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 

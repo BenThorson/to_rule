@@ -24,7 +24,7 @@ public class ItemDetailScreen {
     public ItemDetailScreen(List<Item> items, String title){
         List<String> extractStrings = getItemNames(items);
         this.items = items;
-        list = new ScrollList(extractStrings, 20, Screen.SCREEN_HEIGHT-1, Color.YELLOW, Color.BLACK, Color.WHITE);
+        list = new ScrollList(extractStrings, 20, Screen.SCREEN_HEIGHT-1);
         this.title = title;
     }
 

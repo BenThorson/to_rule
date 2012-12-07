@@ -16,9 +16,9 @@ import java.awt.event.KeyEvent;
  */
 public class WorldParamScreen implements Screen {
 
-    private com.bthorson.torule.screens.component.Menu worldSize = new com.bthorson.torule.screens.component.Menu("World Size", (String)null, new String[]{"1000 by 1000"}, Color.YELLOW, Color.BLACK, Color.WHITE);
-    private com.bthorson.torule.screens.component.Menu numCities = new com.bthorson.torule.screens.component.Menu("Number of Towns", (String)null, new String[]{"5", "10", "15"}, Color.YELLOW, Color.BLACK, Color.WHITE);
-    private InputDialog playerName = new InputDialog("Enter Player Name", Color.YELLOW, Color.BLACK, Color.WHITE);
+    private com.bthorson.torule.screens.component.Menu worldSize = new com.bthorson.torule.screens.component.Menu("World Size", (String)null, new String[]{"1000 by 1000"});
+    private com.bthorson.torule.screens.component.Menu numCities = new com.bthorson.torule.screens.component.Menu("Number of Towns", (String)null, new String[]{"5", "10", "15"});
+    private InputDialog playerName = new InputDialog("Enter Player Name");
 
     private enum MenuType {WORLD_SIZE, NUM_CITIES, PLAYER_NAME}
 

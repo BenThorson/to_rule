@@ -12,7 +12,7 @@ public enum CreatureImage {
     H_SWORDSMAN(74),
     H_MERCHANT(55),
     H_SKELETON(58),
-    G_SWORDMAN(38),
+    G_SWORDSMAN(38),
     G_KNIGHT(36),
     G_SKELETON(10),
     PUPPY(1 + getCritterOffset()),

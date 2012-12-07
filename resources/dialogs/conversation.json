@@ -55,6 +55,85 @@
             }
         },
         {
+            "profession":"mayor",
+            "introduction":{
+                "id":"intro.1",
+                "text":"Hello, can I help you?",
+                "responses":[
+                    {
+                        "id":"townInfo.1",
+                        "text":"Can you tell me about this place?",
+                        "responses":[
+                            {
+                                "id":"townInfo.1.response",
+                                "text":"This place sure is a great place to live!"
+                            }
+                        ]
+                    },
+                    {
+                        "id":"needWork.1",
+                        "text":"I am looking for work.",
+                        "check":"questActive",
+                        "responses":[
+                            {
+                                "id":"needWork.1.response",
+                                "text":"I do have an issue I'd like to see resolved.",
+                                "action":"offerQuest"
+                            },
+                            {
+                                "id":"questActive.1",
+                                "text":"you should finish up the quest at hand first."
+                            }
+                        ]
+                    },
+                    {
+                        "id":"aboutThatQuest.1",
+                        "text":"I want to talk to you about that quest",
+                        "check":"questActive",
+                        "responses":[
+
+                            {
+                                "id":"questActive.no",
+                                "text":"What quest?  I'm not seeing anything active for you."
+                            },
+                            {
+                                "id":"questActive.yes",
+                                "text":"What about it, are you done?",
+                                "responses":[
+                                    {
+                                        "id":"questComplete.yes",
+                                        "text":"Yes it's done",
+                                        "check":"questComplete",
+                                        "responses":[
+                                            {
+                                                "id":"questComplete.reward",
+                                                "text":"Thanks!  Here you go",
+                                                "action":"questReward"
+                                            },
+                                            {
+                                                "id":"questComplete.lied",
+                                                "text":"That's not what I heard, liar."
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id":"questComplete.no",
+                                        "text":"Nope, just want to talk about it",
+                                        "responses":[
+                                            {
+                                                "id":"questComplete.no.response",
+                                                "text":"I'm busy, go away."
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
             "profession":"merchant",
             "introduction":{
                 "id":"intro.1",

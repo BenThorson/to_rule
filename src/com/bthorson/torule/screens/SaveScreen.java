@@ -30,7 +30,7 @@ public class SaveScreen implements Screen {
     public SaveScreen(Screen previous){
         this.previous = previous;
         choices = getChoices();
-        choose = new Menu("Save and Quit?", (String)null, choices, Color.YELLOW, Color.BLACK, Color.WHITE);
+        choose = new Menu("Save and Quit?", (String)null, choices);
     }
 
     @Override
@@ -79,12 +79,12 @@ public class SaveScreen implements Screen {
                 default:
                     String val = choices[num];
                     if ("new".equalsIgnoreCase(val)){
-                        saveName = new InputDialog("Name of save", Color.YELLOW, Color.BLACK, Color.WHITE);
+                        saveName = new InputDialog("Name of save");
                     } else if ("cancel".equalsIgnoreCase(val)){
                         return previous;
                     } else {
                         name = val;
-                        confirm = new Menu("Overwrite?", (String)null, new String[]{"Yes", "No"}, Color.YELLOW, Color.BLACK, Color.WHITE);
+                        confirm = new Menu("Overwrite?", (String)null, Menu.YES_NO);
                         return this;
                     }
             }

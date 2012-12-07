@@ -113,6 +113,10 @@ public class Creature extends PhysicalEntity implements AiControllable {
         ai = new FollowAI(this, ai);
     }
 
+    public void addGold(int gold) {
+        this.gold += gold;
+    }
+
     public static class CreatureBuilder{
         private Point position;
         private int glyph;
@@ -359,16 +363,16 @@ public class Creature extends PhysicalEntity implements AiControllable {
         }
 
         Item goldDrop = ItemFactory.INSTANCE.createGoldDrop(gold);
+        goldDrop.setPosition(position);
         gold = 0;
         EntityManager.getInstance().addFreeItem(goldDrop);
 
         for (Item item: inventory){
             if (random.nextBoolean()){
                 //puts it on the ground
-                dropItem(item);
+                EntityManager.getInstance().addFreeItem(item);
             } else {
                 //destroys it
-                removeItem(item);
                 EntityManager.getInstance().destroyItem(item);
             }
         }
@@ -592,6 +596,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
         if (selectedItem.getName().equals("gold")){
             gold += selectedItem.getAttributes().get("quantity");
             EntityManager.getInstance().destroyItem(selectedItem);
+            return;
         }
 
         selectedItem.setOwnedBy(this);

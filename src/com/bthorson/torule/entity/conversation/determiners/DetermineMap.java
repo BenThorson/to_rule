@@ -19,6 +19,8 @@ public enum DetermineMap {
         determiners = new HashMap<String, Determiner>();
         determiners.put("checkRecruit", new RecruitDetermine());
         determiners.put("hasInventory", new ShopHasInventory());
+        determiners.put("questActive", new QuestActiveDeterminer());
+        determiners.put("questComplete", new QuestCompleteDeterminer());
     }
 
     public Determiner get(String key){

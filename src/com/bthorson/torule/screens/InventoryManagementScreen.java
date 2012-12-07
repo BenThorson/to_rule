@@ -71,7 +71,7 @@ public class InventoryManagementScreen implements Screen {
                 return previous;
             } else if (num != -1) {
                 selectedItem = player.getInventory().get(num);
-                itemActionMenu = new Menu(selectedItem.getName(), "What to do with this?", getChoices(selectedItem), Color.YELLOW, Color.BLACK, Color.WHITE);
+                itemActionMenu = new Menu(selectedItem.getName(), "What to do with this?", getChoices(selectedItem));
             }
         }
         return this;

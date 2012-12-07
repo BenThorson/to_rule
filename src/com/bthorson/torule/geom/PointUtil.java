@@ -1,5 +1,7 @@
 package com.bthorson.torule.geom;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -37,5 +39,15 @@ public class PointUtil {
 
     public static Point randomPoint(Point seBound) {
         return randomPoint(PointUtil.POINT_ORIGIN, seBound);
+    }
+
+    public static List<Point> getPointsInRange(Point nw, Point se) {
+        List<Point> points = new ArrayList<Point>();
+        for (int x = nw.x(); x < se.x(); x++){
+            for (int y = nw.y(); y < se.y(); y++){
+                points.add(new Point(x,y));
+            }
+        }
+        return points;
     }
 }

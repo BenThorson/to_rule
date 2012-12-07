@@ -265,6 +265,10 @@ public class EntityManager {
         return passiveAnimalFaction;
     }
 
+    public Faction getGoblinFaction() {
+        return goblinFaction;
+    }
+
 
     private class NewLocalUpdateAction implements Runnable {
 

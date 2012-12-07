@@ -69,7 +69,11 @@ public class World {
 
 
     public Local getLocal(Point localGridPosition) {
-        return locals[localGridPosition.x()][localGridPosition.y()];
+        if(localGridPosition.withinRect(seCorner.divide(LOCAL_SIZE_POINT))){
+            return locals[localGridPosition.x()][localGridPosition.y()];
+        } else {
+            return null;
+        }
     }
 
     public int width() {

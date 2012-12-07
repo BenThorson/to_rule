@@ -43,7 +43,7 @@ public class ConversationScreen implements ControlCallbackScreen {
         if (conversant != null){
             conversation = new SampleConversation(conversant);
             ConversationTextAndOptions convoTexts = conversation.startConversation();
-            convoDialog = new Menu(conversant.getName(), convoTexts.getText(), convoTexts.getOptions(), Color.YELLOW, Color.BLACK, Color.WHITE);
+            convoDialog = new Menu(conversant.getName(), convoTexts.getText(), convoTexts.getOptions());
         }
     }
 
@@ -75,7 +75,7 @@ public class ConversationScreen implements ControlCallbackScreen {
                 if (newScreen != null){
                     return newScreen;
                 }
-                convoDialog = new Menu(conversant.getName(), convs.getText(), convs.getOptions(), Color.YELLOW, Color.BLACK, Color.WHITE);
+                convoDialog = new Menu(conversant.getName(), convs.getText(), convs.getOptions());
             } else {
                 return previous;
             }

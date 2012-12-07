@@ -1,0 +1,25 @@
+{
+    "quests":[
+        {
+            "name":"goblinAroundTown",
+            "text":"There has been seen a goblin skulking outside town.  Reports indicate the goblin has been spotted %s of town.",
+            "textParams":[
+                "direction"
+            ],
+            "distance":1,
+            "givenBy":"mayor",
+            "spawns":[
+                {
+                    "type":"goblin",
+                    "min":1,
+                    "max":1
+                }
+            ],
+            "objective":"kill",
+            "reward":{
+                "gold":50,
+                "fame":5
+            }
+        }
+    ]
+}

@@ -19,7 +19,7 @@ public class StartScreen implements Screen {
     public StartScreen(){
         startMenu = new Menu("Welcome to my game!", (String)null, new String[]{"Start new game",
                                                                  "Load saved game",
-                                                                 "Exit to OS"}, Color.YELLOW, Color.BLACK, Color.WHITE);
+                                                                 "Exit to OS"});
     }
 
 

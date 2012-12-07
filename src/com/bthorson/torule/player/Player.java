@@ -4,6 +4,8 @@ import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.ai.PlayerAI;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.persist.SerializeUtils;
+import com.bthorson.torule.quest.ActiveQuest;
+import com.bthorson.torule.quest.KillQuest;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,6 +27,7 @@ public class Player extends Creature {
     private ExploredMap explored = new ExploredMap();
 
     private List<Creature> followers = new ArrayList<Creature>();
+    private List<ActiveQuest> quests = new ArrayList<ActiveQuest>();
 
     public Player(CreatureBuilder builder) {
         super(builder);
@@ -32,7 +35,7 @@ public class Player extends Creature {
     }
 
     public int getFame() {
-        return 1;
+        return fame;
     }
 
     public boolean hasExplored(Point point){
@@ -77,5 +80,27 @@ public class Player extends Creature {
         object.add("explored", gson.toJsonTree(explored));
         SerializeUtils.serializeRefCollection(followers, object, "followers");
         return object;
+    }
+
+    public void addQuest(ActiveQuest quest) {
+        if (quests == null){
+            quests = new ArrayList<ActiveQuest>();
+        }
+        quests.add(quest);
+    }
+
+    public void removeQuest(ActiveQuest quest){
+        if (quests == null){
+            quests = new ArrayList<ActiveQuest>();
+        }
+        quests.remove(quest);
+    }
+
+    public List<ActiveQuest> getQuests() {
+        return quests;
+    }
+
+    public void addFame(int fame) {
+        this.fame += fame;
     }
 }
