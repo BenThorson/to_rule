@@ -37,10 +37,7 @@ public class FollowerCommandScreen implements ControlCallbackScreen {
     @Override
     public void positionSelected(Point point) {
         selectScreenActive = false;
-        if (point == null){
-            return;
-        }
-        else {
+        if (point != null) {
             List<Creature> followers = EntityManager.getInstance().getPlayer().getFollowersInCommandableRange();
             switch (choice){
                 case 0:
@@ -78,8 +75,10 @@ public class FollowerCommandScreen implements ControlCallbackScreen {
         if (done){
             return previous;
         }
-        if (selectScreenActive){
-            selectScreen.respondToUserInput(key);
+        if (selectScreenActive) {
+            if (this == selectScreen.respondToUserInput(key)) {
+                return previous;
+            }
         } else {
             int val = commandMenu.respondToUserInput(key);
             switch (val) {

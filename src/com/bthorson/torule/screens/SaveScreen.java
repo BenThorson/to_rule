@@ -1,7 +1,9 @@
 package com.bthorson.torule.screens;
 
+import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.map.World;
 import com.bthorson.torule.persist.SaveAction;
 import com.bthorson.torule.screens.component.Menu;
 
@@ -80,6 +82,10 @@ public class SaveScreen implements Screen {
                         saveName = new InputDialog("Name of save");
                     } else if ("cancel".equalsIgnoreCase(val)){
                         return previous;
+                    } else if ("quit without saving".equalsIgnoreCase(val)) {
+                        World.destroy();
+                        EntityManager.destroy();
+                        return new StartScreen();
                     } else {
                         name = val;
                         confirm = new Menu("Overwrite?", (String)null, Menu.YES_NO);
@@ -110,6 +116,7 @@ public class SaveScreen implements Screen {
             }
         }
         vals.add("new");
+        vals.add("quit without saving");
         vals.add("cancel");
         return vals.toArray(new String[vals.size()]);
     }

@@ -41,15 +41,16 @@ public class AStarPathTo implements PathTo {
                 if(closedList.contains(n)){
                     continue;
                 }
-                int g = current.getG() + world.tile(n.getPnt()).moveCost() + PointUtil.diagMoves(n.getPnt(), target) * 2;
+                int g = current.getG() + world.tile(n.getPnt()).moveCost();
                 if (world.creature(n.getPnt()) != null && !n.getPnt().equals(target)){
                     g += 30;
                 }
 
+                int h = PointUtil.diagMoves(n.getPnt(), target) * 6 + PointUtil.getDiagDist(n.getPnt(), target) * 3;
+
                 if (!openList.contains(n)){
                     n.setParent(current);
                     n.setG(g);
-                    int h = PointUtil.diagMoves(n.getPnt(), target) + PointUtil.getDiagDist(n.getPnt(), target);
                     n.setH(h);
 //                    System.out.println(String.format("adding point = %d,%d g=%d h=%d parent %d,%d", n.getPnt().x(), n.getPnt().y(), n.getG(), n.getH(), n.getParent().getPnt().x(), n.getParent().getPnt().y() ));
                     openList.add(n);
@@ -65,7 +66,6 @@ public class AStarPathTo implements PathTo {
                 if (updateVals){
                     n.setParent(current);
                     n.setG(g);
-                    int h = PointUtil.diagMoves(n.getPnt(), target) + PointUtil.getDiagDist(n.getPnt(), target);
                     n.setH(h);
 //                    System.out.println(String.format("updating point = %d,%d g=%d h=%d parent %d,%d", n.getPnt().x(), n.getPnt().y(), n.getG(), n.getH(), n.getParent(), n.getParent().getPnt().y()));
 

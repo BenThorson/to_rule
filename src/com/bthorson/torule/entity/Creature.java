@@ -594,7 +594,11 @@ public class Creature extends PhysicalEntity implements AiControllable {
         }
 
         equipmentSlots.get(item.getSlotType()).setItem(item);
+        item.setOwnedBy(this);
         item.setEquipped(true);
+        if (!inventory.contains(item)){
+            inventory.add(item);
+        }
     }
 
     public void unEquip(int i) {
@@ -673,6 +677,34 @@ public class Creature extends PhysicalEntity implements AiControllable {
         inventory.remove(selectedItem);
     }
 
+    public void transferEquipmentForOptimize(Creature gifter){
+        optimizeEquippedItems();
+        List<Item> giftable = new ArrayList<Item>();
+        for (Item item : gifter.inventory){
+            if (!item.isEquipped()){
+                giftable.add(item);
+            }
+        }
+        gifter.inventory.removeAll(optimizeFromGifts(giftable));
+    }
+
+    private List<Item> optimizeFromGifts(List<Item> giftable) {
+        ArrayList<Item> taken = new ArrayList<Item>();
+        for (String key : equipmentSlots.keySet()){
+            EquipmentSlot slot = equipmentSlots.get(key);
+            Item toEquip = findBestEquipmentForSlot(slot, giftable);
+            try {
+                equip(toEquip);
+                if (giftable.contains(toEquip)){
+                    taken.add(toEquip);
+                }
+            } catch (CannotEquipException e) {
+                e.printStackTrace();
+            }
+        }
+        return taken;
+    }
+
 
     public void optimizeEquippedItems() {
 
@@ -689,9 +721,13 @@ public class Creature extends PhysicalEntity implements AiControllable {
     }
 
     private Item findBestEquipmentForSlot(EquipmentSlot slot) {
+        return findBestEquipmentForSlot(slot, inventory);
+    }
+
+    private Item findBestEquipmentForSlot(EquipmentSlot slot, List<Item> candidates) {
         Item toEquip = null;
-        for (Item item : inventory){
-            if (item.getSlotType().equals(slot.getSlotName())){
+        for (Item item : candidates){
+            if (item.getSlotType() != null && item.getSlotType().equals(slot.getSlotName())){
                 if (toEquip == null ||
                         ItemType.INSTANCE.getItemRelativeWorth(item) > ItemType.INSTANCE.getItemRelativeWorth(toEquip)){
                     toEquip = item;
@@ -720,7 +756,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
         } else {
             armoredModifier = "heavily armed";
         }
-        info.add(getName() + " looks " + armoredModifier + ",");
+        info.add("He looks " + armoredModifier + ",");
         String strengthDesc = "";
         if (strength < 4) {
             strengthDesc = "weak";
@@ -729,16 +765,16 @@ public class Creature extends PhysicalEntity implements AiControllable {
         } else {
             strengthDesc = "pretty strong";
         }
-        info.add(" looks like he is " + strengthDesc + ",");
+        info.add(" is " + strengthDesc + ",");
         String dexterityDesc = "";
         if (dexterity < 4) {
             dexterityDesc = "clumsy";
         } else if (dexterity < 7){
-            dexterityDesc = "of average coordination";
+            dexterityDesc = "of average dex";
         } else {
             dexterityDesc = "pretty swift";
         }
-        info.add(" looks like he is " + dexterityDesc + ",");
+        info.add(" is " + dexterityDesc + ",");
         String constitutionDesc = "";
         if (constitution < 4) {
             constitutionDesc = "fragile";
@@ -747,7 +783,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
         } else {
             constitutionDesc = "pretty robust";
         }
-        info.add(" looks like he is " + constitutionDesc + ",");
+        info.add(" is " + constitutionDesc + ",");
 
         String hitpointDesc = "";
         if (maxHitpoints < 20) {
