@@ -118,7 +118,7 @@ public class FollowerListScreen implements Screen {
             if (selectedFollower.getAi().getPrevious() != null){
                 selectedFollower.setAi(selectedFollower.getAi().getPrevious());
             } else {
-                selectedFollower.setAi(new WanderAI(selectedFollower, null));
+                selectedFollower.setAi(new WanderAI(selectedFollower, null, true));
             }
         }
         return null;
