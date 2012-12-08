@@ -68,10 +68,9 @@ public class Player extends Creature {
 
     public List<Creature> getFollowers() {
         if (followers == null){
-            return new ArrayList<Creature>(followers);
-        } else {
-            return null;
+            followers = new ArrayList<Creature>();
         }
+        return new ArrayList<Creature>(followers);
 
     }
 
@@ -106,6 +105,7 @@ public class Player extends Creature {
         JsonObject object = super.serialize().getAsJsonObject();
         object.addProperty("fame", fame);
         object.add("explored", gson.toJsonTree(explored));
+        object.addProperty("commandableRange", commandableRange);
         SerializeUtils.serializeRefCollection(followers, object, "followers");
         SerializeUtils.serializeRefCollection(quests, object, "quests");
         return object;

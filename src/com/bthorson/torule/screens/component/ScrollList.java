@@ -1,7 +1,9 @@
 package com.bthorson.torule.screens.component;
 
+import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.screens.EntityRenderer;
 import com.bthorson.torule.screens.ScreenUtil;
 
 import java.awt.*;
@@ -13,9 +15,9 @@ import java.util.List;
  * Date: 12/1/12
  * Time: 1:37 PM
  */
-public class ScrollList {
+public class ScrollList<T extends Entity> {
 
-    private List<String> items;
+    private List<T> items;
     private Color textColor;
     private int firstDisplayed;
     private int lastDisplayed;
@@ -26,14 +28,20 @@ public class ScrollList {
     private int totalHeight;
     private final Color foreground;
     private final Color background;
+    private EntityRenderer<T> entityRenderer;
+
 
     private int currentChoice;
 
-    public ScrollList(List<String> items, int width, int height){
-        this(items, width, height, Color.YELLOW, Color.BLACK, Color.WHITE);
+    public ScrollList(List<T> items, int width, int height){
+        this(items, width, height, new DefaultRenderer<T>());
     }
 
-    public ScrollList(List<String> items, int width, int height, Color foreground, Color background, Color textColor){
+    public ScrollList(List<T> items, int width, int height, EntityRenderer<T> renderer){
+        this(items, width, height, Color.YELLOW, Color.BLACK, Color.WHITE, renderer);
+    }
+
+    public ScrollList(List<T> items, int width, int height, Color foreground, Color background, Color textColor, EntityRenderer<T> renderer){
         this.items = items;
         this.textColor = textColor;
 
@@ -43,6 +51,7 @@ public class ScrollList {
         this.totalHeight = height;
         this.foreground = foreground;
         this.background = background;
+        this.entityRenderer = renderer;
         init();
     }
 
@@ -62,7 +71,7 @@ public class ScrollList {
         ScreenUtil.makeRect(terminal, x, y, totalWidth, totalHeight, foreground, background, true);
         for (int i = firstDisplayed; i < lastDisplayed; i++){
 
-            String toWrite = items.get(i);
+            String toWrite = entityRenderer.render(items.get(i));
             if (toWrite.length() > width){
                 toWrite = toWrite.substring(0,width);
             }
@@ -89,6 +98,10 @@ public class ScrollList {
     }
 
     public int respondToUserInput(KeyEvent key) {
+
+        if (items.isEmpty()){
+            return KeyEvent.VK_ESCAPE == key.getKeyCode() ? -2 : -1;
+        }
 
         switch (key.getKeyCode()){
             case KeyEvent.VK_DOWN:
@@ -136,7 +149,7 @@ public class ScrollList {
         return currentChoice;
     }
 
-    public void updateList(List<String> items) {
+    public void updateList(List<T> items) {
         this.items = items;
         if (currentChoice >= items.size()){
             currentChoice--;

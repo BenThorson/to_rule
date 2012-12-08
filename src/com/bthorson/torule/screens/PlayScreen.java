@@ -104,8 +104,9 @@ public class PlayScreen implements Screen {
             case KeyEvent.VK_NUMPAD1: player.move(Direction.SOUTH_WEST.point()); break;
             case KeyEvent.VK_NUMPAD3: player.move(Direction.SOUTH_EAST.point()); break;
             case KeyEvent.VK_NUMPAD5: break;
-            case KeyEvent.VK_I: return new InventoryManagementScreen(this);
+            case KeyEvent.VK_I: return new InventoryManagementScreen(this, player);
 //            case KeyEvent.VK_PERIOD: player.getGroup().rotateTest(); break;
+            case KeyEvent.VK_B: return new FollowerListScreen(this);
             case KeyEvent.VK_F: return new FollowerCommandScreen(this, player.position().subtract(getOffset()));
             case KeyEvent.VK_T: return new ConversationScreen(this, player.position().subtract(getOffset()));
             case KeyEvent.VK_H: World.getInstance().skipTurns(500); break;
@@ -115,6 +116,8 @@ public class PlayScreen implements Screen {
                 if (items.size() > 0){
                     return new LootScreen(this, items);
                 }
+            case KeyEvent.VK_SEMICOLON:
+                player.addGold(5000);
             default:
                 return this;
         }

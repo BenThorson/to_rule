@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 import java.awt.*;
 import java.util.List;
 
-public abstract class PhysicalEntity extends Entity {
+public abstract class PhysicalEntity extends Entity implements Describable {
     public String templateName;
     protected Point position;
     private int glyph;
@@ -36,8 +36,6 @@ public abstract class PhysicalEntity extends Entity {
     public void setGlyph(int glyph) {
         this.glyph = glyph;
     }
-
-    public abstract List<String> getDetailedInfo();
 
     @Override
     public JsonElement serialize() {

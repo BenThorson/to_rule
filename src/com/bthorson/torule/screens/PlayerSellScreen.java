@@ -4,6 +4,7 @@ import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.item.Item;
+import com.bthorson.torule.screens.component.ItemNameRenderer;
 import com.bthorson.torule.screens.component.Menu;
 import com.bthorson.torule.town.Building;
 
@@ -15,7 +16,7 @@ import java.awt.event.KeyEvent;
  * Time: 8:27 AM
  */
 public class PlayerSellScreen implements Screen {
-    private ItemDetailScreen itemDetailScreen;
+    private EntityDetailScreen<Item> itemDetailScreen;
     private Building shop;
     private Screen previous;
     private Menu confirmation;
@@ -27,8 +28,10 @@ public class PlayerSellScreen implements Screen {
         this.previous = previous;
         this.shop = shop;
 
-        itemDetailScreen = new ItemDetailScreen(player.getInventory(), shop.getOwner().getName() + "s " + shop.getBuildingType().prettyName());
-
+        itemDetailScreen = new EntityDetailScreen<Item>(player.getInventory(),
+                                                        shop.getOwner().getName() + "s " +
+                                                                shop.getBuildingType().prettyName(),
+                                                        new ItemNameRenderer());
     }
 
     @Override

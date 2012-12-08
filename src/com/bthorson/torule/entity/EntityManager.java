@@ -87,6 +87,7 @@ public class EntityManager {
 
         if (!player.position().divide(MapConstants.LOCAL_SIZE_POINT).equals(lastCheckedPosition.divide(MapConstants.LOCAL_SIZE_POINT))){
             nextReady = false;
+            System.out.println("starting a new thread to load new chunks in");
             new NewLocalUpdateAction();
         }
 

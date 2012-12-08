@@ -22,7 +22,7 @@ public class ToRuleMain extends JFrame implements KeyListener {
 
     public ToRuleMain(){
         super();
-        setTitle("Helloooo!");
+        setTitle("To Rule(Because I can't come up with a game name to save my life)");
 
         terminal = new AsciiPanel(Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT);
         add(terminal);
