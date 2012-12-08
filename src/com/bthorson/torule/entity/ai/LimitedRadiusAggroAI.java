@@ -41,7 +41,7 @@ public class LimitedRadiusAggroAI extends AggroableAI {
 
     @Override
     protected Creature getTarget() {
-        Creature creature = self.closestVisibleHostile();
+        Creature creature = super.getTarget();
 
         if(creature != null && self.isWithinRange(creature.position(), radius)) {
             return creature;

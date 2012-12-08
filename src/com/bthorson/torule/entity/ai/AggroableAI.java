@@ -31,4 +31,9 @@ public class AggroableAI extends CreatureAI {
         return false;
     }
 
+    protected Creature getTarget() {
+        return self.closestVisibleHostile();
+    }
+
+
 }

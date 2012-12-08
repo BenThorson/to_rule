@@ -1,5 +1,6 @@
 package com.bthorson.torule.screens;
 
+import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.*;
 import com.bthorson.torule.geom.Direction;
@@ -7,6 +8,8 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
+import com.bthorson.torule.quest.ScriptedSpawn;
+import com.bthorson.torule.worldgen.SpawnAction;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -116,6 +119,19 @@ public class PlayScreen implements Screen {
                 if (items.size() > 0){
                     return new LootScreen(this, items);
                 }
+            case KeyEvent.VK_W: return new QuestScreen(this);
+            case KeyEvent.VK_9:
+                List<ScriptedSpawn> spawns = new ArrayList<ScriptedSpawn>();
+                ScriptedSpawn spawn = new ScriptedSpawn();
+                spawn.setMin(5);
+                spawn.setMax(5);
+                spawn.setType("goblin");
+                spawns.add(spawn);
+                    Point point = new Point(PointUtil.randomPoint(player.position().subtract(player.visionRadius()),
+                                                                  player.position().add(player.visionRadius())));
+
+                    new SpawnAction().createCreatures(spawns, point);
+
             case KeyEvent.VK_SEMICOLON:
                 player.addGold(5000);
             default:

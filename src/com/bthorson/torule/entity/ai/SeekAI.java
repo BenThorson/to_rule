@@ -61,10 +61,17 @@ public class SeekAI extends CreatureAI{
                                 PointUtil.getDiagDist(self.position(), targetPosition) &&
                 (World.getInstance().isTravelable(nextMove) ||
                         nextMove.equals(targetPosition))){
-            if (self.move(nextMove.subtract(self.position()))){
+            Point delta = nextMove.subtract(self.position());
+            if (!delta.equals(delta.normalize())){
+                repairPath(nextMove);
+                delta = path.peek().subtract(self.position());
+            }
+
+            if (self.move(delta)){
                 path.pop();
             } else if (!nextMove.equals(targetPosition)) {
                 if (++stuckCount % stuckCountMax == 0){
+                    stuckCount = 0;
                     calcAndExecutePath();
                 }
             }
@@ -72,6 +79,19 @@ public class SeekAI extends CreatureAI{
             calcAndExecutePath();
         }
         return this;
+    }
+
+    private void repairPath(Point nextMove) {
+        path.pop();
+        Stack<Point> repair = pathTo.buildPath(World.getInstance(), self.position(), nextMove);
+        System.out.println("repairing path");
+        Stack<Point> reverse = new Stack<Point>();
+        while (!repair.empty()){
+            reverse.push(repair.pop());
+        }
+        while (!reverse.empty()){
+            path.push(reverse.pop());
+        }
     }
 
     private void calcAndExecutePath() {

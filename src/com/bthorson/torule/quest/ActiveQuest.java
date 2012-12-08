@@ -1,12 +1,17 @@
 package com.bthorson.torule.quest;
 
+import com.bthorson.torule.StringUtil;
 import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.Describable;
 import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.entity.EntityManager;
+import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.persist.SerializeUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +19,7 @@ import java.util.List;
  * Date: 12/6/12
  * Time: 7:44 PM
  */
-public class ActiveQuest extends Entity {
+public class ActiveQuest extends Entity implements Describable{
 
     private String description;
     private Creature questGiver;
@@ -73,6 +78,16 @@ public class ActiveQuest extends Entity {
 
     public void setQuestReward(QuestReward questReward) {
         this.questReward = questReward;
+    }
+
+    @Override
+    public List<String> getDetailedInfo() {
+        List<String> list = new ArrayList<String>();
+        list.add("Quest:  " + getName());
+        list.add("Description:  " + getDescription());
+        list.add("Given By:  " + questGiver.getName() + " of " +
+                EntityManager.getInstance().town(PointUtil.toRegional(questGiver.position())).getName());
+        return list;
     }
 
     @Override

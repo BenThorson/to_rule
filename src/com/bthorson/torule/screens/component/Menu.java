@@ -1,5 +1,6 @@
 package com.bthorson.torule.screens.component;
 
+import com.bthorson.torule.StringUtil;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.screens.ScreenUtil;
@@ -47,7 +48,7 @@ public class Menu {
         this.textColor = textColor;
 
         currentChoice = 0;
-        splitDetails(additionalDetails);
+        splitDetails = StringUtil.splitStringByLength(additionalDetails, MAX_WIDTH);
 
         init();
     }
@@ -78,29 +79,6 @@ public class Menu {
         width = Math.max(Math.max(longestStringLengthInList(Arrays.asList(choices)),
                                            longestStringLengthInList(splitDetails)), title.length()) + 2;
 
-    }
-
-    private void splitDetails(String additionalDetails) {
-
-        if (additionalDetails == null){
-            return;
-        }
-        String[] words = additionalDetails.split(" ");
-        StringBuilder sb = new StringBuilder();
-        int counter = 0;
-        for (String word : words){
-            if (word.length() + counter + 1 < MAX_WIDTH){
-                sb.append(word).append(" ");
-                counter += word.length() + 1;
-            } else {
-                splitDetails.add(sb.toString());
-                sb = new StringBuilder(word).append(" ");
-                counter = word.length() + 1;
-            }
-        }
-        if (sb.length() > 0){
-            splitDetails.add(sb.toString());
-        }
     }
 
     private int longestStringLengthInList(List<String> strings){

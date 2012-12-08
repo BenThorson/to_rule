@@ -2,6 +2,7 @@ package com.bthorson.torule.entity;
 
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.MapConstants;
 import com.bthorson.torule.map.World;
@@ -75,6 +76,10 @@ public class EntityManager {
     public void addCreature(Creature creature){
         creatures.add(creature);
         fullCatalog.put(creature.id, creature);
+        if (lastCheckedPosition != null && creature.position().withinRect(PointUtil.floorToNearest100(lastCheckedPosition).subtract(100),
+                                                                          PointUtil.floorToNearest100(lastCheckedPosition).add(200))){
+            locallyUpdate.add(creature);
+        }
     }
 
     public void update(){
@@ -320,6 +325,7 @@ public class EntityManager {
             nextReady = true;
             lastCheckedPosition = player.position();
             nextLocalUpdate = newUpdate;
+            System.out.println("thread complete");
         }
 
         private Point correctSeCorner(Point toRegion) {

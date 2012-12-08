@@ -1,5 +1,6 @@
 package com.bthorson.torule.screens;
 
+import com.bthorson.torule.StringUtil;
 import com.bthorson.torule.entity.Describable;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
@@ -39,7 +40,11 @@ public class EntityDetailScreen<T extends Entity & Describable> {
             T item = entities.get(list.getCurrentChoice());
             List<String> details = item.getDetailedInfo();
             for (String detail : details){
-                terminal.writePopupText(detail, detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
+                List<String> formatted = StringUtil.splitStringByLength(detail, Screen.SCREEN_WIDTH - 24);
+                for (String format: formatted){
+                    terminal.writePopupText(format, detailsStart.add(new Point(0, detailsRow++)), Color.WHITE, Color.BLACK);
+                }
+                detailsRow++;
             }
         }
     }
