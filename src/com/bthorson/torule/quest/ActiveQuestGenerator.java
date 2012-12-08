@@ -44,7 +44,7 @@ public class ActiveQuestGenerator {
             List<Point> points = getPlaceablePointsInRegion(number, offset, placement);
             for (int i = 0; i < number; i++){
                 Creature creature = CreatureFactory.INSTANCE.createCreature(spawn.getType(), points.get(i));
-                creature.setAi(new WanderAI(creature, null));
+                creature.setAi(new WanderAI(creature, null, true));
                 creature.setFaction(EntityManager.getInstance().getGoblinFaction());
                 creatures.add(creature);
             }

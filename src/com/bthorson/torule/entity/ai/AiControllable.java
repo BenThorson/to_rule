@@ -40,4 +40,6 @@ public interface AiControllable {
     Creature closestVisibleHostile();
 
     boolean isHostile(Creature other);
+
+    boolean isWithinRange(Point point, int range);
 }

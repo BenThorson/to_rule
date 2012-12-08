@@ -232,7 +232,8 @@ public class LoadAction {
         } else if ("WanderAI".equalsIgnoreCase(name)){
             return new WanderAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
                                 gson.fromJson(ai.get("nwBound"), Point.class),
-                                gson.fromJson(ai.get("seBound"), Point.class), previous);
+                                gson.fromJson(ai.get("seBound"), Point.class),
+                                previous, ai.get("isAggroable").getAsBoolean());
         } else if ("GuardAI".equalsIgnoreCase(name)){
             return new GuardAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
                                gson.fromJson(ai.get("guardPoint"), Point.class), previous);
@@ -246,6 +247,10 @@ public class LoadAction {
             return new AttackAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
                                 creatures.get(ai.get("creature").getAsInt()).getEntity(),
                                 previous);
+        } else if ("LimitedRadiusAggroAI".equalsIgnoreCase(name)){
+            return new LimitedRadiusAggroAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
+                                            previous, ai.get("radius").getAsInt(),
+                                            getAiAndInstantiate(ai.get("defaultAI").getAsJsonObject()));
         }
         return null;
     }

@@ -63,7 +63,7 @@ public class MoveToAI extends AggroableAI {
         if (nextMove != null) {
             Point delta = nextMove.subtract(self.position());
             if (World.getInstance().isTravelable(nextMove) || PointUtil.getDiagDist(self.position(), point) != 1) {
-                self.move(delta.normalize());
+                self.move(delta);
                 if (self.position().equals(nextMove)) {
                     path.pop();
                 } else if (!nextMove.equals(point)) {

@@ -1,5 +1,7 @@
 package com.bthorson.torule.geom;
 
+import com.bthorson.torule.map.MapConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -49,5 +51,13 @@ public class PointUtil {
             }
         }
         return points;
+    }
+
+    public static Point toRegional(Point position) {
+        return position.divide(100);
+    }
+
+    public static Point floorToNearest100(Point point){
+        return toRegional(point).multiply(100);
     }
 }

@@ -17,27 +17,35 @@ import java.util.Random;
  * Date: 9/7/12
  * Time: 8:51 PM
  */
-public class WanderAI extends AggroableAI {
+public class WanderAI extends CreatureAI {
 
     private Point nwBound;
     private Point seBound;
-    public WanderAI(AiControllable self, Point nwBound, Point seBound, CreatureAI previous){
+    private boolean isAggroable;
+
+//    private AggroableAI aggroableAI;
+
+    public WanderAI(AiControllable creature, CreatureAI previous, boolean isAggroable) {
+        this(creature, PointUtil.POINT_ORIGIN, World.getInstance().seCorner(), previous, isAggroable);
+    }
+
+    public WanderAI(AiControllable self, Point nwBound, Point seBound, CreatureAI previous, boolean isAggroable) {
         super(self, previous);
         this.nwBound = nwBound;
         this.seBound = seBound;
-    }
-
-    public WanderAI(Creature creature, CreatureAI previous) {
-        this(creature, PointUtil.POINT_ORIGIN, World.getInstance().seCorner(), previous);
+        this.isAggroable = isAggroable;
     }
 
     @Override
     public CreatureAI execute() {
 
-        CreatureAI ai = super.execute();
-        if (ai instanceof AggroAI){
-            return ai;
+        if (isAggroable){
+            CreatureAI ai = new AggroableAI(self, this).execute();
+            if (ai instanceof AggroAI){
+                return ai;
+            }
         }
+
 
         int check = new Random().nextInt(10);
 
@@ -80,6 +88,7 @@ public class WanderAI extends AggroableAI {
         JsonObject obj = super.serialize().getAsJsonObject();
         obj.add("nwBound", gson.toJsonTree(nwBound));
         obj.add("seBound", gson.toJsonTree(seBound));
+        obj.addProperty("isAggroable", isAggroable);
         return obj;
     }
 }

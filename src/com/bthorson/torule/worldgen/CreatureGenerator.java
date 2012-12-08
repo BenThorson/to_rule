@@ -4,6 +4,7 @@ import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.CreatureFactory;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.entity.ai.GuardAI;
+import com.bthorson.torule.entity.ai.LimitedRadiusAggroAI;
 import com.bthorson.torule.entity.ai.PatrolAI;
 import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Direction;
@@ -52,8 +53,8 @@ public class CreatureGenerator {
                         Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
                         if (!World.getInstance().isOccupied(candidate)){
                             Creature cow = CreatureFactory.INSTANCE.createCreature("cow", candidate);
-                            cow.setAi(new WanderAI(cow, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null));
-                            cow.setFaction(EntityManager.getInstance().getPassiveAnimalFaction());
+                            cow.setAi(new WanderAI(cow, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, false));
+                            cow.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
                         }  else {
                             i--;
                         }
@@ -66,7 +67,7 @@ public class CreatureGenerator {
                         Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
                         if (!World.getInstance().isOccupied(candidate)){
                             Creature cow = CreatureFactory.INSTANCE.createCreature("cow", candidate);
-                            cow.setAi(new WanderAI(cow, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null));
+                            cow.setAi(new WanderAI(cow, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, false));
                             cow.setFaction(EntityManager.getInstance().getPassiveAnimalFaction());
                         }  else {
                             i--;
@@ -78,8 +79,10 @@ public class CreatureGenerator {
                         Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
                         if (!World.getInstance().isOccupied(candidate)){
                             Creature boar = CreatureFactory.INSTANCE.createCreature("boar", candidate);
-                            boar.setAi(new WanderAI(boar, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null));
-                            boar.setFaction(EntityManager.getInstance().getPassiveAnimalFaction());
+                            boar.setAi(new LimitedRadiusAggroAI(boar, null, 5, new WanderAI(boar,
+                                    PointUtil.floorToNearest100(boar.position()),
+                                    PointUtil.floorToNearest100(boar.position()).add(100), null, false)));
+                            boar.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
                         }  else {
                             i--;
                         }
@@ -92,7 +95,7 @@ public class CreatureGenerator {
                         Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
                         if (!World.getInstance().isOccupied(candidate)){
                             Creature wolf = CreatureFactory.INSTANCE.createCreature("wolf", candidate);
-                            wolf.setAi(new WanderAI(wolf, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null));
+                            wolf.setAi(new WanderAI(wolf, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, true));
                             wolf.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
                         }  else {
                             i--;
@@ -105,7 +108,7 @@ public class CreatureGenerator {
                          Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
                          if (!World.getInstance().isOccupied(candidate)){
                              Creature honeyBadger = CreatureFactory.INSTANCE.createCreature("honeyBadger", candidate);
-                             honeyBadger.setAi(new WanderAI(honeyBadger, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null));
+                             honeyBadger.setAi(new WanderAI(honeyBadger, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, true));
                              honeyBadger.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
                          }  else {
                              i--;
@@ -143,7 +146,7 @@ public class CreatureGenerator {
             if (!World.getInstance().isOccupied(candidate) && !candidate.equals(new Point(50,50))){
                 Creature villager = CreatureFactory.INSTANCE.createCreature("villager", candidate);
                 villager.setFaction(town.getFaction());
-                villager.setAi(new WanderAI(villager, town.getLocal().getNwBoundWorldCoord(), town.getLocal().getSeBoundWorldBound(), null));
+                villager.setAi(new WanderAI(villager, town.getLocal().getNwBoundWorldCoord(), town.getLocal().getSeBoundWorldBound(), null, true));
             } else {
                 i--;
             }
@@ -163,7 +166,7 @@ public class CreatureGenerator {
             if (!World.getInstance().isOccupied(candidate) && !candidate.equals(new Point(50,50))){
                 Creature puppy = CreatureFactory.INSTANCE.createCreature("puppy", candidate);
                 puppy.setFaction(town.getFaction());
-                puppy.setAi(new WanderAI(puppy, town.getLocal().getNwBoundWorldCoord(), town.getLocal().getSeBoundWorldBound(), null));
+                puppy.setAi(new WanderAI(puppy, town.getLocal().getNwBoundWorldCoord(), town.getLocal().getSeBoundWorldBound(), null, true));
             } else {
                 i--;
             }
@@ -176,7 +179,7 @@ public class CreatureGenerator {
         shopOwner.setFaction(town.getFaction());
         shopOwner.setAi(new WanderAI(shopOwner,
                                      building.getNwCorner().add(Direction.SOUTH_EAST.point()),
-                                     building.getSeCorner().add(Direction.NORTH_WEST.point()), null));
+                                     building.getSeCorner().add(Direction.NORTH_WEST.point()), null, true));
         shopOwner.addOwnedProperty("shop", building);
         building.setOwner(shopOwner);
         for (Item item : building.getInventory()){
@@ -207,7 +210,7 @@ public class CreatureGenerator {
         Point row2 = offset.add(86, 74);
 
         for (int i = 0; i < 20; i+= 2){
-            Creature guard1 = CreatureFactory.INSTANCE.createCreature(templateName, row1.add(0,i));
+            Creature guard1 = CreatureFactory.INSTANCE.createCreature(templateName, row1.add(0, i));
             Creature guard2 = CreatureFactory.INSTANCE.createCreature(templateName, row2.add(0,i));
             guard1.setAi(new GuardAI(guard1, guard1.position(), null));
             guard1.setFaction(town.getFaction());

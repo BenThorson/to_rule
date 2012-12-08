@@ -12,9 +12,14 @@ import com.google.gson.JsonObject;
  */
 public class FollowAI extends SeekAI {
 
-
     public FollowAI(AiControllable self, CreatureAI previous) {
         super(self, self.getLeader(), previous);
+    }
+
+    @Override
+    public CreatureAI execute() {
+
+        return super.execute();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override

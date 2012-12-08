@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class Player extends Creature {
 
-    private int fame;
+    private int fame = 10;
 
     private int commandableRange;
 
@@ -68,11 +68,9 @@ public class Player extends Creature {
 
     public List<Creature> getFollowers() {
         if (followers == null){
-            return new ArrayList<Creature>(followers);
-        } else {
-            return null;
+            followers = new ArrayList<Creature>();
         }
-
+        return followers;
     }
 
     public void addQuest(ActiveQuest quest) {
@@ -114,16 +112,10 @@ public class Player extends Creature {
     public List<Creature> getFollowersInCommandableRange() {
         List<Creature> commandable = new ArrayList<Creature>(followers.size());
         for (Creature follower : followers){
-            if (isCommandable(follower.position())){
+            if (isWithinRange(follower.position(), commandableRange)){
                 commandable.add(follower);
             }
         }
         return commandable;
-    }
-
-    private boolean isCommandable(Point point){
-        Point product = position().subtract(point).squared();
-
-        return !(product.x() + product.y() > commandableRange*commandableRange);
     }
 }

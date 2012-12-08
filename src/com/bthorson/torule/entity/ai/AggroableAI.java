@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
  * Date: 12/5/12
  * Time: 9:17 PM
  */
-public abstract class AggroableAI extends CreatureAI {
+public class AggroableAI extends CreatureAI {
 
     public AggroableAI(AiControllable self, CreatureAI previous) {
         super(self, previous);
@@ -23,7 +23,7 @@ public abstract class AggroableAI extends CreatureAI {
             aggroAI.execute();
             return aggroAI;
         }
-        return this;
+        return previous;
     }
 
     @Override

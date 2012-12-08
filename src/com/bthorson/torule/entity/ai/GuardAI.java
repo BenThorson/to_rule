@@ -31,7 +31,7 @@ public class GuardAI extends AggroableAI {
         if (!self.position().equals(guardPoint)){
             return new MoveToAI(guardPoint, this);
         }
-        return ai;
+        return this;
     }
 
     @Override

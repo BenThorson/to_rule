@@ -79,12 +79,6 @@ public class EntityManager {
 
     public void update(){
 
-
-        for (Creature dead : toRemove){
-            remove(dead);
-        }
-        toRemove.clear();
-
         if (!player.position().divide(MapConstants.LOCAL_SIZE_POINT).equals(lastCheckedPosition.divide(MapConstants.LOCAL_SIZE_POINT))){
             nextReady = false;
             new NewLocalUpdateAction();
@@ -99,6 +93,11 @@ public class EntityManager {
         for (Creature creature : locallyUpdate){
             creature.update(World.getInstance().getTurnCounter());
         }
+
+        for (Creature dead : toRemove){
+            remove(dead);
+        }
+        toRemove.clear();
     }
 
     public Creature creatureAt(Point position){

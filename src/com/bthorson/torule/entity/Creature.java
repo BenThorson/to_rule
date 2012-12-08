@@ -1,12 +1,7 @@
 package com.bthorson.torule.entity;
 
 import com.bthorson.torule.Message;
-import com.bthorson.torule.entity.ai.AggroAI;
-import com.bthorson.torule.entity.ai.AiControllable;
-import com.bthorson.torule.entity.ai.CreatureAI;
-import com.bthorson.torule.entity.ai.DeadAi;
-import com.bthorson.torule.entity.ai.FollowAI;
-import com.bthorson.torule.entity.ai.PlayerAI;
+import com.bthorson.torule.entity.ai.*;
 import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.exception.CannotEquipException;
 import com.bthorson.torule.geom.Direction;
@@ -115,10 +110,10 @@ public class Creature extends PhysicalEntity implements AiControllable {
             //do nothing
         } else {
             this.leader = leader;
-            if (ai instanceof FollowAI){
-                ai = new FollowAI(this, ai.getPrevious());
+            if (ai instanceof FollowAI) {
+                ai = new LimitedRadiusAggroAI(this, ai.getPrevious(), 4, new FollowAI(this, ai.getPrevious()));
             } else {
-                ai = new FollowAI(this, ai);
+                ai = new LimitedRadiusAggroAI(this, ai, 4, new FollowAI(this, ai));
             }
         }
     }
@@ -249,7 +244,9 @@ public class Creature extends PhysicalEntity implements AiControllable {
         }
 
         if (Math.abs(delta.x()) > 1 || Math.abs(delta.y()) > 1){
-            throw new RuntimeException("too large of a move");
+            delta = delta.normalize();
+            System.out.println("too large of a move");
+//            throw new RuntimeException("too large of a move");
         }
 
         if (Point.BLANK.equals(delta)){
@@ -359,7 +356,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
         if (!dead){
             Random random = new Random();
             if (!(ai instanceof AggroAI) || random.nextInt(10) > 5){
-                setAi(new AggroAI(this, attacker, ai.getPrevious()));
+                setAi(new AggroAI(this, attacker, ai));
             }
         }
     }
@@ -847,5 +844,13 @@ public class Creature extends PhysicalEntity implements AiControllable {
         obj.addProperty("constitution", constitution);
         return obj;
     }
+
+
+    public boolean isWithinRange(Point point, int range){
+        Point product = position().subtract(point).squared();
+
+        return !(product.x() + product.y() > range*range);
+    }
+
 
 }

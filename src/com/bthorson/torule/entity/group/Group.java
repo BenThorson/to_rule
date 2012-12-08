@@ -191,6 +191,11 @@ public class Group extends Entity implements AiControllable{
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
+    public boolean isWithinRange(Point point, int range) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public void remove(Creature dead) {
 //        if (memList.remove(dead)){
 //            reformOnUpdate = true;
