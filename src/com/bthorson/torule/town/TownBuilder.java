@@ -37,24 +37,13 @@ public class TownBuilder {
         return this;
     }
 
-    public TownBuilder buildWall(int x, int y, int w, int h) {
-        toBuildOn.getTiles()[x][y] = Tile.WALL_NW;
-        toBuildOn.getTiles()[x + w][y] = Tile.WALL_NE;
-        toBuildOn.getTiles()[x][y + h] = Tile.WALL_SW;
-        toBuildOn.getTiles()[x + w][y + h] = Tile.WALL_SE;
-        for (int i = 1; i < w; i++) {
-            toBuildOn.getTiles()[x + i][y] = Tile.WALL_HORIZ;
-            toBuildOn.getTiles()[x + i][y + h] = Tile.WALL_HORIZ;
-        }
-        for (int i = 1; i < h; i++) {
-            toBuildOn.getTiles()[x][y + i] = Tile.WALL_VERT;
-            toBuildOn.getTiles()[x + w][y + i] = Tile.WALL_VERT;
-        }
+    public TownBuilder cityWalls(int x, int y, int w, int h){
+        ContstructionUtil.buildWall(toBuildOn, x, y, w, h);
         return this;
     }
 
     public TownBuilder buildBuilding(int x, int y, int w, int h, Direction doorDir, BuildingType buildingType) {
-        buildWall(x,y,w,h);
+        ContstructionUtil.buildWall(toBuildOn, x,y,w,h);
         fillRect(x + 1, y + 1, w - 1, h - 1, Tile.FLOOR);
 
         Building b = new Building(toBuildOn.getNwBoundWorldCoord().add(new Point(x, y)), toBuildOn.getNwBoundWorldCoord().add(new Point(x + w, y + h)),
@@ -113,7 +102,7 @@ public class TownBuilder {
                 .buildRoad(3, 8, 16, 86, 16)
                 .buildRoad(3, 16, 83, 50, 83)
                 .buildRoad(3, 84, 16, 84, 50)
-                .buildWall(0, 0, 99, 99)
+                .cityWalls(0, 0, 99, 99)
 
                 .buildBuilding(8, 18, 6, 6, Direction.EAST, BuildingType.HOUSE)
                 .buildBuilding(8, 25, 6, 6, Direction.EAST, BuildingType.HOUSE)
@@ -168,6 +157,8 @@ public class TownBuilder {
 
 
     }
+
+
 
     private TownBuilder regionalPosition(Point localPoint) {
         town.setRegionalPosition(localPoint);

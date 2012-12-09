@@ -11,10 +11,7 @@ import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.item.Item;
-import com.bthorson.torule.map.LocalType;
-import com.bthorson.torule.map.MapConstants;
-import com.bthorson.torule.map.Tile;
-import com.bthorson.torule.map.World;
+import com.bthorson.torule.map.*;
 import com.bthorson.torule.player.Player;
 import com.bthorson.torule.town.Building;
 import com.bthorson.torule.town.Town;
@@ -34,103 +31,123 @@ import static com.bthorson.torule.map.MapConstants.LOCAL_SIZE_Y;
  */
 public class CreatureGenerator {
 
-    public void createHostileMobs(){
+    public void spawnCreaturesByFerocity(){
 
         //todo ripe for refactoring
         Point localAmounts = World.getInstance().seCorner().divide(LOCAL_SIZE_POINT);
         Random random = new Random();
         for (int x = 0; x < localAmounts.x(); x++){
             for (int y = 0; y < localAmounts.y(); y++) {
-                Point local = new Point(x,y);
-                int distToNearestTown = getTownDistance(local);
-                if (distToNearestTown == 0){
-                    continue;
-                }
-                else if (distToNearestTown == 1){
-                    int numGentle = random.nextInt(15);
-                    for (int i = 0; i < numGentle; i++){
-                        Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
-                        Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
-                        if (!World.getInstance().isOccupied(candidate)){
-                            Creature cow = CreatureFactory.INSTANCE.createCreature("cow", candidate);
-                            cow.setAi(new WanderAI(cow, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, false));
-                            cow.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
-                        }  else {
-                            i--;
+                Point localPos = new Point(x,y);
+                Local local = World.getInstance().getLocal(localPos);
+                int numGentle;
+                int numAggressive;
+                switch (local.getFerocity()){
+                    case CIVILIZED:
+                        if (EntityManager.getInstance().town(localPos) != null){
+                            break;
                         }
-                    }
-                }
-                else if (distToNearestTown == 2){
-                    int numGentle = random.nextInt(7);
-                    for (int i = 0; i < numGentle; i++){
-                        Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
-                        Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
-                        if (!World.getInstance().isOccupied(candidate)){
-                            Creature cow = CreatureFactory.INSTANCE.createCreature("cow", candidate);
-                            cow.setAi(new WanderAI(cow, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, false));
-                            cow.setFaction(EntityManager.getInstance().getPassiveAnimalFaction());
-                        }  else {
-                            i--;
+                        numGentle = random.nextInt(15);
+                        for (int i = 0; i < numGentle; i++){
+                            Point transformedLocal = localPos.multiply(LOCAL_SIZE_POINT);
+                            Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                            if (!World.getInstance().isOccupied(candidate)){
+                                Creature cow = CreatureFactory.INSTANCE.createCreature("cow", candidate);
+                                cow.setAi(new WanderAI(cow, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, false));
+                                cow.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
+                            }  else {
+                                i--;
+                            }
                         }
-                    }
-                    int numAggressive = random.nextInt(7);
-                    for (int i = 0; i < numAggressive; i++){
-                        Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
-                        Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
-                        if (!World.getInstance().isOccupied(candidate)){
-                            Creature boar = CreatureFactory.INSTANCE.createCreature("boar", candidate);
-                            boar.setAi(new LimitedRadiusAggroAI(boar, null, 5, new WanderAI(boar,
-                                    PointUtil.floorToNearest100(boar.position()),
-                                    PointUtil.floorToNearest100(boar.position()).add(100), null, false)));
-                            boar.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
-                        }  else {
-                            i--;
+                        break;
+                    case TAME:
+                        numGentle = random.nextInt(7);
+                        for (int i = 0; i < numGentle; i++){
+                            Point transformedLocal = localPos.multiply(LOCAL_SIZE_POINT);
+                            Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                            if (!World.getInstance().isOccupied(candidate)){
+                                Creature cow = CreatureFactory.INSTANCE.createCreature("cow", candidate);
+                                cow.setAi(new WanderAI(cow, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, false));
+                                cow.setFaction(EntityManager.getInstance().getPassiveAnimalFaction());
+                            }  else {
+                                i--;
+                            }
                         }
-                    }
-                }
-                else if (distToNearestTown == 3){
-                    int numAggressive = random.nextInt(10);
-                    for (int i = 0; i < numAggressive; i++){
-                        Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
-                        Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
-                        if (!World.getInstance().isOccupied(candidate)){
-                            Creature wolf = CreatureFactory.INSTANCE.createCreature("wolf", candidate);
-                            wolf.setAi(new WanderAI(wolf, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, true));
-                            wolf.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
-                        }  else {
-                            i--;
+                        numAggressive = random.nextInt(7);
+                        for (int i = 0; i < numAggressive; i++){
+                            Point transformedLocal = localPos.multiply(LOCAL_SIZE_POINT);
+                            Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                            if (!World.getInstance().isOccupied(candidate)){
+                                Creature boar = CreatureFactory.INSTANCE.createCreature("boar", candidate);
+                                boar.setAi(new LimitedRadiusAggroAI(boar, null, 5, new WanderAI(boar,
+                                        PointUtil.floorToNearest100(boar.position()),
+                                        PointUtil.floorToNearest100(boar.position()).add(100), null, false)));
+                                boar.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
+                            }  else {
+                                i--;
+                            }
                         }
-                    }
-                } else {
-                    int numAggressive = random.nextInt(distToNearestTown * 3);
-                     for (int i = 0; i < numAggressive; i++){
-                         Point transformedLocal = local.multiply(LOCAL_SIZE_POINT);
-                         Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
-                         if (!World.getInstance().isOccupied(candidate)){
-                             Creature honeyBadger = CreatureFactory.INSTANCE.createCreature("honeyBadger", candidate);
-                             honeyBadger.setAi(new WanderAI(honeyBadger, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, true));
-                             honeyBadger.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
-                         }  else {
-                             i--;
-                         }
-                     }
-                    
+                        break;
+                    case NEUTRAL:
+                        numAggressive = random.nextInt(15);
+                        for (int i = 0; i < numAggressive; i++){
+                            Point transformedLocal = localPos.multiply(LOCAL_SIZE_POINT);
+                            Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                            if (!World.getInstance().isOccupied(candidate)){
+                                Creature wolf = CreatureFactory.INSTANCE.createCreature("wolf", candidate);
+                                wolf.setAi(new WanderAI(wolf, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, true));
+                                wolf.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
+                            }  else {
+                                i--;
+                            }
+                        }
+                        break;
+                    case WILD:
+                        numAggressive = random.nextInt(18);
+                        for (int i = 0; i < numAggressive; i++){
+                            Point transformedLocal = localPos.multiply(LOCAL_SIZE_POINT);
+                            Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                            if (!World.getInstance().isOccupied(candidate)){
+                                Creature honeyBadger = CreatureFactory.INSTANCE.createCreature("honeyBadger", candidate);
+                                honeyBadger.setAi(new WanderAI(honeyBadger, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, true));
+                                honeyBadger.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
+                            }  else {
+                                i--;
+                            }
+                        }
+                        break;
+                    case DANGEROUS:
+                        numAggressive = random.nextInt(7);
+                        for (int i = 0; i < numAggressive; i++){
+                            Point transformedLocal = localPos.multiply(LOCAL_SIZE_POINT);
+                            Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                            if (!World.getInstance().isOccupied(candidate)){
+                                Creature troll = CreatureFactory.INSTANCE.createCreature("troll", candidate);
+                                troll.setAi(new WanderAI(troll, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, true));
+                                troll.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
+                            }  else {
+                                i--;
+                            }
+                        }
+                        break;
+                    case EVIL:
+                        numAggressive = random.nextInt(7);
+                        for (int i = 0; i < numAggressive; i++){
+                            Point transformedLocal = localPos.multiply(LOCAL_SIZE_POINT);
+                            Point candidate = transformedLocal.add(PointUtil.randomPoint(LOCAL_SIZE_POINT));
+                            if (!World.getInstance().isOccupied(candidate)){
+                                Creature demon = CreatureFactory.INSTANCE.createCreature("demon", candidate);
+                                demon.setAi(new WanderAI(demon, transformedLocal, transformedLocal.add(LOCAL_SIZE_POINT), null, true));
+                                demon.setFaction(EntityManager.getInstance().getAggressiveAnimalFaction());
+                            }  else {
+                                i--;
+                            }
+                        }
+                        break;
                 }
             }
         }
     }
-
-    private int getTownDistance(Point local) {
-        int min = Integer.MAX_VALUE;
-        for (Town town : EntityManager.getInstance().getTowns()){
-            int dist = PointUtil.manhattanDist(town.getRegionalPosition(), local);
-            if (dist < min){
-                min = dist;
-            }
-        }
-        return min;
-    }
-
 
     public void createPlayer(String playerName, Town town){
         Point placement = town.getRegionalPosition().multiply(new Point(MapConstants.LOCAL_SIZE_X, MapConstants.LOCAL_SIZE_Y));

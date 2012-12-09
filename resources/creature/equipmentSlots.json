@@ -39,6 +39,11 @@
             "slotName":"tusk",
             "itemType":"NONE",
             "itemPurpose":"OFFENSE"
+        },
+        {
+            "slotName":"wings",
+            "itemType":"NONE",
+            "itemPurpose":"DEFENSE"
         }
     ]
 }

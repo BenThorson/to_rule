@@ -15,7 +15,7 @@ import java.awt.event.KeyEvent;
  */
 public class WorldParamScreen implements Screen {
 
-    private com.bthorson.torule.screens.component.Menu worldSize = new com.bthorson.torule.screens.component.Menu("World Size", (String)null, new String[]{"1000 by 1000"});
+    private com.bthorson.torule.screens.component.Menu worldSize = new com.bthorson.torule.screens.component.Menu("World Size", (String)null, new String[]{"1000x1000", "2000x2000"});
     private com.bthorson.torule.screens.component.Menu numCities = new com.bthorson.torule.screens.component.Menu("Number of Towns", (String)null, new String[]{"5", "10", "15"});
     private InputDialog playerName = new InputDialog("Enter Player Name");
 
@@ -54,6 +54,8 @@ public class WorldParamScreen implements Screen {
                     case 0:
                         params.setWorldSize(new Point(1000,1000));
                         break;
+                    case 1:
+                        params.setWorldSize(new Point(2000,2000));
                     default:
                         return this;
                 }

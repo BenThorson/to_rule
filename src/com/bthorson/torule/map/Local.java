@@ -16,7 +16,9 @@ public class Local {
 
     private Point nwBoundWorldCoord;
     private Point seBoundWorldBound;
-    public static Point seBound = new Point(WIDTH,HEIGHT);
+    private  Ferocity ferocity;
+    private int distanceFromTown;
+
 
     private LocalType type;
 
@@ -25,7 +27,7 @@ public class Local {
 
     public Local(Point nwBound, Tile[][] tiles) {
         nwBoundWorldCoord = nwBound;
-        seBoundWorldBound = nwBoundWorldCoord.add(seBound);
+        seBoundWorldBound = nwBoundWorldCoord.add(MapConstants.LOCAL_SIZE_POINT);
         this.tiles = tiles;
     }
 
@@ -72,5 +74,21 @@ public class Local {
 
     public void setType(LocalType type) {
         this.type = type;
+    }
+
+    public Ferocity getFerocity() {
+        return ferocity;
+    }
+
+    public void setFerocity(Ferocity ferocity) {
+        this.ferocity = ferocity;
+    }
+
+    public int getDistanceFromTown() {
+        return distanceFromTown;
+    }
+
+    public void setDistanceFromTown(int distanceFromTown) {
+        this.distanceFromTown = distanceFromTown;
     }
 }

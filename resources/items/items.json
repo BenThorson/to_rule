@@ -260,6 +260,27 @@
             "attributes":{
                 "quantity":"0"
             }
+        },
+        {
+            "itemId":"hide.troll",
+            "type":"LOOT",
+            "name":"troll hide",
+            "price":250,
+            "weight":15
+        },
+        {
+            "itemId":"claw.troll",
+            "type":"LOOT",
+            "name":"troll claw",
+            "price":120,
+            "weight":4
+        },
+        {
+            "itemId":"demon.horn",
+            "type":"LOOT",
+            "name":"demon horn",
+            "price":400,
+            "weight":10
         }
             
     ]

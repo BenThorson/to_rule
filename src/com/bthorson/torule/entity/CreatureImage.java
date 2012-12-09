@@ -24,7 +24,11 @@ public enum CreatureImage {
     BOAR(0x184 + getCritterOffset()),
     DEAD_BOAR(0x187 + getCritterOffset()),
     BADGER(0xC4 + getCritterOffset()),
-    DEAD_BADGER(0xC7 + getCritterOffset());
+    DEAD_BADGER(0xC7 + getCritterOffset()),
+    TROLL(0x1B3 + getCritterOffset()),
+    DEAD_TROLL(0x1B7 + getCritterOffset()),
+    DEMON(0x2F3 + getCritterOffset()),
+    NONE(0x1B8);
 
 
     private int num;

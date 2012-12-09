@@ -1,5 +1,6 @@
 package com.bthorson.torule.screens;
 
+import com.bthorson.torule.debug.DebugUtil;
 import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.*;
@@ -120,17 +121,12 @@ public class PlayScreen implements Screen {
                     return new LootScreen(this, items);
                 }
             case KeyEvent.VK_W: return new QuestScreen(this);
+            case KeyEvent.VK_8:
+                DebugUtil.teleportPlayer();
+                break;
             case KeyEvent.VK_9:
-                List<ScriptedSpawn> spawns = new ArrayList<ScriptedSpawn>();
-                ScriptedSpawn spawn = new ScriptedSpawn();
-                spawn.setMin(5);
-                spawn.setMax(5);
-                spawn.setType("goblin");
-                spawns.add(spawn);
-                    Point point = new Point(PointUtil.randomPoint(player.position().subtract(player.visionRadius()),
-                                                                  player.position().add(player.visionRadius())));
-
-                    new SpawnAction().createCreatures(spawns, point);
+                DebugUtil.debugSpawnGoblin();
+                break;
 
             case KeyEvent.VK_SEMICOLON:
                 player.addGold(5000);

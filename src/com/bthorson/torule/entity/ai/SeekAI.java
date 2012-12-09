@@ -43,8 +43,6 @@ public class SeekAI extends CreatureAI{
             return previous;
         }
 
-
-
         if (self.canSee(target.position())){
             targetPosition = target.position();
         }

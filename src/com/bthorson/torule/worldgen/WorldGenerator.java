@@ -5,28 +5,13 @@ import com.bthorson.torule.entity.Faction;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
-import com.bthorson.torule.map.Local;
-import com.bthorson.torule.map.LocalBuilder;
-import com.bthorson.torule.map.LocalType;
-import com.bthorson.torule.map.MapConstants;
-import com.bthorson.torule.map.Tile;
-import com.bthorson.torule.map.World;
-import com.bthorson.torule.town.Building;
-import com.bthorson.torule.town.BuildingType;
-import com.bthorson.torule.town.Town;
-import com.bthorson.torule.town.TownBuilder;
-import com.bthorson.torule.town.WealthLevel;
+import com.bthorson.torule.map.*;
+import com.bthorson.torule.town.*;
 import org.jgrapht.alg.KruskalMinimumSpanningTree;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static com.bthorson.torule.map.MapConstants.*;
 
@@ -110,7 +95,7 @@ public class WorldGenerator implements WorldLoader {
             generator.makePuppies(town, 10);
         }
 
-        generator.createHostileMobs();
+        generator.spawnCreaturesByFerocity();
     }
 
     private void createMap(WorldGenParams params) {
@@ -121,17 +106,18 @@ public class WorldGenerator implements WorldLoader {
         Random random = new Random();
         for (int x = 0; x < params.getWorldSize().x()/LOCAL_SIZE_X; x++){
             for (int y = 0; y < params.getWorldSize().y()/LOCAL_SIZE_Y; y++){
-                locals[x][y] = new LocalBuilder(random.nextInt(5), random.nextInt(5), random.nextInt(5))
+                locals[x][y] = new LocalBuilder(random.nextInt(5), random.nextInt(33), random.nextInt(15))
                         .makeGrassland().build(new Point(x * LOCAL_SIZE_X, y * LOCAL_SIZE_Y));
                 locals[x][y].setType(LocalType.WILDERNESS);
             }
         }
         this.seCorner = params.getWorldSize();
 
-        initWorld(params);
+        buildTowns(params);
+        new GoblinCamp().build(locals[0][0]);
     }
 
-    private void initWorld(WorldGenParams params) {
+    private void buildTowns(WorldGenParams params) {
         Set<Point> townPoints = new HashSet<Point>();
 
         outer:
@@ -175,6 +161,7 @@ public class WorldGenerator implements WorldLoader {
         }
 
         getMSTPath(townPoints);
+        assignFerocityValues();
     }
 
     private Local getLocal(Point localGridPosition) {
@@ -263,6 +250,9 @@ public class WorldGenerator implements WorldLoader {
     private void buildConnectingRoad(Direction lastDirection, Direction cursorDirection, Point cursor) {
         Local local = getLocal(cursor);
         TownBuilder builder = new TownBuilder(local, WealthLevel.POOR);
+        if (!LocalType.TOWN.equals(local.getType())){
+            local.setType(LocalType.ROAD);
+        }
         builder.buildRoad(4, LOCAL_SIZE_X / 2 - 2, LOCAL_SIZE_Y / 2, LOCAL_SIZE_X / 2 + 2, LOCAL_SIZE_Y);
 
         if (lastDirection != null){
@@ -302,6 +292,94 @@ public class WorldGenerator implements WorldLoader {
         }
     }
 
+    public void assignFerocityValues(){
+        List<Local> toEvaluate = new ArrayList<Local>();
+        Random random = new Random();
+        for (Local[] row : locals){
+            for (Local col : row) {
+                determineDistanceScore(toEvaluate, random, col);
+            }
+        }
+
+        Collections.sort(toEvaluate, new Comparator<Local>() {
+            @Override
+            public int compare(Local o1, Local o2) {
+                return o1.getDistanceFromTown() - o2.getDistanceFromTown();
+            }
+        });
+
+        doAssignmentOfFerocity(toEvaluate);
+    }
+
+    private void doAssignmentOfFerocity(List<Local> toEvaluate) {
+        int divisor = toEvaluate.size() / Ferocity.values().length;
+
+        for (int i = 0; i < divisor; i++){
+            toEvaluate.get(i).setFerocity(Ferocity.CIVILIZED);
+        }
+        for (int i = divisor; i < divisor * 2; i++){
+            toEvaluate.get(i).setFerocity(Ferocity.TAME);
+        }
+        for (int i = divisor * 2; i < divisor * 3; i++){
+            toEvaluate.get(i).setFerocity(Ferocity.NEUTRAL);
+        }
+        for (int i = divisor * 3; i < divisor * 4; i++){
+            toEvaluate.get(i).setFerocity(Ferocity.WILD);
+        }
+        for (int i = divisor * 4; i < divisor * 5; i++){
+            toEvaluate.get(i).setFerocity(Ferocity.DANGEROUS);
+        }
+        for (int i = divisor * 5; i < toEvaluate.size(); i++){
+            toEvaluate.get(i).setFerocity(Ferocity.EVIL);
+        }
+    }
+
+    private void determineDistanceScore(List<Local> toEvaluate, Random random, Local col) {
+        col.setDistanceFromTown(getTownDistance(col.getNwBoundWorldCoord().divide(LOCAL_SIZE_POINT)));
+        if (col.getDistanceFromTown() == 0){
+            col.setFerocity(Ferocity.CIVILIZED);
+            return;
+        } else {
+            toEvaluate.add(col);
+        }
+
+        int variance = 0;
+        int varianceChance = random.nextInt(10);
+        switch (varianceChance){
+            case 0:
+                variance = -3; break;
+            case 1:
+                variance = -2; break;
+            case 2:
+                variance = -1; break;
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                break;
+            case 7:
+                variance = 1; break;
+            case 8:
+                variance = 2; break;
+            case 9:
+                variance = 3;
+
+        }
+        col.setDistanceFromTown(col.getDistanceFromTown() - variance);
+    }
+
+    private int getTownDistance(Point local) {
+        int min = Integer.MAX_VALUE;
+        for (Town town : towns){
+            int dist = PointUtil.manhattanDist(town.getRegionalPosition(), local);
+            if (dist < min){
+                min = dist;
+            }
+        }
+        return min;
+    }
+
+
     @Override
     public Local[][] getLocals() {
         return locals;
@@ -321,4 +399,6 @@ public class WorldGenerator implements WorldLoader {
     public int worldHeight() {
         return height;
     }
+
+
 }

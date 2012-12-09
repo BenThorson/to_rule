@@ -36,6 +36,22 @@
             "slots":[
                     "tusk"
             ]
+        },
+        {
+            "creature":"monsterHumanoid",
+            "slots":[
+                    "weapon",
+                    "torso",
+                    "head"
+            ]
+        },
+        {
+            "creature":"wingedMonster",
+            "slots":[
+                    "weapon",
+                    "torso",
+                    "wings"
+            ]
         }
     ]
 }

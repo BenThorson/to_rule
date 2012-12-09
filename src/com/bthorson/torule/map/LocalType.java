@@ -7,6 +7,6 @@ package com.bthorson.torule.map;
  */
 public enum LocalType {
 
-    TOWN, WILDERNESS
+    TOWN, WILDERNESS, ROAD, GOBLIN_CAMP
 
 }

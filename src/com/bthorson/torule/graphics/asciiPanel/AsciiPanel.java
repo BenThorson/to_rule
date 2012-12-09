@@ -32,7 +32,7 @@ public class AsciiPanel extends JPanel {
      */
     public static Color red = new Color(128, 0, 0);
 
-    public static Color brown =  new Color(0x994444);
+    public static Color brown =  new Color(0xA54444);
 
     /**
      * The color green.

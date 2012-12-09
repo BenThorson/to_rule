@@ -120,4 +120,9 @@ public class Player extends Creature {
         }
         return commandable;
     }
+
+    //todo remove this, it's just for debugging
+    public void setPosition(int i, int i1) {
+        position = new Point(i, i1);
+    }
 }

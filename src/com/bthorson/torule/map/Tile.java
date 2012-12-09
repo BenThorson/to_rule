@@ -13,7 +13,6 @@ import java.util.Random;
 public enum Tile {
 
 
-
     GRASS_1('.', AsciiPanel.brightGreen, AsciiPanel.brightGreen, true, false, 4),
     GRASS_2('\'', AsciiPanel.brightGreen, AsciiPanel.brightGreen, true, false, 4),
     GRASS_3(',', AsciiPanel.brightGreen, AsciiPanel.brightGreen, true, false, 4),
@@ -37,7 +36,10 @@ public enum Tile {
     DOOR((char)197, AsciiPanel.brightBlack, new Color(0x994444), true, true, 2),
     OPEN_DOOR((char)197, AsciiPanel.brightBlack, new Color(0x994444), true, false, 2),
     FLOOR((char)0x2B, new Color(0xAAAAAA), new Color(0xAAAAAA), true, false, 2),
-    ROCK((char)0x7, AsciiPanel.white, Color.GREEN, false, false, 1000);
+    ROCK((char)0x7, AsciiPanel.white, Color.GREEN, false, false, 1000),
+    WATER((char)0xF7, Color.BLUE, Color.BLUE, false, false, 1000),
+    DIRT('.', AsciiPanel.brown, AsciiPanel.brown, true, false, 4),
+    ROUGH_WALL((char)0xB2, Color.GRAY, Color.GRAY, false, true, 1000);
 
 
 
