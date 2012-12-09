@@ -27,7 +27,7 @@ public enum CreatureImage {
     DEAD_BADGER(0xC7 + getCritterOffset()),
     TROLL(0x1B3 + getCritterOffset()),
     DEAD_TROLL(0x1B7 + getCritterOffset()),
-    DEMON(0x2F3 + getCritterOffset()),
+    DEMON(0x2D3 + getCritterOffset()),
     NONE(0x1B8);
 
 

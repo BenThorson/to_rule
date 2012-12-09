@@ -120,6 +120,7 @@ public class PlayScreen implements Screen {
                 if (items.size() > 0){
                     return new LootScreen(this, items);
                 }
+                break;
             case KeyEvent.VK_W: return new QuestScreen(this);
             case KeyEvent.VK_8:
                 DebugUtil.teleportPlayer();
