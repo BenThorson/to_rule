@@ -1,5 +1,6 @@
 package com.bthorson.torule.entity;
 
+import com.bthorson.torule.entity.group.Group;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
@@ -12,6 +13,7 @@ import com.bthorson.torule.town.Building;
 import com.bthorson.torule.town.Town;
 import com.google.gson.JsonArray;
 
+import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,11 +28,17 @@ public class EntityManager {
 
     private Map<Integer, Entity> fullCatalog = new HashMap<Integer, Entity>();
     private List<Creature> creatures;
+    private List<Group> groups;
+
+    private Player player;
+
     private List<PhysicalEntity> freeItems;
     private Map<Point, Town> towns;
     private List<Faction> factions;
 
     List<Creature> toRemove;
+
+    private Map<Point, Creature> creaturePositionMap = new HashMap<Point, Creature>();
 
     private Faction aggressiveAnimalFaction;
     private Faction passiveAnimalFaction;
@@ -41,7 +49,6 @@ public class EntityManager {
     private List<Creature> nextLocalUpdate;
     private Point lastCheckedPosition;
 
-    private Player player;
     private static EntityManager INSTANCE = new EntityManager();
 
     public static void destroy(){
@@ -76,6 +83,7 @@ public class EntityManager {
     public void addCreature(Creature creature){
         creatures.add(creature);
         fullCatalog.put(creature.id, creature);
+        creaturePositionMap.put(creature.position(), creature);
         if (lastCheckedPosition != null && creature.position().withinRect(PointUtil.floorToNearest100(lastCheckedPosition).subtract(100),
                                                                           PointUtil.floorToNearest100(lastCheckedPosition).add(200))){
             locallyUpdate.add(creature);
@@ -107,16 +115,22 @@ public class EntityManager {
     }
 
     public Creature creatureAt(Point position){
-        for (Creature creature : creatures){
-            if (creature == null){
-                System.out.println("huh?");
-                continue;
-            }
-            if (creature.position().equals(position)){
-                return creature;
-            }
-        }
-        return null;
+        return creaturePositionMap.get(position);
+//        for (Creature creature : creatures){
+//            if (creature == null){
+//                System.out.println("huh?");
+//                continue;
+//            }
+//            if (creature.position().equals(position)){
+//                return creature;
+//            }
+//        }
+//        return null;
+    }
+
+    public void registerMove(Point oldPosition, Creature creature){
+        creaturePositionMap.remove(oldPosition);
+        creaturePositionMap.put(creature.position(), creature);
     }
 
     public void remove(Creature dead) {
@@ -151,6 +165,7 @@ public class EntityManager {
         Corpse corpse = new Corpse(creature);
         addFreeItem(corpse);
         fullCatalog.put(corpse.id, corpse);
+        creaturePositionMap.remove(creature);
     }
 
     public boolean isPlayer(Creature creature) {
@@ -282,6 +297,10 @@ public class EntityManager {
 
     public Faction getGoblinFaction() {
         return goblinFaction;
+    }
+
+    public void removeGroup(Group group) {
+        //To change body of created methods use File | Settings | File Templates.
     }
 
 

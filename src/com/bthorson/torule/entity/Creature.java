@@ -271,7 +271,9 @@ public class Creature extends PhysicalEntity implements AiControllable {
             hasMovedThisUpdate = ai.interact(other);
             return hasMovedThisUpdate;
         } else if (world.tile(moveTo).passable()){
+            Point oldMove = position();
             position = moveTo;
+            EntityManager.getInstance().registerMove(oldMove, this);
             hasMovedThisUpdate = true;
         }
         return hasMovedThisUpdate;

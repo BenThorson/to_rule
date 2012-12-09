@@ -197,16 +197,16 @@ public class Group extends Entity implements AiControllable{
     }
 
     public void remove(Creature dead) {
-//        if (memList.remove(dead)){
-//            reformOnUpdate = true;
-//            if(!memList.isEmpty()){
-//                if (dead.equals(squadCommander)){
-//                    squadCommander = memList.get(0);
-//                }
-//            } else {
-//                EntityManager.getInstance().removeGroup(this);
-//            }
-//        }
+        if (memList.remove(dead)){
+            reformOnUpdate = true;
+            if(!memList.isEmpty()){
+                if (dead.equals(squadCommander)){
+                    squadCommander = memList.get(0);
+                }
+            } else {
+                EntityManager.getInstance().removeGroup(this);
+            }
+        }
     }
 
     @Override
