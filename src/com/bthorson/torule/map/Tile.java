@@ -3,6 +3,7 @@ package com.bthorson.torule.map;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -38,8 +39,13 @@ public enum Tile {
     FLOOR((char)0x2B, new Color(0xAAAAAA), new Color(0xAAAAAA), true, false, 2),
     ROCK((char)0x7, AsciiPanel.white, Color.GREEN, false, false, 1000),
     WATER((char)0xF7, Color.BLUE, Color.BLUE, false, false, 1000),
-    DIRT('.', AsciiPanel.brown, AsciiPanel.brown, true, false, 4),
-    ROUGH_WALL((char)0xB2, Color.GRAY, Color.GRAY, false, true, 1000);
+    DIRT_1('.', AsciiPanel.brown, AsciiPanel.brown, true, false, 4),
+    DIRT_2('\'', AsciiPanel.brown, AsciiPanel.brown, true, false, 4),
+    DIRT_3(',', AsciiPanel.brown, AsciiPanel.brown, true, false, 4),
+    DIRT_4('`', AsciiPanel.brown, AsciiPanel.brown, true, false, 4),    
+    ROUGH_WALL((char)0xB2, Color.GRAY, Color.GRAY, false, true, 1000),
+    DEAD_TREE((char)0xA0, Color.GRAY, AsciiPanel.brown, false, true, 1000),
+    SKULL_TOTEM((char)0x87, AsciiPanel.white, AsciiPanel.brown, true, true, 4);
 
 
 
@@ -73,7 +79,31 @@ public enum Tile {
         }
         return GRASS_4;
     }
+    
+    public static boolean isGrass(Tile tile){
+        return Arrays.asList(GRASS_1, GRASS_2, GRASS_3, GRASS_4).contains(tile);
+    }
 
+    public static Tile getDirt(){
+        int rand = new Random().nextInt(4);
+        switch (rand) {
+            case 0:
+                return DIRT_1;
+            case 1:
+                return DIRT_2;
+            case 2:
+                return DIRT_3;
+            case 3:
+                return DIRT_4;
+        }
+        return DIRT_4;
+    }
+
+    public static boolean isDirt(Tile tile){
+        return Arrays.asList(DIRT_1, DIRT_2, DIRT_3, DIRT_4).contains(tile);
+    }
+    
+    
     public static Tile getBrush(){
         int rand = new Random().nextInt(4);
         switch (rand) {
@@ -89,6 +119,11 @@ public enum Tile {
         return BRUSH_4;
     }
 
+    
+    public static boolean isBrush(Tile tile){
+        return Arrays.asList(BRUSH_1, BRUSH_2, BRUSH_3, BRUSH_4).contains(tile);
+    }
+    
     public static Tile getTree(){
         int rand = new Random().nextInt(4);
         switch (rand) {
@@ -103,7 +138,11 @@ public enum Tile {
         }
         return TREE_4;
     }
-
+       
+    public static boolean isTree(Tile tile){
+        return Arrays.asList(TREE_1, TREE_2, TREE_3, TREE_4).contains(tile);
+    }
+    
 
     public char glyph() {
         return glyph;

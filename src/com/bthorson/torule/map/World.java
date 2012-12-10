@@ -154,16 +154,12 @@ public class World {
     }
 
     public void openDoor(Point position){
-        Local local = getLocal(position.divide(LOCAL_SIZE_POINT));
-        Point offset = position.subtract(local.getNwBoundWorldCoord());
-        local.getTiles()[offset.x()][offset.y()] = Tile.OPEN_DOOR;
+        setTile(position, Tile.OPEN_DOOR);
         openDoors.add(position);
     }
 
     private void closeDoor(Point position){
-        Local local = getLocal(position.divide(LOCAL_SIZE_POINT));
-        Point offset = position.subtract(local.getNwBoundWorldCoord());
-        local.getTiles()[offset.x()][offset.y()] = Tile.DOOR;
+        setTile(position, Tile.DOOR);
     }
 
     public long getTurnCounter() {
@@ -179,5 +175,11 @@ public class World {
                 return;
             }
         }
+    }
+
+    public void setTile(Point position, Tile tile) {
+        Local local = getLocal(position.divide(LOCAL_SIZE_POINT));
+        Point offset = position.subtract(local.getNwBoundWorldCoord());
+        local.getTiles()[offset.x()][offset.y()] = tile;
     }
 }

@@ -31,7 +31,7 @@ public class ScrollList<T extends Entity> {
     private EntityRenderer<T> entityRenderer;
 
 
-    private int currentChoice;
+    private int currentChoice = 0;
 
     public ScrollList(List<T> items, int width, int height){
         this(items, width, height, new DefaultRenderer<T>());
@@ -154,8 +154,10 @@ public class ScrollList<T extends Entity> {
         if (currentChoice >= items.size()){
             currentChoice--;
         }
-        if (lastDisplayed >= items.size()){
+        if (lastDisplayed > items.size()){
             lastDisplayed--;
+        } else if (lastDisplayed < height + 1){
+            lastDisplayed++;
         }
     }
 }

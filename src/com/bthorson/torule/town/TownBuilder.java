@@ -8,6 +8,8 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.*;
 
+import java.util.Arrays;
+
 /**
  * Created with IntelliJ IDEA.
  * User: benthorson
@@ -93,6 +95,13 @@ public class TownBuilder {
     }
 
     public static Town buildPredefinedTown(Local local, Point localPoint, WealthLevel wealthLevel) {
+        for (int x = 0; x < MapConstants.LOCAL_SIZE_X; x++){
+            for (int y = 0; y < MapConstants.LOCAL_SIZE_Y; y++){
+                if (Arrays.asList(Tile.BRUSH_1, Tile.BRUSH_2, Tile.BRUSH_3, Tile.BRUSH_4).contains(local.tile(x,y))){
+                    local.getTiles()[x][y] = Tile.getGrass();
+                }
+            }
+        }
         return new TownBuilder(local, wealthLevel)
                 .buildTownSquare(26)
                 .buildRoad(4, 0, MapConstants.LOCAL_SIZE_Y / 2, MapConstants.LOCAL_SIZE_X, MapConstants.LOCAL_SIZE_Y / 2)

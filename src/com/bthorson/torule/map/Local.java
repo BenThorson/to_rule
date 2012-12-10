@@ -16,7 +16,10 @@ public class Local {
 
     private Point nwBoundWorldCoord;
     private Point seBoundWorldBound;
-    private  Ferocity ferocity;
+    //relative ferocity
+    private Ferocity ferocity;
+    //score to help determine it
+    private int ferocityScore;
     private int distanceFromTown;
 
 
@@ -82,6 +85,14 @@ public class Local {
 
     public void setFerocity(Ferocity ferocity) {
         this.ferocity = ferocity;
+    }
+
+    public int getFerocityScore() {
+        return ferocityScore;
+    }
+
+    public void setFerocityScore(int ferocityScore) {
+        this.ferocityScore = ferocityScore;
     }
 
     public int getDistanceFromTown() {

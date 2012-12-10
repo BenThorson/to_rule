@@ -26,18 +26,21 @@ public class ItemTransferScreen implements Screen {
     private Confirmation confirmation = new Confirmation("Are you sure?");
     private boolean confirmationActive = false;
 
-    ScrollList fromInventory;
+    private ScrollList<Item> fromInventory;
+    private ScrollList<Item> toInventory;
 
     public ItemTransferScreen(Screen previous, Creature transferFrom, Creature transferTo) {
         this.previous = previous;
         this.transferFrom = transferFrom;
         this.transferTo = transferTo;
-        this.fromInventory = new ScrollList<Item>(transferFrom.getInventory(), 20, 20, new ItemNameRenderer());
+        this.fromInventory = new ScrollList<Item>(transferFrom.getInventory(), 20, 15, new ItemNameRenderer());
+        this.toInventory = new ScrollList<Item>(transferTo.getInventory(), 20, 15, new ItemNameRenderer());
     }
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
         fromInventory.displayOutput(terminal, 0, 0);
+        toInventory.displayOutput(terminal,0,16);
         Point start = new Point(22,0);
         int row = 0;
         terminal.writeText(String.format("Item transfer from %s", transferFrom.getName()), start.add(0,row++), Color.WHITE, Color.BLACK);
@@ -66,7 +69,6 @@ public class ItemTransferScreen implements Screen {
             int num = fromInventory.respondToUserInput(key);
             switch (num){
                 case -2:
-                case 1:
                     return previous;
                 case -1:
                     return this;
@@ -88,6 +90,7 @@ public class ItemTransferScreen implements Screen {
             transferFrom.optimizeEquippedItems();
         }
         fromInventory.updateList(transferFrom.getInventory());
+        toInventory.updateList(transferTo.getInventory());
     }
 
     @Override

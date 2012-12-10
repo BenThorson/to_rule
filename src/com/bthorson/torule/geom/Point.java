@@ -1,5 +1,8 @@
 package com.bthorson.torule.geom;
 
+import com.bthorson.torule.map.MapConstants;
+import com.bthorson.torule.map.World;
+
 /**
  * User: ben
  * Date: 9/7/12
@@ -175,5 +178,9 @@ public class Point {
 
     public int absSumOfValues() {
         return Math.abs(x) + Math.abs(y);
+    }
+
+    public boolean isOutOfBounds() {
+        return x < 0 || y < 0 || x > World.getInstance().seCorner().x() || y > World.getInstance().seCorner().y();
     }
 }

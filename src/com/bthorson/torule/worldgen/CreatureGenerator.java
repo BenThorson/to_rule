@@ -33,6 +33,10 @@ public class CreatureGenerator {
 
     public void spawnCreaturesByFerocity(){
 
+        if (true){
+            return;
+        }
+
         //todo ripe for refactoring
         Point localAmounts = World.getInstance().seCorner().divide(LOCAL_SIZE_POINT);
         Random random = new Random();

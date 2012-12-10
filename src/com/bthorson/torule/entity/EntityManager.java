@@ -46,6 +46,7 @@ public class EntityManager {
 
     private List<Creature> locallyUpdate;
     private boolean nextReady;
+    private boolean updateOccuring;
     private List<Creature> nextLocalUpdate;
     private Point lastCheckedPosition;
 
@@ -92,8 +93,9 @@ public class EntityManager {
 
     public void update(){
 
-        if (!player.position().divide(MapConstants.LOCAL_SIZE_POINT).equals(lastCheckedPosition.divide(MapConstants.LOCAL_SIZE_POINT))){
+        if (!updateOccuring && !player.position().divide(MapConstants.LOCAL_SIZE_POINT).equals(lastCheckedPosition.divide(MapConstants.LOCAL_SIZE_POINT))){
             nextReady = false;
+            updateOccuring = true;
             System.out.println("starting a new thread to load new chunks in");
             new NewLocalUpdateAction();
         }
@@ -165,7 +167,7 @@ public class EntityManager {
         Corpse corpse = new Corpse(creature);
         addFreeItem(corpse);
         fullCatalog.put(corpse.id, corpse);
-        creaturePositionMap.remove(creature);
+        creaturePositionMap.remove(creature.position());
     }
 
     public boolean isPlayer(Creature creature) {
@@ -344,6 +346,7 @@ public class EntityManager {
             nextReady = true;
             lastCheckedPosition = player.position();
             nextLocalUpdate = newUpdate;
+            updateOccuring = false;
             System.out.println("thread complete");
         }
 

@@ -13,8 +13,8 @@ import com.bthorson.torule.item.ItemType;
 import com.bthorson.torule.map.Tile;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.persist.SerializeUtils;
-import com.bthorson.torule.player.Player;
 import com.bthorson.torule.town.Building;
+import com.bthorson.torule.util.RandomUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -403,6 +403,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
         for (Item item: inventory){
             if (random.nextBoolean()){
                 item.setPosition(position);
+                item.setEquipped(false);
                 EntityManager.getInstance().addFreeItem(item);
             } else {
                 //destroys it
@@ -428,7 +429,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
                 }
             }
         }
-        double rawValue = weaponDmg == 1 ? 1 : new Random().nextInt(weaponDmg - 1) + 1;
+        double rawValue = RandomUtils.getRandomInRange(1, weaponDmg);
 
         double multiplier = (double)strength * .1 + 1;
         return other.mitigateDamage(rawValue * multiplier);
@@ -524,8 +525,12 @@ public class Creature extends PhysicalEntity implements AiControllable {
 
     public void swapPlaces(Creature other) {
         Point temp = this.position;
+        this.position = new Point(-1,-1);
+        EntityManager.getInstance().registerMove(temp, this);
         this.position = other.position;
         other.position = temp;
+        EntityManager.getInstance().registerMove(position, other);
+        EntityManager.getInstance().registerMove(new Point(-1,-1), this);
     }
 
     public Direction getHeading() {

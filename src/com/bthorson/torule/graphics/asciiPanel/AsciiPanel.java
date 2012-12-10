@@ -402,6 +402,7 @@ public class AsciiPanel extends JPanel {
         if (foreground == null) foreground = defaultForegroundColor;
         if (background == null) background = defaultBackgroundColor;
 
+        textChars[position.x()][position.y()] = 0;
         backgroundChars[position.x()][position.y()] = character;
         foregroundColors[position.x()][position.y()] = foreground;
         backgroundColors[position.x()][position.y()] = background;
@@ -452,6 +453,7 @@ public class AsciiPanel extends JPanel {
         if (fg == null) fg = defaultForegroundColor;
         if (bg == null) bg = defaultBackgroundColor;
 
+        popupText[position.x()][position.y()] = 0;
         popupChars[position.x()][position.y()] = character;
         foregroundColors[position.x()][position.y()] = fg;
         backgroundColors[position.x()][position.y()] = bg;

@@ -7,6 +7,7 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.*;
 import com.bthorson.torule.town.*;
+import javafx.util.Pair;
 import org.jgrapht.alg.KruskalMinimumSpanningTree;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
@@ -28,6 +29,7 @@ public class WorldGenerator implements WorldLoader {
     private int width;
     private int height;
     private Point playerHomeLocal;
+    private List<Local> goblinSites;
 
     private List<Town> towns = new ArrayList<Town>();
     private List<Faction> factions = new ArrayList<Faction>();
@@ -39,16 +41,69 @@ public class WorldGenerator implements WorldLoader {
         EntityManager.destroy();
         System.out.println("building new map");
         createMap(params);
-        System.out.println("attempting to destroy current world");
+        System.out.println("attempting to destroy old world");
         World.destroy();
         System.out.println("loading new map into new world");
         World.getInstance().startWorld(this);
         System.out.println("creating creatures for world");
         populateWorld(params);
+        System.out.println("decorating world");
+        finishDecorations();
         System.out.println("starting the entity manager");
         EntityManager.getInstance().start();
 
 
+
+    }
+
+    private void finishDecorations() {
+        uglifyGoblinSites();
+    }
+
+    private void uglifyGoblinSites() {
+        for (Local camp : goblinSites) {
+            Point upper =
+                    !camp.getNwBoundWorldCoord().subtract(LOCAL_SIZE_POINT).isOutOfBounds()
+                            ? camp.getNwBoundWorldCoord()
+                                  .subtract(LOCAL_SIZE_POINT)
+                            : camp.getNwBoundWorldCoord();
+            Point lower = !camp.getSeBoundWorldBound().add(LOCAL_SIZE_POINT).isOutOfBounds()
+                            ? camp.getSeBoundWorldBound().add(LOCAL_SIZE_POINT)
+                            : camp.getSeBoundWorldBound();
+            Point origin = camp.getNwBoundWorldCoord().add(50);
+
+            for (int x = upper.x(); x < lower.x(); x++){
+                for (int y = upper.y(); y < lower.y(); y++){
+                    Point target = new Point(x,y);
+                    Point product = target.subtract(origin).squared();
+
+                    if (product.x() + product.y() <= 10000){
+                        transformTileByDistance(target, product.x() + product.y());
+                    }
+
+
+                }
+            }
+        }
+    }
+
+    private void transformTileByDistance(Point target, int distSquared) {
+        Random random = new Random();
+        System.out.println(String.format("checking target %d, %d", target.x(), target.y()));
+        Tile tile = World.getInstance().tile(target);
+        if (random.nextInt(10000) > distSquared){
+            if (Tile.isBrush(tile)){
+                World.getInstance().setTile(target, Tile.SKULL_TOTEM);
+            }
+
+            if (Tile.isGrass(tile)){
+                World.getInstance().setTile(target, Tile.getDirt());
+            }
+
+            if (Tile.isTree(tile)){
+                World.getInstance().setTile(target, Tile.DEAD_TREE);
+            }
+        }
     }
 
     private void setupFactions() {
@@ -114,7 +169,50 @@ public class WorldGenerator implements WorldLoader {
         this.seCorner = params.getWorldSize();
 
         buildTowns(params);
-        new GoblinCamp().build(locals[0][0]);
+        assignFerocityValues();
+        buildGoblinCamps(params);
+    }
+
+    private void buildGoblinCamps(WorldGenParams params){
+        goblinSites = chooseGoblinSites(params);
+        for (Local local : goblinSites){
+            new GoblinCamp().build(local);
+        }
+
+    }
+
+    private List<Local> chooseGoblinSites(WorldGenParams params) {
+
+        List<Local> candidates = new ArrayList<Local>();
+
+        for (Local[] row : locals){
+            for (Local col : row){
+                if (Ferocity.DANGEROUS.equals(col.getFerocity()) && col.getDistanceFromTown() > 2){
+                    candidates.add(col);
+                }
+            }
+        }
+        Collections.sort(candidates, new DistToCityComparator());
+        Collections.reverse(candidates);
+        System.out.println("");
+
+        List<Pair<Integer, Local>> secondConsider = new ArrayList<Pair<Integer, Local>>();
+        for (Local candidate : candidates){
+            List<Local> others = new ArrayList<Local>(candidates);
+            secondConsider.add(new Pair<Integer, Local>(getDistanceFromOthers(candidate, others), candidate));
+        }
+        Collections.sort(secondConsider, new DistToEachotherComparator());
+        Collections.reverse(secondConsider);
+        List<Local> choices = new ArrayList<Local>();
+        for (Pair<Integer, Local> choice : secondConsider) {
+            choices.add(choice.getValue());
+            if(choices.size() >= params.getNumCities()){
+                break;
+            }
+        }
+        return choices;
+
+
     }
 
     private void buildTowns(WorldGenParams params) {
@@ -161,7 +259,6 @@ public class WorldGenerator implements WorldLoader {
         }
 
         getMSTPath(townPoints);
-        assignFerocityValues();
     }
 
     private Local getLocal(Point localGridPosition) {
@@ -297,17 +394,11 @@ public class WorldGenerator implements WorldLoader {
         Random random = new Random();
         for (Local[] row : locals){
             for (Local col : row) {
-                determineDistanceScore(toEvaluate, random, col);
+                determineFerocityScore(toEvaluate, random, col);
             }
         }
 
-        Collections.sort(toEvaluate, new Comparator<Local>() {
-            @Override
-            public int compare(Local o1, Local o2) {
-                return o1.getDistanceFromTown() - o2.getDistanceFromTown();
-            }
-        });
-
+        Collections.sort(toEvaluate, new FerocityComparator());
         doAssignmentOfFerocity(toEvaluate);
     }
 
@@ -334,7 +425,7 @@ public class WorldGenerator implements WorldLoader {
         }
     }
 
-    private void determineDistanceScore(List<Local> toEvaluate, Random random, Local col) {
+    private void determineFerocityScore(List<Local> toEvaluate, Random random, Local col) {
         col.setDistanceFromTown(getTownDistance(col.getNwBoundWorldCoord().divide(LOCAL_SIZE_POINT)));
         if (col.getDistanceFromTown() == 0){
             col.setFerocity(Ferocity.CIVILIZED);
@@ -365,13 +456,25 @@ public class WorldGenerator implements WorldLoader {
                 variance = 3;
 
         }
-        col.setDistanceFromTown(col.getDistanceFromTown() - variance);
+        col.setFerocityScore(col.getDistanceFromTown() - variance);
     }
 
     private int getTownDistance(Point local) {
         int min = Integer.MAX_VALUE;
         for (Town town : towns){
             int dist = PointUtil.manhattanDist(town.getRegionalPosition(), local);
+            if (dist < min){
+                min = dist;
+            }
+        }
+        return min;
+    }
+
+    private int getDistanceFromOthers(Local local, List<Local> others) {
+        int min = Integer.MAX_VALUE;
+        for (Local loc : others){
+            int dist = PointUtil.manhattanDist(PointUtil.toRegional(loc.getNwBoundWorldCoord()),
+                                               PointUtil.toRegional(local.getNwBoundWorldCoord()));
             if (dist < min){
                 min = dist;
             }
@@ -400,5 +503,25 @@ public class WorldGenerator implements WorldLoader {
         return height;
     }
 
+    private class FerocityComparator implements Comparator<Local> {
+        @Override
+        public int compare(Local o1, Local o2) {
+            return o1.getFerocityScore() - o2.getFerocityScore();
+        }
+    }
 
+    private class DistToCityComparator implements Comparator<Local> {
+        @Override
+        public int compare(Local o1, Local o2) {
+            return o1.getDistanceFromTown() - o2.getDistanceFromTown();
+        }
+    }
+
+
+    private class DistToEachotherComparator implements Comparator<Pair<Integer, Local>> {
+        @Override
+        public int compare(Pair<Integer, Local> o1, Pair<Integer, Local> o2) {
+            return o1.getKey() - o2.getKey();
+        }
+    }
 }
