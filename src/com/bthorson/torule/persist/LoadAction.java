@@ -37,8 +37,10 @@ public class LoadAction {
     private Map<Integer, JsonObjectEntityPair<ActiveQuest>> activeQuests;
     private Map<Integer, JsonObjectEntityPair<Item>> items;
     private Map<Integer, JsonObjectEntityPair<Faction>> factions;
+    private Map<Integer, JsonObjectEntityPair<Herd>> herds;
     private long turn;
     private int idSerialGen;
+
     public SavedWorldLoader load(String name){
         try {
             String prefix = "save/" + name;
@@ -53,6 +55,7 @@ public class LoadAction {
             activeQuests = new ActiveQuestDeserializer().deserialize(new File(prefix + "/ActiveQuest.eo"));
             items = new ItemDeserializer().deserialize(new File(prefix + "/Item.eo"));
             factions = new FactionDeserializer().deserialize(new File(prefix + "/Faction.eo"));
+            herds = new HerdDeserializer().deserialize(new File(prefix + "/Herd.eo"));
 
             JsonElement element = new JsonParser().parse(new JsonReader(new FileReader(new File(prefix + "/metadata.eo"))));
             JsonObject jsonObject = element.getAsJsonObject();
@@ -67,6 +70,7 @@ public class LoadAction {
             relinkItems();
             relinkFactions();
             relinkQuests();
+            relinkHerds();
 
 
         } catch (FileNotFoundException e) {
@@ -77,6 +81,22 @@ public class LoadAction {
 
         return new SavedWorldLoader(world, buildings, towns, creatures, player, items, factions, turn, idSerialGen);
 
+    }
+
+    private void relinkHerds() {
+        for (Integer key : herds.keySet()){
+            JsonObject object = herds.get(key).getJsonObject();
+            Herd herd = herds.get(key).getEntity();
+            List<Creature> creats = new ArrayList<Creature>();
+            if (object.has("creatures")){
+                JsonArray array = object.get("creatures").getAsJsonArray();
+                for (JsonElement element : array) {
+                    creats.add(getEntityOrNull(creatures, element.getAsInt()));
+                }
+            }
+            herd.setCreatures(creats);
+            herd.setAi(getAiAndInstantiate(object.get("ai").getAsJsonObject()));
+        }
     }
 
     private void relinkQuests() {
@@ -211,48 +231,61 @@ public class LoadAction {
         boolean nullPrevious = !ai.get("previous").isJsonObject();
         JsonObject prevObj = nullPrevious ? null : ai.get("previous").getAsJsonObject();
         CreatureAI previous = nullPrevious ? null : getAiAndInstantiate(prevObj);
+        AiControllable self = getSelf(ai.get("self").getAsInt());
 
         if ("DeadAI".equalsIgnoreCase(name)){
             return new DeadAi();
         } else if ("FollowAI".equalsIgnoreCase(name)){
-            return new FollowAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
+            return new FollowAI(self,
                                 getAiAndInstantiate(ai.get("previous").getAsJsonObject()));
         } else if ("GroupFollowAI".equalsIgnoreCase(name)){
-                    return new GroupFollowAI(creatures.get(ai.get("self").getAsInt()).getEntity(), previous);
+                    return new GroupFollowAI(self, previous);
         } else if ("PlayerAI".equalsIgnoreCase(name)){
-                    return new PlayerAI(creatures.get(ai.get("self").getAsInt()).getEntity());
+                    return new PlayerAI(self);
         } else if ("SeekAI".equalsIgnoreCase(name)){
-                            return new SeekAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
+                            return new SeekAI(self,
                                               creatures.get(ai.get("target").getAsInt()).getEntity(),
                                               previous);
         } else if ("AggroAI".equalsIgnoreCase(name)){
-                            return new AggroAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
+                            return new AggroAI(self,
                                               creatures.get(ai.get("target").getAsInt()).getEntity(),
                                               previous);
         } else if ("WanderAI".equalsIgnoreCase(name)){
-            return new WanderAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
+            return new WanderAI(self,
                                 gson.fromJson(ai.get("nwBound"), Point.class),
                                 gson.fromJson(ai.get("seBound"), Point.class),
                                 previous, ai.get("isAggroable").getAsBoolean());
         } else if ("GuardAI".equalsIgnoreCase(name)){
-            return new GuardAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
+            return new GuardAI(self,
                                gson.fromJson(ai.get("guardPoint"), Point.class), previous);
         } else if ("MoveToAI".equalsIgnoreCase(name)) {
             return new MoveToAI(gson.fromJson(ai.get("point"), Point.class),
                                 previous);
         } else if ("PatrolAI".equalsIgnoreCase(name)){
-            return new PatrolAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
+            return new PatrolAI(self,
                                 deserializePointList(gson, ai.get("patrolPath").getAsJsonArray()), ai.get("current").getAsInt(), previous);
         } else if ("AttackAI".equalsIgnoreCase(name)){
-            return new AttackAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
+            return new AttackAI(self,
                                 creatures.get(ai.get("creature").getAsInt()).getEntity(),
                                 previous);
-        } else if ("LimitedRadiusAggroAI".equalsIgnoreCase(name)){
-            return new LimitedRadiusAggroAI(creatures.get(ai.get("self").getAsInt()).getEntity(),
-                                            previous, ai.get("radius").getAsInt(),
-                                            getAiAndInstantiate(ai.get("defaultAI").getAsJsonObject()));
+        } else if ("HerdAI".equalsIgnoreCase(name)){
+            return new HerdAI(self,
+                              previous, herds.get(ai.get("herd").getAsInt()).getEntity());
+        } else if ("MeanderAI".equalsIgnoreCase(name)){
+            return new MeanderAI(self,
+                                 previous);
         }
         return null;
+    }
+
+    private AiControllable getSelf(int key) {
+        if (creatures.containsKey(key)){
+            return creatures.get(key).getEntity();
+        } else if (herds.containsKey(key)){
+            return herds.get(key).getEntity();
+        }
+        return null;
+
     }
 
     private List<Point> deserializePointList(Gson gson, JsonArray array) {

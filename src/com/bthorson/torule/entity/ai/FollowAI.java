@@ -18,7 +18,10 @@ public class FollowAI extends SeekAI {
 
     @Override
     public CreatureAI execute() {
-
+        CreatureAI ai = new AggroableAI(self, this).execute();
+        if (ai instanceof AggroAI){
+            return ai;
+        }
         return super.execute();    //To change body of overridden methods use File | Settings | File Templates.
     }
 

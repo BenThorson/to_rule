@@ -1,14 +1,9 @@
 package com.bthorson.torule.entity;
 
-import com.bthorson.torule.entity.ai.PlayerAI;
-import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.item.ItemFactory;
-import com.bthorson.torule.map.World;
-import com.bthorson.torule.player.ExploredMap;
 import com.bthorson.torule.player.Player;
-import com.bthorson.torule.town.Building;
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
 
@@ -28,6 +23,7 @@ public enum CreatureFactory {
     private Map<String, JsonObject> equipmentSlotMap = new HashMap<String, JsonObject>();
     private Map<String, JsonObject> creatureEquipmentFormat = new HashMap<String, JsonObject>();
     private Map<String, JsonObject> creatureTemplate = new HashMap<String, JsonObject>();
+    private Gson gson = new Gson();
 
     private CreatureFactory(){
         load();
@@ -105,7 +101,9 @@ public enum CreatureFactory {
                 .inventory(equipment)
                 .itemlessAttackValues(itemlessAttack)
                 .corpseGlyph(CreatureImage.valueOf(template.get("corpseImage").getAsString()).num())
-                .innateArmor(template.get("innateArmor").getAsInt());
+                .innateArmor(template.get("innateArmor").getAsInt())
+                .aggressionLevel(getTypedMap(template.get("aggressionLevel"), String.class));
+
 
         Creature creature;
         if (templateName.equalsIgnoreCase("player")){
@@ -114,10 +112,27 @@ public enum CreatureFactory {
             creature = builder.build();
         }
 
-        EntityManager.getInstance().addCreature(creature);
+        creature.setFaction(EntityManager.getInstance().getFaction(creature, template.get("faction").getAsString()));
+
+        EntityManager.getInstance().addUpdatable(creature);
         creature.optimizeEquippedItems();
         return creature;
 
+    }
+
+    private <T> Map<String, T> getTypedMap(JsonElement element, Class<T> clzz) {
+
+        Map<String, T> type = new HashMap<String, T>();
+
+        if (!element.isJsonObject()){
+            return new HashMap<String, T>();
+        }
+        JsonObject object = element.getAsJsonObject();
+        for (Map.Entry<String, JsonElement> item : object.entrySet()){
+            type.put(item.getKey(), gson.fromJson(item.getValue(), clzz));
+        }
+
+        return type;
     }
 
     public List<Item> getLootDropsForCreature(String templateName){

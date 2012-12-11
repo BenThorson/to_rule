@@ -1,5 +1,7 @@
 package com.bthorson.torule.geom;
 
+import java.util.Random;
+
 /**
  * User: ben
  * Date: 9/14/12
@@ -123,5 +125,9 @@ public enum Direction {
             }
         }
         return null;
+    }
+
+    public static Direction random() {
+        return values()[new Random().nextInt(values().length)];
     }
 }

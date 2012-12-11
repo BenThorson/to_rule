@@ -47,7 +47,7 @@ public class WanderAI extends CreatureAI {
         }
 
 
-        int check = new Random().nextInt(10);
+        int check = new Random().nextInt(20);
 
         switch (check){
             case 0:
@@ -72,6 +72,29 @@ public class WanderAI extends CreatureAI {
             case 9:
                 if(self.position().add(Direction.WEST.point()).withinRect(nwBound, seBound))
                     self.move(Direction.WEST.point());
+                break;
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+                break;
+            case 16:
+                if(self.position().add(Direction.NORTH_WEST.point()).withinRect(nwBound, seBound))
+                    self.move(Direction.NORTH_WEST.point());
+                break;
+            case 17:
+                if(self.position().add(Direction.SOUTH_EAST.point()).withinRect(nwBound, seBound))
+                    self.move(Direction.SOUTH_EAST.point());
+                break;
+            case 18:
+                if(self.position().add(Direction.NORTH_EAST.point()).withinRect(nwBound, seBound))
+                    self.move(Direction.NORTH_EAST.point());
+                break;
+            case 19:
+                if(self.position().add(Direction.WEST.point()).withinRect(nwBound, seBound))
+                    self.move(Direction.SOUTH_WEST.point());
                 break;
         }
         return this;

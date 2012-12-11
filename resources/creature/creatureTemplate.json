@@ -6,9 +6,15 @@
             "startingGold":200,
             "hitPoints":50,
             "profession":"LEADER",
+            "faction":"nearestTown",
+            "aggressionLevel":{
+                "type":"Defend",
+                "range":"100"
+            },
             "image":"H_KNIGHT",
             "corpseImage":"H_SKELETON",
-            "innateArmor":"1",
+            "innateArmor":1,
+
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1",
@@ -31,8 +37,13 @@
             "profession":"VILLAGER",
             "hitPoints":35,
             "image":"H_PEASANT",
+            "faction":"nearestTown",
+            "aggressionLevel":{
+                "type":"Defend",
+                "range":"4"
+            },
             "corpseImage":"H_SKELETON",
-            "innateArmor":"1",
+            "innateArmor":1,
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1"
@@ -53,8 +64,13 @@
             "profession":"MERCHANT",
             "hitPoints":20,
             "image":"H_MERCHANT",
+            "faction":"nearestTown",
+            "aggressionLevel":{
+                "type":"Defend",
+                "range":"0"
+            },
             "corpseImage":"H_SKELETON",
-            "innateArmor":"1",
+            "innateArmor":1,
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1"
@@ -74,9 +90,14 @@
             "startingGold":200,
             "hitPoints":50,
             "profession":"SOLDIER",
+            "faction":"nearestTown",
+            "aggressionLevel":{
+                "type":"Attack",
+                "range":"100"
+            },
             "image":"H_SWORDSMAN",
             "corpseImage":"H_SKELETON",
-            "innateArmor":"1",
+            "innateArmor":1,
             "startingEquipment":[
                 "leather.helm.2",
                 "leather.chest.2",
@@ -98,9 +119,14 @@
             "startingGold":1000,
             "profession":"MAYOR",
             "hitPoints":50,
+            "faction":"nearestTown",
+            "aggressionLevel":{
+                "type":"Defend",
+                "range":"100"
+            },
             "image":"H_MERCHANT",
             "corpseImage":"H_SKELETON",
-            "innateArmor":"1",
+            "innateArmor":1,
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1"
@@ -119,10 +145,15 @@
             "creatureType":"human",
             "startingGold":20,
             "hitPoints":20,
+            "faction":"goblin",
+            "aggressionLevel":{
+                "type":"Defend",
+                "range":"100"
+            },
             "profession":"MOB",
             "image":"G_SWORDSMAN",
             "corpseImage":"G_SKELETON",
-            "innateArmor":"1",
+            "innateArmor":1,
             "startingEquipment":[
                 "cloth.helm.1",
                 "cloth.chest.1",
@@ -141,13 +172,18 @@
             "templateName":"puppy",
             "name":"puppy",
             "creatureType":"mammalPredator",
+            "faction":"nearestTown",
+            "aggressionLevel":{
+                "type":"Defend",
+                "range":"3"
+            },
             "startingGold":0,
             "hitPoints":10,
             "profession":"PET",
             "image":"PUPPY",
             "corpseImage":"DEAD_DOG",
             "startingEquipment":[],
-            "innateArmor":"3",
+            "innateArmor":3,
             "itemlessAttack":[
                 {
                     "slotType":"mouth",
@@ -163,6 +199,11 @@
         {
             "templateName":"wolf",
             "creatureType":"mammalPredator",
+            "faction":"aggressiveAnimal",
+            "aggressionLevel":{
+                "type":"Attack",
+                "range":"100"
+            },
             "name":"wolf",
             "startingGold":0,
             "hitPoints":20,
@@ -170,7 +211,7 @@
             "image":"WOLF",
             "corpseImage":"DEAD_WOLF",
             "startingEquipment":[],
-            "innateArmor":"4",
+            "innateArmor":4,
             "itemlessAttack":[
                 {
                     "slotType":"mouth",
@@ -199,13 +240,17 @@
             "creatureType":"mammalGrazer",
             "name":"cow",
             "faction":"passiveAnimal",
+            "aggressionLevel":{
+                "type":"Defend",
+                "range":"4"
+            },
             "startingGold":0,
             "hitPoints":20,
             "profession":"MOB",
             "image":"COW",
             "corpseImage":"DEAD_COW",
             "startingEquipment":[],
-            "innateArmor":"10",
+            "innateArmor":10,
             "itemlessAttack":[
                 {
                     "slotType":"hoof",
@@ -229,14 +274,18 @@
             "templateName":"boar",
             "creatureType":"tuskedAnimal",
             "name":"boar",
-            "faction":"passiveAnimal",
+            "faction":"aggressiveAnimal",
+            "aggressionLevel":{
+                "type":"Defend",
+                "range":"5"
+            },
             "startingGold":0,
             "hitPoints":30,
             "profession":"MOB",
             "image":"BOAR",
             "corpseImage":"DEAD_BOAR",
             "startingEquipment":[],
-            "innateArmor":"10",
+            "innateArmor":10,
             "itemlessAttack":[
                 {
                     "slotType":"tusk",
@@ -261,13 +310,17 @@
             "creatureType":"mammalPredator",
             "name":"honey badger",
             "faction":"aggressiveAnimal",
+            "aggressionLevel":{
+                "type":"Attack",
+                "range":"100"
+            },
             "startingGold":0,
             "hitPoints":30,
             "profession":"MOB",
             "image":"BADGER",
             "corpseImage":"DEAD_BADGER",
             "startingEquipment":[],
-            "innateArmor":"6",
+            "innateArmor":6,
             "itemlessAttack":[
                 {
                     "slotType":"claw",
@@ -295,45 +348,18 @@
             "templateName":"troll",
             "creatureType":"monsterHumanoid",
             "name":"troll",
-            "faction":"aggressiveAnimal",
-            "startingGold":0,
-            "hitPoints":70,
-            "profession":"MOB",
-            "image":"TROLL",
-            "corpseImage":"DEAD_TROLL",
-            "startingEquipment":[],
-            "innateArmor":"16",
-            "itemlessAttack":[
-                {
-                    "slotType":"hand",
-                    "value":15
-                }
-            ],
-            "loot":[
-                {
-                    "item":"hide.troll",
-                    "chance":70,
-                    "quantity":1
-                },
-                {
-                    "item":"claws.troll",
-                    "chance":70,
-                    "quantity":2
-                }
-            ]
-        },
-        {
-            "templateName":"troll",
-            "creatureType":"monsterHumanoid",
-            "name":"troll",
             "faction":"goblin",
+            "aggressionLevel":{
+                "type":"Defend",
+                "range":"100"
+            },
             "startingGold":0,
             "hitPoints":70,
             "profession":"MOB",
             "image":"TROLL",
             "corpseImage":"DEAD_TROLL",
             "startingEquipment":[],
-            "innateArmor":"16",
+            "innateArmor":16,
             "itemlessAttack":[
                 {
                     "slotType":"weapon",
@@ -358,13 +384,17 @@
             "creatureType":"wingedMonster",
             "name":"demon",
             "faction":"demon",
+            "aggressionLevel":{
+                "type":"Attack",
+                "range":"100"
+            },
             "startingGold":0,
             "hitPoints":120,
             "profession":"MOB",
             "image":"DEMON",
             "corpseImage":"NONE",
             "startingEquipment":[],
-            "innateArmor":"16",
+            "innateArmor":16,
             "itemlessAttack":[
                 {
                     "slotType":"weapon",

@@ -5,7 +5,7 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.player.Player;
 import com.bthorson.torule.quest.ScriptedSpawn;
-import com.bthorson.torule.worldgen.SpawnAction;
+import com.bthorson.torule.worldgen.spawn.SpawnAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class DebugUtil {
         ScriptedSpawn spawn = new ScriptedSpawn();
         spawn.setMin(5);
         spawn.setMax(5);
-        spawn.setType("goblin");
+        spawn.setCreatureType("goblin");
         spawns.add(spawn);
         Point point = new Point(PointUtil.randomPoint(player.position().subtract(player.visionRadius()),
                 player.position().add(player.visionRadius())));

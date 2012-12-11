@@ -150,14 +150,14 @@ public class ScrollList<T extends Entity> {
     }
 
     public void updateList(List<T> items) {
-        this.items = items;
         if (currentChoice >= items.size()){
             currentChoice--;
         }
         if (lastDisplayed > items.size()){
             lastDisplayed--;
-        } else if (lastDisplayed < height + 1){
+        } else if (lastDisplayed < height + 1 && items.size() > this.items.size()){
             lastDisplayed++;
         }
+        this.items = items;
     }
 }

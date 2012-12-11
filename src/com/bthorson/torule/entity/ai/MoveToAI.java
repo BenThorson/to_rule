@@ -18,37 +18,29 @@ import java.util.Stack;
  * Date: 12/5/12
  * Time: 6:04 PM
  */
-public class MoveToAI extends AggroableAI {
+public class MoveToAI extends CreatureAI {
 
     private Point point;
     private CreatureAI previous;
     private Stack<Point> path = new Stack<Point>();
     private PathTo pathTo;
-    private boolean shouldAggro;
     private int stuckCount = 0;
     private int stuckCountMax = 5;
 
-    public MoveToAI(Point point, CreatureAI previous) {
-        this(point, previous, false);
-    }
 
-    public MoveToAI(Point point, CreatureAI previous, boolean shouldAggro) {
+    public MoveToAI(Point point, CreatureAI previous) {
         super(previous.self, previous);
         this.point = point;
         this.previous = previous;
         pathTo = new AStarPathTo();
-        this.shouldAggro = shouldAggro;
     }
 
     @Override
     public CreatureAI execute() {
 
-        if (shouldAggro) {
-
-            CreatureAI ai = super.execute();
-            if (ai instanceof AggroAI) {
-                return ai;
-            }
+        CreatureAI ai = new AggroableAI(self, this).execute();
+        if (ai instanceof AggroAI){
+            return ai;
         }
 
         if (self.position().equals(point)) {
@@ -63,6 +55,12 @@ public class MoveToAI extends AggroableAI {
         if (nextMove != null) {
             Point delta = nextMove.subtract(self.position());
             if (World.getInstance().isTravelable(nextMove) || PointUtil.getDiagDist(self.position(), point) != 1) {
+
+                if (!delta.equals(delta.normalize())){
+                    repairPath(nextMove);
+                    delta = path.peek().subtract(self.position());
+                }
+
                 self.move(delta);
                 if (self.position().equals(nextMove)) {
                     path.pop();
@@ -85,6 +83,20 @@ public class MoveToAI extends AggroableAI {
         }
         return this;
     }
+
+    private void repairPath(Point nextMove) {
+        path.pop();
+        Stack<Point> repair = pathTo.buildPath(World.getInstance(), self.position(), nextMove);
+        System.out.println("repairing path");
+        Stack<Point> reverse = new Stack<Point>();
+        while (!repair.empty()){
+            reverse.push(repair.pop());
+        }
+        while (!reverse.empty()){
+            path.push(reverse.pop());
+        }
+    }
+
 
     @Override
     public boolean interact(Entity entity) {

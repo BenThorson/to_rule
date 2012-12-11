@@ -68,7 +68,7 @@ public class SavedWorldLoader implements WorldLoader {
                                                 towns.get(key).getEntity());
         }
         for (Integer key : creatures.keySet()){
-            EntityManager.getInstance().addCreature(creatures.get(key).getEntity());
+            EntityManager.getInstance().addUpdatable(creatures.get(key).getEntity());
         }
         for (Integer key : items.keySet()){
             Item item = items.get(key).getEntity();

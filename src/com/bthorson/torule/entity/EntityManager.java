@@ -13,7 +13,6 @@ import com.bthorson.torule.town.Building;
 import com.bthorson.torule.town.Town;
 import com.google.gson.JsonArray;
 
-import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.Map;
 public class EntityManager {
 
     private Map<Integer, Entity> fullCatalog = new HashMap<Integer, Entity>();
-    private List<Creature> creatures;
+    private List<Updatable> updatable;
     private List<Group> groups;
 
     private Player player;
@@ -35,6 +34,8 @@ public class EntityManager {
     private List<PhysicalEntity> freeItems;
     private Map<Point, Town> towns;
     private List<Faction> factions;
+
+    private List<Herd> herds;
 
     List<Creature> toRemove;
 
@@ -44,10 +45,10 @@ public class EntityManager {
     private Faction passiveAnimalFaction;
     private Faction goblinFaction;
 
-    private List<Creature> locallyUpdate;
+    private List<Updatable> locallyUpdate;
     private boolean nextReady;
     private boolean updateOccuring;
-    private List<Creature> nextLocalUpdate;
+    private List<Updatable> nextLocalUpdate;
     private Point lastCheckedPosition;
 
     private static EntityManager INSTANCE = new EntityManager();
@@ -57,7 +58,7 @@ public class EntityManager {
     }
 
     private EntityManager(){
-        creatures = new ArrayList<Creature>();
+        updatable = new ArrayList<Updatable>();
         freeItems = new ArrayList<PhysicalEntity>();
         toRemove = new ArrayList<Creature>();
         towns = new HashMap<Point, Town>();
@@ -81,10 +82,13 @@ public class EntityManager {
         return player;
     }
 
-    public void addCreature(Creature creature){
-        creatures.add(creature);
-        fullCatalog.put(creature.id, creature);
-        creaturePositionMap.put(creature.position(), creature);
+    public void addUpdatable(Updatable creature){
+        updatable.add(creature);
+        fullCatalog.put(((Entity)creature).id, (Entity)creature);
+        if (creature instanceof Creature){
+            Creature c = (Creature)creature;
+            creaturePositionMap.put(c.position(), c);
+        }
         if (lastCheckedPosition != null && creature.position().withinRect(PointUtil.floorToNearest100(lastCheckedPosition).subtract(100),
                                                                           PointUtil.floorToNearest100(lastCheckedPosition).add(200))){
             locallyUpdate.add(creature);
@@ -106,19 +110,23 @@ public class EntityManager {
 
 //        System.out.println("in main, updating at " + World.getInstance().getTurnCounter());
 
-        for (Creature creature : locallyUpdate){
-            creature.update(World.getInstance().getTurnCounter());
+        for (Updatable creature : locallyUpdate){
+            if (!creature.dead()){
+                creature.update(World.getInstance().getTurnCounter());
+            }
         }
 
-        for (Creature dead : toRemove){
-            remove(dead);
+        if (!updateOccuring){
+            for (Creature dead : toRemove){
+                remove(dead);
+            }
         }
         toRemove.clear();
     }
 
     public Creature creatureAt(Point position){
         return creaturePositionMap.get(position);
-//        for (Creature creature : creatures){
+//        for (Creature creature : updatable){
 //            if (creature == null){
 //                System.out.println("huh?");
 //                continue;
@@ -136,25 +144,25 @@ public class EntityManager {
     }
 
     public void remove(Creature dead) {
-        creatures.remove(dead);
+        updatable.remove(dead);
         fullCatalog.remove(dead.id);
         locallyUpdate.remove(dead);
     }
 
     public List<Creature> getActiveCreaturesInRange(Point p1, Point p2) {
         List<Creature> retList = new ArrayList<Creature>();
-        for (Creature c: locallyUpdate){
-            if (c.position().withinRect(p1, p2)){
-                retList.add(c);
+        for (Updatable c: locallyUpdate){
+            if (c.position().withinRect(p1, p2) && c instanceof Creature){
+                retList.add((Creature)c);
             }
         }
         return retList;
     }
 
-    private List<Creature> getAllCreaturesInRange(Point p1, Point p2) {
-        List<Creature> retList = new ArrayList<Creature>();
-        for (Creature c: creatures){
-            if (c.position().withinRect(p1, p2)){
+    private List<Updatable> getAllUpdatableInRange(Point p1, Point p2) {
+        List<Updatable> retList = new ArrayList<Updatable>();
+        for (Updatable c: updatable){
+            if (c.position().withinRect(p1, p2) && !c.dead()){
                 retList.add(c);
             }
         }
@@ -305,6 +313,36 @@ public class EntityManager {
         //To change body of created methods use File | Settings | File Templates.
     }
 
+    public Faction getFaction(Creature creature, String faction) {
+        if ("nearestTown".equals(faction)) {
+            return getNearestTown(creature.position()).getFaction();
+        } else {
+            for (Faction fctn : factions) {
+                if (fctn.getName().equals(faction)) {
+                    return fctn;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    public Town getNearestTown(Point local) {
+        int min = Integer.MAX_VALUE;
+        Town closest = null;
+        for (Town town : towns.values()){
+            int dist = PointUtil.manhattanDist(town.getRegionalPosition(), local);
+            if (dist < min){
+                min = dist;
+                closest = town;
+            }
+        }
+        return closest;
+    }
+
+
+
 
     private class NewLocalUpdateAction implements Runnable {
 
@@ -320,23 +358,23 @@ public class EntityManager {
             Point toRegion = origin.divide(MapConstants.LOCAL_SIZE_POINT);
             Point nwRegion = correctNwCorner(toRegion).multiply(MapConstants.LOCAL_SIZE_POINT);
             Point seRegion = correctSeCorner(toRegion).multiply(MapConstants.LOCAL_SIZE_POINT);
-            List<Creature> newUpdate = getAllCreaturesInRange(nwRegion, seRegion);
+            List<Updatable> newUpdate = getAllUpdatableInRange(nwRegion, seRegion);
 
-            List<Creature> doStuff = new ArrayList<Creature>();
+            List<Updatable> doStuff = new ArrayList<Updatable>();
 
             long startTime = Long.MAX_VALUE;
-            for (Creature creature : newUpdate){
-                if (locallyUpdate != null && !locallyUpdate.contains(creature)){
-                    doStuff.add(creature);
-                    if (creature.getLastUpdate() < startTime){
-                        startTime = creature.getLastUpdate();
+            for (Updatable updatable : newUpdate){
+                if (locallyUpdate != null && !locallyUpdate.contains(updatable)){
+                    doStuff.add(updatable);
+                    if (updatable.getLastUpdate() < startTime){
+                        startTime = updatable.getLastUpdate();
                     }
                 }
             }
 
             for (;startTime < World.getInstance().getTurnCounter(); startTime++){
 //                System.out.println("in thread, updating at " + startTime);
-                for (Creature creature : doStuff){
+                for (Updatable creature : doStuff){
                     if (creature.getLastUpdate() < startTime){
                         creature.update(startTime);
                     }

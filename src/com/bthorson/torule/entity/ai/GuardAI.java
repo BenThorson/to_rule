@@ -16,7 +16,7 @@ public class GuardAI extends AggroableAI {
 
     private Point guardPoint;
 
-    public GuardAI(Creature self, Point point, CreatureAI previous) {
+    public GuardAI(AiControllable self, Point point, CreatureAI previous) {
         super(self, previous);
         guardPoint = point;
     }

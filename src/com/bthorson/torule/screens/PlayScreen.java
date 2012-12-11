@@ -1,7 +1,6 @@
 package com.bthorson.torule.screens;
 
 import com.bthorson.torule.debug.DebugUtil;
-import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.*;
 import com.bthorson.torule.geom.Direction;
@@ -9,8 +8,6 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
-import com.bthorson.torule.quest.ScriptedSpawn;
-import com.bthorson.torule.worldgen.SpawnAction;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;

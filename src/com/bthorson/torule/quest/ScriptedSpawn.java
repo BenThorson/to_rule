@@ -1,22 +1,24 @@
 package com.bthorson.torule.quest;
 
+import com.bthorson.torule.worldgen.spawn.Spawn;
+
 /**
  * User: Ben Thorson
  * Date: 12/6/12
  * Time: 2:35 PM
  */
-public class ScriptedSpawn {
+public class ScriptedSpawn implements Spawn {
 
-    private String type;
+    private String creatureType;
     private int min;
     private int max;
 
-    public String getType() {
-        return type;
+    public String getCreatureType() {
+        return creatureType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCreatureType(String creatureType) {
+        this.creatureType = creatureType;
     }
 
     public int getMin() {

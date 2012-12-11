@@ -19,12 +19,7 @@ public class PatrolAI extends AggroableAI {
     private List<Point> patrolPath;
     private int current = 0;
 
-    public PatrolAI(Creature self, List<Point> patrolPath, CreatureAI previous){
-        super(self, previous);
-        this.patrolPath = patrolPath;
-    }
-
-    public PatrolAI(Creature self, List<Point> patrolPath, int start, CreatureAI previous){
+    public PatrolAI(AiControllable self, List<Point> patrolPath, int start, CreatureAI previous){
         super(self, previous);
         this.patrolPath = patrolPath;
         current = start;

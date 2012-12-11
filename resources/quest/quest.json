@@ -10,7 +10,7 @@
             "givenBy":"mayor",
             "spawns":[
                 {
-                    "type":"goblin",
+                    "creatureType":"goblin",
                     "min":1,
                     "max":1
                 }

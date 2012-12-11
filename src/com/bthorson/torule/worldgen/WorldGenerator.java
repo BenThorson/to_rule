@@ -89,7 +89,6 @@ public class WorldGenerator implements WorldLoader {
 
     private void transformTileByDistance(Point target, int distSquared) {
         Random random = new Random();
-        System.out.println(String.format("checking target %d, %d", target.x(), target.y()));
         Tile tile = World.getInstance().tile(target);
         if (random.nextInt(10000) > distSquared){
             if (Tile.isBrush(tile)){
@@ -110,9 +109,11 @@ public class WorldGenerator implements WorldLoader {
         Faction aggressiveAnimalFaction = new Faction("aggressiveAnimal");
         Faction passiveAnimalFaction = new Faction("passiveAnimal");
         Faction goblinFaction = new Faction("goblin");
+        Faction demonFaction = new Faction("demon");
         factions.add(aggressiveAnimalFaction);
         factions.add(passiveAnimalFaction);
         factions.add(goblinFaction);
+        factions.add(demonFaction);
 
         for (Town town : towns){
             Faction faction = town.getFaction();
@@ -121,9 +122,17 @@ public class WorldGenerator implements WorldLoader {
             town.getFaction().addEnemyFaction(goblinFaction);
             goblinFaction.addEnemyFaction(town.getFaction());
             factions.add(faction);
+            demonFaction.addEnemyFaction(town.getFaction());
+            town.getFaction().addEnemyFaction(demonFaction);
         }
         aggressiveAnimalFaction.addEnemyFaction(goblinFaction);
         goblinFaction.addEnemyFaction(aggressiveAnimalFaction);
+        demonFaction.addEnemyFaction(aggressiveAnimalFaction);
+        demonFaction.addEnemyFaction(passiveAnimalFaction);
+        demonFaction.addEnemyFaction(goblinFaction);
+        aggressiveAnimalFaction.addEnemyFaction(demonFaction);
+        passiveAnimalFaction.addEnemyFaction(demonFaction);
+        goblinFaction.addEnemyFaction(demonFaction);
     }
 
 
@@ -161,7 +170,7 @@ public class WorldGenerator implements WorldLoader {
         Random random = new Random();
         for (int x = 0; x < params.getWorldSize().x()/LOCAL_SIZE_X; x++){
             for (int y = 0; y < params.getWorldSize().y()/LOCAL_SIZE_Y; y++){
-                locals[x][y] = new LocalBuilder(random.nextInt(5), random.nextInt(33), random.nextInt(15))
+                locals[x][y] = new LocalBuilder(random.nextInt(5), random.nextInt(15), random.nextInt(15))
                         .makeGrassland().build(new Point(x * LOCAL_SIZE_X, y * LOCAL_SIZE_Y));
                 locals[x][y].setType(LocalType.WILDERNESS);
             }

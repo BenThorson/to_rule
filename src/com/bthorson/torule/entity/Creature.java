@@ -28,7 +28,7 @@ import java.util.List;
  * Date: 9/7/12
  * Time: 12:39 PM
  */
-public class Creature extends PhysicalEntity implements AiControllable {
+public class Creature extends PhysicalEntity implements AiControllable, Updatable {
 
     private CreatureAI ai = null;
 
@@ -69,6 +69,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
     private int strength;
     private int dexterity;
     private int constitution;
+    private Map<String, String> aggressionLevel;
 
     public Creature(CreatureBuilder builder) {
         super(builder.position, builder.glyph, Color.WHITE, builder.name);
@@ -87,6 +88,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
         this.constitution = builder.constitution;
         this.itemlessAttackVals = builder.itemlessAttackValues;
         this.templateName = builder.templateName;
+        this.aggressionLevel = builder.aggressionLevel;
         assignOwnershipOfItems();
 
     }
@@ -107,13 +109,13 @@ public class Creature extends PhysicalEntity implements AiControllable {
 
     public void follow(Creature leader) {
         if (this.leader != null && this.leader.equals(leader) && ai instanceof FollowAI){
-            //do nothing
+            this.aggressionLevel.put("range", "4");
         } else {
             this.leader = leader;
             if (ai instanceof FollowAI) {
-                ai = new LimitedRadiusAggroAI(this, ai.getPrevious(), 4, new FollowAI(this, ai.getPrevious()));
+                ai = new FollowAI(this, ai.getPrevious());
             } else {
-                ai = new LimitedRadiusAggroAI(this, ai, 4, new FollowAI(this, ai));
+                ai = new FollowAI(this, ai);
             }
         }
     }
@@ -144,6 +146,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
         public int constitution = 5;
         private String templateName;
         private String name;
+        private Map<String, String> aggressionLevel;
 
         public CreatureBuilder position(Point position){
             this.position = position;
@@ -227,6 +230,11 @@ public class Creature extends PhysicalEntity implements AiControllable {
 
         public CreatureBuilder name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public CreatureBuilder aggressionLevel(Map<String, String> aggressionLevel) {
+            this.aggressionLevel = aggressionLevel;
             return this;
         }
     }
@@ -864,6 +872,7 @@ public class Creature extends PhysicalEntity implements AiControllable {
         obj.addProperty("faction", faction.id);
         obj.addProperty("gold",gold);
         obj.add("profession", gson.toJsonTree(profession));
+        obj.add("aggressionLevel", gson.toJsonTree(aggressionLevel));
         SerializeUtils.serializeRefMap(properties, obj, "properties");
 
         if (inventory != null && !inventory.isEmpty()){
@@ -895,5 +904,11 @@ public class Creature extends PhysicalEntity implements AiControllable {
         return !(product.x() + product.y() > range*range);
     }
 
+    public Map<String, String> getAggressionLevel() {
+        if (aggressionLevel == null){
+            aggressionLevel = new HashMap<String, String>();
+        }
+        return aggressionLevel;
+    }
 
 }

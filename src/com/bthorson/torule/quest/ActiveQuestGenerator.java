@@ -1,19 +1,14 @@
 package com.bthorson.torule.quest;
 
 import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.CreatureFactory;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
-import com.bthorson.torule.map.MapConstants;
-import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
-import com.bthorson.torule.worldgen.SpawnAction;
+import com.bthorson.torule.worldgen.spawn.SpawnAction;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static com.bthorson.torule.map.MapConstants.LOCAL_SIZE_POINT;
 
@@ -35,6 +30,10 @@ public class ActiveQuestGenerator {
         Point offset = quest.getDirection().point().multiply(quest.getDistance()).add(giverLoc).multiply(LOCAL_SIZE_POINT);
         Point placement = PointUtil.randomPoint(LOCAL_SIZE_POINT);
         List<Creature> creatures = new SpawnAction().createCreatures(quest.getSpawns(), offset.add(placement));
+        for (Creature creature : creatures){
+            creature.setAi(new WanderAI(creature, null, true));
+            creature.setFaction(EntityManager.getInstance().getGoblinFaction());
+        }
 
         return creatures;
     }

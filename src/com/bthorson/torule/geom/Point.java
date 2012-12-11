@@ -181,6 +181,11 @@ public class Point {
     }
 
     public boolean isOutOfBounds() {
-        return x < 0 || y < 0 || x > World.getInstance().seCorner().x() || y > World.getInstance().seCorner().y();
+        return x < 0 || y < 0 || x >= World.getInstance().seCorner().x() || y >= World.getInstance().seCorner().y();
+    }
+
+    @Override
+    public String toString() {
+        return  "x = " + x() + ", " + "y = " + y();
     }
 }

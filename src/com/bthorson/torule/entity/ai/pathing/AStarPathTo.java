@@ -28,6 +28,11 @@ public class AStarPathTo implements PathTo {
 
         while (!openList.isEmpty()){
 
+            if (closedList.size() > 10000){
+                System.out.println("Possible error building path from " + start + " to " + target);
+                return new Stack<Point>();
+            }
+
             Node current = openList.poll();
             if (current.getPnt().equals(target)){
 //                System.out.println(String.format("built path ending with %d,%d.  Open list size had a maximum of %d nodes", current.getPnt().x(), current.getPnt().y(), maxOpenList));

@@ -1,4 +1,4 @@
-package com.bthorson.torule.worldgen;
+package com.bthorson.torule.worldgen.spawn;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.CreatureFactory;
@@ -25,13 +25,13 @@ import static com.bthorson.torule.map.MapConstants.LOCAL_SIZE_POINT;
  */
 public class SpawnAction {
 
-    public List<Creature> createCreatures(List<ScriptedSpawn> spawns, Point point) {
+    public List<Creature> createCreatures(List<? extends Spawn> spawns, Point point) {
 
         Point offset = PointUtil.floorToNearest100(point);
         Point placement = point.subtract(offset);
 
         List<Creature> creatures = new ArrayList<Creature>();
-        for (ScriptedSpawn spawn : spawns){
+        for (Spawn spawn : spawns){
             int number = 0;
 
             if (spawn.getMin() != spawn.getMax()){
@@ -40,9 +40,7 @@ public class SpawnAction {
             else number = spawn.getMin();
             List<Point> points = getPlaceablePointsInRegion(number, offset, placement);
             for (int i = 0; i < number; i++){
-                Creature creature = CreatureFactory.INSTANCE.createCreature(spawn.getType(), points.get(i));
-                creature.setAi(new WanderAI(creature, null, true));
-                creature.setFaction(EntityManager.getInstance().getGoblinFaction());
+                Creature creature = CreatureFactory.INSTANCE.createCreature(spawn.getCreatureType(), points.get(i));
                 creatures.add(creature);
             }
 

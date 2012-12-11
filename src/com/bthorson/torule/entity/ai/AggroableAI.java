@@ -11,14 +11,17 @@ import com.google.gson.JsonElement;
  */
 public class AggroableAI extends CreatureAI {
 
+    private int radius;
+
     public AggroableAI(AiControllable self, CreatureAI previous) {
         super(self, previous);
+        this.radius = Integer.parseInt(((Creature) self).getAggressionLevel().get("range"));
     }
 
     @Override
     public CreatureAI execute() {
         Creature toAggro = getTarget();
-        if (toAggro != null){
+        if(toAggro != null && self.isWithinRange(toAggro.position(), radius)) {
             AggroAI aggroAI = new AggroAI(self, toAggro, this);
             aggroAI.execute();
             return aggroAI;

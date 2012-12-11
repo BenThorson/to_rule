@@ -38,10 +38,10 @@ public class SeekAI extends CreatureAI{
             return previous;
         }
 
-        if (PointUtil.manhattanDist(self.position(), target.position()) > 100){
-            System.out.println("Too large to calculate, aborting seek ai");
-            return previous;
-        }
+//        if (PointUtil.manhattanDist(self.position(), target.position()) > 100){
+//            System.out.println("Too large to calculate, aborting seek ai");
+//            return previous;
+//        }
 
         if (self.canSee(target.position())){
             targetPosition = target.position();

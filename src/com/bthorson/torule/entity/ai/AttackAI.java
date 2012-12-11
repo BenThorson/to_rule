@@ -16,7 +16,7 @@ public class AttackAI extends CreatureAI {
     private Creature creature;
     private AggroAI aggro;
 
-    public AttackAI(Creature self, Creature creature, CreatureAI previous) {
+    public AttackAI(AiControllable self, Creature creature, CreatureAI previous) {
         super(self, previous);
         aggro = new AggroAI(self, creature, this);
         this.creature = creature;
