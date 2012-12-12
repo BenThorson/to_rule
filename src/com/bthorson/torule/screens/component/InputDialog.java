@@ -1,7 +1,8 @@
-package com.bthorson.torule.screens;
+package com.bthorson.torule.screens.component;
 
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
+import com.bthorson.torule.screens.ScreenUtil;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -71,7 +72,12 @@ public class InputDialog {
         } else if (keyCode == KeyEvent.VK_ENTER){
             return input.toString();
         } else if (keyCode == KeyEvent.VK_ESCAPE){
-            input = new StringBuilder();
+            if (input.length() > 0){
+                input = new StringBuilder();
+            } else {
+                return (char)27 + "";
+            }
+
         } else if (keyCode >= 48 && keyCode <= 112 ) {
             input.append(new String("" + key.getKeyChar()).toUpperCase());
         }

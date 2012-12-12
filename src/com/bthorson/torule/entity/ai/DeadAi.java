@@ -10,8 +10,8 @@ import com.bthorson.torule.entity.Entity;
  */
 public class DeadAi extends CreatureAI {
 
-    public DeadAi() {
-        super(null, null);
+    public DeadAi(AiControllable self, CreatureAI previous) {
+        super(self, previous);
     }
 
     @Override

@@ -387,7 +387,7 @@ public class Creature extends PhysicalEntity implements AiControllable, Updatabl
     private void die() {
         hitpoints = 0;
         dead = true;
-        ai = new DeadAi();
+        ai = new DeadAi(this, null);
         super.setGlyph(corpseGlyph);
         dropLoot();
         EntityManager.getInstance().creatureDead(this);

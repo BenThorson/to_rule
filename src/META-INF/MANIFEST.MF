@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: jgrapht-jdk1.6.jar Hmapgen.jar jgrapht-jdk1.6.jar Hmapgen.
+ jar gson-2.2.2.jar commons-io-2.4.jar jgrapht-jdk1.6.jar
+Main-Class: com.bthorson.torule.ToRuleMain
+

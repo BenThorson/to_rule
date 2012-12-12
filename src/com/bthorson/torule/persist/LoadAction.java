@@ -232,7 +232,7 @@ public class LoadAction {
         AiControllable self = getSelf(ai.get("self").getAsInt());
 
         if ("DeadAI".equalsIgnoreCase(name)){
-            return new DeadAi();
+            return new DeadAi(self, previous);
         } else if ("FollowAI".equalsIgnoreCase(name)){
             return new FollowAI(self,
                                 getAiAndInstantiate(ai.get("previous").getAsJsonObject()));

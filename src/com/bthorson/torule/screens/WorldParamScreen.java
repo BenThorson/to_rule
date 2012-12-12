@@ -3,6 +3,7 @@ package com.bthorson.torule.screens;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.map.World;
+import com.bthorson.torule.screens.component.InputDialog;
 import com.bthorson.torule.worldgen.WorldGenParams;
 import com.bthorson.torule.worldgen.WorldGenerator;
 
@@ -51,6 +52,8 @@ public class WorldParamScreen implements Screen {
         switch (activeMenu){
             case WORLD_SIZE:
                 switch (worldSize.respondToUserInput(key)){
+                    case -2:
+                        return new StartScreen();
                     case 0:
                         params.setWorldSize(new Point(1000,1000));
                         break;
@@ -63,6 +66,9 @@ public class WorldParamScreen implements Screen {
                 return this;
             case NUM_CITIES:
                 switch (numCities.respondToUserInput(key)){
+                    case -2:
+                        activeMenu = MenuType.WORLD_SIZE;
+                        return this;
                     case 0:
                         params.setNumCities(5);
                         break;
@@ -80,6 +86,10 @@ public class WorldParamScreen implements Screen {
             case PLAYER_NAME:
                 String s = playerName.respondToUserInput(key);
                 if (s != null){
+                    if (s.contains((char)27 + "")){
+                        activeMenu = MenuType.NUM_CITIES;
+                        return this;
+                    }
                     params.setPlayerName(s);
                     World.destroy();
                     new WorldGenerator().generateWorld(params);
