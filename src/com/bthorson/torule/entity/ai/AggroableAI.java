@@ -15,7 +15,7 @@ public class AggroableAI extends CreatureAI {
 
     public AggroableAI(AiControllable self, CreatureAI previous) {
         super(self, previous);
-        this.radius = Integer.parseInt(((Creature) self).getAggressionLevel().get("range"));
+        this.radius = Integer.parseInt(self.getAggressionLevel().get("range"));
     }
 
     @Override

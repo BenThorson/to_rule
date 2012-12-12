@@ -35,7 +35,7 @@ public class PatrolAI extends AggroableAI {
         if (patrolPath.get(current).equals(self.position())){
             current = (current + 1) % patrolPath.size();
         }
-        return new MoveToAI(patrolPath.get(current), this);
+        return new MoveToAI(patrolPath.get(current), this).execute();
 
     }
 

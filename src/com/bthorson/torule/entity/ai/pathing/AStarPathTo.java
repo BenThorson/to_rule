@@ -17,7 +17,7 @@ import java.util.Stack;
  */
 public class AStarPathTo implements PathTo {
     @Override
-    public Stack<Point> buildPath(World world, Point start, Point target) {
+    public Stack<Point> buildPath(World world, Point start, Point target, boolean ignoreTerrain) {
 //        System.out.printf("Starting to build a path from x:%d,y:%d to x:%d,y:%d\n",start.x(), start.y(), target.x(), target.y());
 
         List<Node> closedList = new ArrayList<Node>();
@@ -40,18 +40,21 @@ public class AStarPathTo implements PathTo {
             }
             closedList.add(current);
 
-            for (Point neighbor : getNeighbors(current.getPnt(), world, target)){
+            for (Point neighbor : getNeighbors(current.getPnt(), world, target, ignoreTerrain)){
                 boolean updateVals = false;
                 Node n = new Node(neighbor);
                 if(closedList.contains(n)){
                     continue;
                 }
-                int g = current.getG() + world.tile(n.getPnt()).moveCost();
-                if (world.creature(n.getPnt()) != null && !n.getPnt().equals(target)){
-                    g += 30;
+                int g = current.getG() + (ignoreTerrain ? 1 : world.tile(n.getPnt()).moveCost());
+
+                int h = PointUtil.diagMoves(n.getPnt(), target) * (ignoreTerrain ? 1 : 6) +
+                        PointUtil.getDiagDist(n.getPnt(), target) * (ignoreTerrain ? 1 : 3);
+
+                if (world.creature(n.getPnt()) != null && !n.getPnt().equals(target) && !ignoreTerrain){
+                    h += 30;
                 }
 
-                int h = PointUtil.diagMoves(n.getPnt(), target) * 6 + PointUtil.getDiagDist(n.getPnt(), target) * 3;
 
                 if (!openList.contains(n)){
                     n.setParent(current);
@@ -89,14 +92,14 @@ public class AStarPathTo implements PathTo {
         return path;
     }
 
-    private List<Point> getNeighbors(Point current, World world, Point target) {
+    private List<Point> getNeighbors(Point current, World world, Point target, boolean ignoreTerrain) {
         List<Point> ret = new ArrayList<Point>();
         if (PointUtil.getDiagDist(target, current) == 1){
             ret.add(target);
             return ret;
         }
         for (Direction dir : Direction.values()){
-            if (world.isTravelable(dir.point().add(current))){
+            if (world.isTravelable(dir.point().add(current)) || ignoreTerrain){
                 ret.add(dir.point().add(current));
             }
         }

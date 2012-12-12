@@ -117,22 +117,22 @@ public class WorldGenerator implements WorldLoader {
 
         for (Town town : towns){
             Faction faction = town.getFaction();
-            aggressiveAnimalFaction.addEnemyFaction(town.getFaction());
-            town.getFaction().addEnemyFaction(aggressiveAnimalFaction);
-            town.getFaction().addEnemyFaction(goblinFaction);
-            goblinFaction.addEnemyFaction(town.getFaction());
+//            aggressiveAnimalFaction.addEnemyFaction(town.getFaction());
+//            town.getFaction().addEnemyFaction(aggressiveAnimalFaction);
+//            town.getFaction().addEnemyFaction(goblinFaction);
+//            goblinFaction.addEnemyFaction(town.getFaction());
             factions.add(faction);
-            demonFaction.addEnemyFaction(town.getFaction());
-            town.getFaction().addEnemyFaction(demonFaction);
+//            demonFaction.addEnemyFaction(town.getFaction());
+//            town.getFaction().addEnemyFaction(demonFaction);
         }
-        aggressiveAnimalFaction.addEnemyFaction(goblinFaction);
-        goblinFaction.addEnemyFaction(aggressiveAnimalFaction);
-        demonFaction.addEnemyFaction(aggressiveAnimalFaction);
-        demonFaction.addEnemyFaction(passiveAnimalFaction);
-        demonFaction.addEnemyFaction(goblinFaction);
-        aggressiveAnimalFaction.addEnemyFaction(demonFaction);
-        passiveAnimalFaction.addEnemyFaction(demonFaction);
-        goblinFaction.addEnemyFaction(demonFaction);
+//        aggressiveAnimalFaction.addEnemyFaction(goblinFaction);
+//        goblinFaction.addEnemyFaction(aggressiveAnimalFaction);
+//        demonFaction.addEnemyFaction(aggressiveAnimalFaction);
+//        demonFaction.addEnemyFaction(passiveAnimalFaction);
+//        demonFaction.addEnemyFaction(goblinFaction);
+//        aggressiveAnimalFaction.addEnemyFaction(demonFaction);
+//        passiveAnimalFaction.addEnemyFaction(demonFaction);
+//        goblinFaction.addEnemyFaction(demonFaction);
     }
 
 

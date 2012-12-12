@@ -1,6 +1,8 @@
 package com.bthorson.torule.debug;
 
+import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.EntityManager;
+import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.player.Player;
@@ -35,7 +37,10 @@ public class DebugUtil {
         Point point = new Point(PointUtil.randomPoint(player.position().subtract(player.visionRadius()),
                 player.position().add(player.visionRadius())));
 
-        new SpawnAction().createCreatures(spawns, point);
+        List<Creature> gobbos = new SpawnAction().createCreatures(spawns, point);
+        for (Creature gobbo : gobbos){
+            gobbo.setAi(new WanderAI(gobbo, null, true));
+        }
     }
 
     public static void teleportPlayer() {

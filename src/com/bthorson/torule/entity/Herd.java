@@ -13,9 +13,12 @@ import com.bthorson.torule.persist.SerializeUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import sun.org.mozilla.javascript.internal.ScriptableObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -104,9 +107,6 @@ public class Herd extends Entity implements AiControllable, Updatable {
             System.out.println(getName() + "tried to move twice in one turn");
             return false;
         }
-        if (!World.getInstance().isTravelable(delta.add(this.point))){
-            return false;
-        }
 
         heading = Direction.directionOf(delta);
         Point moveAttempt = point.add(delta);
@@ -188,7 +188,7 @@ public class Herd extends Entity implements AiControllable, Updatable {
 
     @Override
     public Creature closestVisibleHostile() {
-        throw new UnsupportedOperationException("herd does not determine aggro");
+        return null;
     }
 
     @Override
@@ -199,6 +199,13 @@ public class Herd extends Entity implements AiControllable, Updatable {
     @Override
     public boolean isWithinRange(Point point, int range) {
         throw new UnsupportedOperationException("herd does not determine aggro");
+    }
+
+    @Override
+    public Map<String, String> getAggressionLevel() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("range", "0");
+        return map;
     }
 
     public void setAi(CreatureAI ai) {

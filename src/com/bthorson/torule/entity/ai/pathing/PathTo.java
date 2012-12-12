@@ -14,5 +14,5 @@ import java.util.Stack;
  */
 public interface PathTo {
 
-    public Stack<Point> buildPath(World world, Point start, Point target);
+    public Stack<Point> buildPath(World world, Point start, Point target, boolean ignoreTerrain);
 }

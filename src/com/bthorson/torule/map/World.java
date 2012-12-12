@@ -69,7 +69,7 @@ public class World {
 
 
     public Local getLocal(Point localGridPosition) {
-        if(localGridPosition.withinRect(seCorner.divide(LOCAL_SIZE_POINT))){
+        if (localGridPosition.x() >= 0 && localGridPosition.x() < locals.length && localGridPosition.y() >= 0  && localGridPosition.y() < locals[0].length){
             return locals[localGridPosition.x()][localGridPosition.y()];
         } else {
             return null;

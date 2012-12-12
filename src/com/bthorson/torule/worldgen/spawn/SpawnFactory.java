@@ -6,6 +6,7 @@ import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.entity.Herd;
 import com.bthorson.torule.entity.ai.HerdAI;
 import com.bthorson.torule.entity.ai.MeanderAI;
+import com.bthorson.torule.entity.ai.PatrolAI;
 import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
@@ -31,15 +32,16 @@ import java.util.Random;
  * Date: 12/10/12
  * Time: 3:05 PM
  */
-public enum CritterSpawnFactory {
+public enum SpawnFactory {
 
     INSTANCE;
 
     private Gson gson = new Gson();
 
-    private List<CritterSpawn> spawns = new ArrayList<CritterSpawn>();
+    private List<CritterSpawn> critterSpawns = new ArrayList<CritterSpawn>();
+    private List<PatrolSpawn> patrolSpawns = new ArrayList<PatrolSpawn>();
 
-    private CritterSpawnFactory(){
+    private SpawnFactory(){
         load();
     }
 
@@ -49,7 +51,13 @@ public enum CritterSpawnFactory {
             JsonObject jo = new JsonParser().parse(spawnFile).getAsJsonObject();
             JsonArray spwns = jo.get("spawns").getAsJsonArray();
             for (JsonElement spwn : spwns){
-                spawns.add(gson.fromJson(spwn, CritterSpawn.class));
+                critterSpawns.add(gson.fromJson(spwn, CritterSpawn.class));
+            }
+            spawnFile = FileUtils.readFileToString(new File("resources/creature/patrols.json"));
+            jo = new JsonParser().parse(spawnFile).getAsJsonObject();
+            spwns = jo.get("patrols").getAsJsonArray();
+            for (JsonElement spwn : spwns){
+                patrolSpawns.add(gson.fromJson(spwn, PatrolSpawn.class));
             }
 
         } catch (IOException e) {
@@ -57,7 +65,7 @@ public enum CritterSpawnFactory {
         }
     }
 
-    public void generateSpawn(Point point, Local local){
+    public void createRandomCritterSpawn(Point point, Local local){
         List<CritterSpawn> spawnChoices = getSpawnTypeForFerocity(local.getFerocity());
         if (!spawnChoices.isEmpty()){
             CritterSpawn spawn = spawnChoices.get(new Random().nextInt(spawnChoices.size()));
@@ -90,12 +98,36 @@ public enum CritterSpawnFactory {
     private List<CritterSpawn> getSpawnTypeForFerocity(Ferocity ferocity) {
         List<CritterSpawn> choices = new ArrayList<CritterSpawn>();
 
-        for (CritterSpawn spawn : spawns){
+        for (CritterSpawn spawn : critterSpawns){
             if (Arrays.asList(spawn.getFerocity()).contains(ferocity)){
                 choices.add(spawn);
             }
         }
         return choices;
+    }
+
+    public void createPatrolSpawn(String patrolType, List<Point> patrolPoints){
+        for (PatrolSpawn spawn : patrolSpawns){
+            if (spawn.getPatrolType().equalsIgnoreCase(patrolType)){
+                List<Creature> creatures = new SpawnAction().createCreatures(spawn.getSpawns(), patrolPoints.get(0));
+                Herd herd = new Herd(patrolPoints.get(0), creatures);
+                for (Creature creature : creatures){
+                    creature.setAi(new HerdAI(creature, null, herd));
+                }
+                herd.setAi(new PatrolAI(herd, makePatrolPointsTravellable(patrolPoints), 0, null));
+                EntityManager.getInstance().addUpdatable(herd);
+
+            }
+        }
+    }
+
+    private List<Point> makePatrolPointsTravellable(List<Point> patrolPoints) {
+        List<Point> alteredPoints = new ArrayList<Point>();
+        for (Point point : patrolPoints) {
+            alteredPoints.add(SpawnUtils.getPlaceablePointsInRegion(1, PointUtil.floorToNearest100(point),
+                                                                    point.subtract(PointUtil.floorToNearest100(point))).get(0));
+        }
+        return alteredPoints;
     }
 
 

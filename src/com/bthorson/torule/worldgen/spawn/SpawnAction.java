@@ -38,7 +38,7 @@ public class SpawnAction {
                 number = new Random().nextInt(spawn.getMax() - spawn.getMin()) + spawn.getMin() + 1;
             }
             else number = spawn.getMin();
-            List<Point> points = getPlaceablePointsInRegion(number, offset, placement);
+            List<Point> points = SpawnUtils.getPlaceablePointsInRegion(number, offset, placement);
             for (int i = 0; i < number; i++){
                 Creature creature = CreatureFactory.INSTANCE.createCreature(spawn.getCreatureType(), points.get(i));
                 creatures.add(creature);
@@ -48,28 +48,5 @@ public class SpawnAction {
         return creatures;
     }
 
-    private List<Point> getPlaceablePointsInRegion(int number, Point offset, Point placement) {
-        for (int i = 1; i < 100; i++) {
-            List<Point> attempt = new ArrayList<Point>();
-            for (Point p : getValidPointsinRegion(i, placement)) {
-                if (!World.getInstance().isOccupied(p.add(offset))){
-                    attempt.add(p.add(offset));
-                }
-            }
-            if (attempt.size() > number){
-                return attempt;
-            }
-        }
-        return new ArrayList<Point>();
-    }
 
-    private List<Point> getValidPointsinRegion(int i, Point placement) {
-        List<Point> validPoints = new ArrayList<Point>();
-        for (Point p : PointUtil.getPointsInRange(placement.subtract(i), placement.add(i))) {
-            if (p.withinRect(LOCAL_SIZE_POINT)){
-                validPoints.add(p);
-            }
-        }
-        return validPoints;
-    }
 }

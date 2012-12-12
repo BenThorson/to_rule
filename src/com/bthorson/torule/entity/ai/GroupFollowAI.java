@@ -2,6 +2,7 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.entity.Herd;
 import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
@@ -38,13 +39,13 @@ public class GroupFollowAI extends CreatureAI {
             return this;
         }
         if (!self.getTarget().equals(lastTarget) || path == null || path.isEmpty()){
-            path = new AStarPathTo().buildPath(World.getInstance(), self.position(), self.getTarget());
+            path = new AStarPathTo().buildPath(World.getInstance(), self.position(), self.getTarget(), self instanceof Herd);
             lastTarget = self.getTarget();
         }
         Point next = path.peek();
         Creature creat = World.getInstance().creature(next);
         if (creat != null && creat.getFaction().equals(self.getFaction())){
-            path = new AStarPathTo().buildPath(World.getInstance(), self.position(), self.getTarget());
+            path = new AStarPathTo().buildPath(World.getInstance(), self.position(), self.getTarget(), self instanceof Herd);
             next = path.peek();
         }
         if (self.move(next.subtract(self.position()))){

@@ -5,8 +5,10 @@ import com.bthorson.torule.entity.Faction;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
+import sun.org.mozilla.javascript.internal.ScriptableObject;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -42,4 +44,6 @@ public interface AiControllable {
     boolean isHostile(Creature other);
 
     boolean isWithinRange(Point point, int range);
+
+    Map<String, String> getAggressionLevel();
 }

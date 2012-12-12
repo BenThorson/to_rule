@@ -267,10 +267,6 @@ public class EntityManager {
         return itemMap;
     }
 
-    public Faction getAggressiveAnimalFaction() {
-        return aggressiveAnimalFaction;
-    }
-
     public void setFactions(List<Faction> factns) {
         this.factions = factns;
         for (Faction faction : factns){

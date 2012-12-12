@@ -1,8 +1,12 @@
 package com.bthorson.torule.map;
 
+import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.geom.PointUtil;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: ben
@@ -26,11 +30,13 @@ public class Local {
     private LocalType type;
 
     private Tile[][] tiles;
+    private Point regionalPosition;
 
 
     public Local(Point nwBound, Tile[][] tiles) {
         nwBoundWorldCoord = nwBound;
         seBoundWorldBound = nwBoundWorldCoord.add(MapConstants.LOCAL_SIZE_POINT);
+        this.regionalPosition = PointUtil.toRegional(nwBoundWorldCoord);
         this.tiles = tiles;
     }
 
@@ -101,5 +107,20 @@ public class Local {
 
     public void setDistanceFromTown(int distanceFromTown) {
         this.distanceFromTown = distanceFromTown;
+    }
+
+    public List<Local> getAllNeighbors() {
+        List<Local> neighbors = new ArrayList<Local>();
+        for (Direction d : Direction.values()){
+            Local loc = World.getInstance().getLocal(d.point().add(getRegionalPosition()));
+            if (loc != null){
+                neighbors.add(loc);
+            }
+        }
+        return neighbors;
+    }
+
+    public Point getRegionalPosition() {
+        return regionalPosition;
     }
 }

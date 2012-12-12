@@ -2,6 +2,7 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
+import com.bthorson.torule.entity.Herd;
 import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
 import com.bthorson.torule.entity.ai.pathing.PathTo;
 import com.bthorson.torule.geom.Point;
@@ -51,7 +52,7 @@ public class SeekAI extends CreatureAI{
             if (targetPosition.equals(self.position())){
                 return this;
             }
-            path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition);
+            path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition, self instanceof Herd);
         }
 
         Point nextMove = path.peek();
@@ -81,7 +82,7 @@ public class SeekAI extends CreatureAI{
 
     private void repairPath(Point nextMove) {
         path.pop();
-        Stack<Point> repair = pathTo.buildPath(World.getInstance(), self.position(), nextMove);
+        Stack<Point> repair = pathTo.buildPath(World.getInstance(), self.position(), nextMove, self instanceof Herd);
         System.out.println("repairing path");
         Stack<Point> reverse = new Stack<Point>();
         while (!repair.empty()){
@@ -94,7 +95,7 @@ public class SeekAI extends CreatureAI{
 
     private void calcAndExecutePath() {
         targetPosition = new Point(target.position());
-        path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition);
+        path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition, self instanceof Herd);
         Point nextMove = path.peek();
         if (self.move(nextMove.subtract(self.position()))){
             path.pop();

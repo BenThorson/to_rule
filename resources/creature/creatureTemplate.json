@@ -85,7 +85,7 @@
 
         },
         {
-            "templateName":"city.guard",
+            "templateName":"cityGuard",
             "creatureType":"human",
             "startingGold":200,
             "hitPoints":50,

@@ -57,10 +57,11 @@ public class Node {
         if (o == null || getClass() != o.getClass()) return false;
 
         Node node = (Node) o;
-
-        if (pnt != null ? !pnt.equals(node.pnt) : node.pnt != null) return false;
-
-        return true;
+        if (pnt != null){
+            return (pnt.equals(node.pnt));
+        } else {
+            return node.pnt == null;
+        }
     }
 
     @Override

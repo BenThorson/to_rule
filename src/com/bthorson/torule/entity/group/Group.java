@@ -12,6 +12,7 @@ import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import sun.org.mozilla.javascript.internal.ScriptableObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -194,6 +195,11 @@ public class Group extends Entity implements AiControllable{
     @Override
     public boolean isWithinRange(Point point, int range) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Map<String, String> getAggressionLevel() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void remove(Creature dead) {

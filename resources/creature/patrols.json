@@ -1,0 +1,45 @@
+{
+    "patrols":[
+        {
+            "patrolType":"cityGuards",
+            "spawns":[
+                {
+                    "creatureType":"cityGuard",
+                    "min":2,
+                    "max":4
+                },
+                {
+                    "creatureType":"puppy",
+                    "min":1,
+                    "max":2
+                }
+            ]
+        },
+        {
+            "patrolType":"goblinScout",
+            "spawns":[
+                {
+                    "creatureType":"goblin",
+                    "min":2,
+                    "max":3
+                }
+            ]
+        },
+        {
+            "patrolType":"goblinDefenders",
+            "spawns":[
+                {
+                    "creatureType":"goblin",
+                    "min":10,
+                    "max":15
+                },
+                {
+                    "creatureType":"troll",
+                    "min":0,
+                    "max":2
+                }
+            ]
+        }
+
+    ]
+}
