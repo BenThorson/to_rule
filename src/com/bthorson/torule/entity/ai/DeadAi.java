@@ -1,9 +1,9 @@
 package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Entity;
-import com.google.gson.JsonObject;
 
 /**
+ * Stub object for dead creatures.
  * User: ben
  * Date: 9/11/12
  * Time: 9:36 PM

@@ -5,7 +5,6 @@ import com.bthorson.torule.entity.ai.*;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.Local;
-import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
 import com.bthorson.torule.quest.ActiveQuest;
 import com.bthorson.torule.town.Building;
@@ -13,7 +12,6 @@ import com.bthorson.torule.town.Town;
 import com.bthorson.torule.worldgen.SavedWorldLoader;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
-import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.util.ArrayList;

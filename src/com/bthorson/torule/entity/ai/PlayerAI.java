@@ -2,10 +2,9 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 /**
+ * Handles Player movement and interaction
  * User: ben
  * Date: 9/7/12
  * Time: 9:11 PM

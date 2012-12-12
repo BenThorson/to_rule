@@ -1,9 +1,9 @@
 package com.bthorson.torule.conversation;
 
-import com.bthorson.torule.entity.Profession;
 import com.bthorson.torule.conversation.model.ConversationScript;
 import com.bthorson.torule.conversation.model.Conversations;
-import com.google.gson.*;
+import com.bthorson.torule.entity.Profession;
+import com.google.gson.Gson;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

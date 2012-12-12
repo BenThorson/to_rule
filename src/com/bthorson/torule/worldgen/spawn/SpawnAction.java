@@ -2,19 +2,12 @@ package com.bthorson.torule.worldgen.spawn;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.CreatureFactory;
-import com.bthorson.torule.entity.EntityManager;
-import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
-import com.bthorson.torule.map.World;
-import com.bthorson.torule.quest.Quest;
-import com.bthorson.torule.quest.ScriptedSpawn;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static com.bthorson.torule.map.MapConstants.LOCAL_SIZE_POINT;
 
 /**
  * Created with IntelliJ IDEA.

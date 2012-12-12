@@ -9,7 +9,7 @@ import com.bthorson.torule.screens.component.Confirmation;
 import com.bthorson.torule.screens.component.ItemNameRenderer;
 import com.bthorson.torule.screens.component.ScrollList;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**

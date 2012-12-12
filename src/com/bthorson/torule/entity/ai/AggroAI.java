@@ -4,6 +4,7 @@ import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 
 /**
+ * A hostile state that will attempt to enter melee range and attack the target
  * User: ben
  * Date: 9/7/12
  * Time: 10:51 PM

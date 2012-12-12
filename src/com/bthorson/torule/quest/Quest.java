@@ -1,6 +1,5 @@
 package com.bthorson.torule.quest;
 
-import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 

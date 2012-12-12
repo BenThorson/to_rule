@@ -13,11 +13,7 @@ import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.Ferocity;
 import com.bthorson.torule.map.Local;
 import com.bthorson.torule.map.MapConstants;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

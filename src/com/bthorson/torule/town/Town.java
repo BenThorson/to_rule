@@ -1,6 +1,5 @@
 package com.bthorson.torule.town;
 
-import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.Faction;
 import com.bthorson.torule.entity.NameGenerator;

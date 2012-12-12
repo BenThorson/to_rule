@@ -1,12 +1,7 @@
 package com.bthorson.torule.entity;
 
-import com.bthorson.torule.geom.Point;
-import com.bthorson.torule.geom.PointUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import java.awt.*;
-import java.util.List;
 
 
 /**

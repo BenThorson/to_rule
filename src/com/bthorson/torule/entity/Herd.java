@@ -2,24 +2,17 @@ package com.bthorson.torule.entity;
 
 import com.bthorson.torule.entity.ai.AiControllable;
 import com.bthorson.torule.entity.ai.CreatureAI;
-import com.bthorson.torule.entity.ai.MeanderAI;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
 import com.bthorson.torule.map.LocalType;
-import com.bthorson.torule.map.MapConstants;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.persist.SerializeUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import sun.org.mozilla.javascript.internal.ScriptableObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * User: Ben Thorson

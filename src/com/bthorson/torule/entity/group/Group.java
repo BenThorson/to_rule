@@ -11,8 +11,6 @@ import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import sun.org.mozilla.javascript.internal.ScriptableObject;
 
 import java.util.HashMap;
 import java.util.List;

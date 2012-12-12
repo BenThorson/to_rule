@@ -7,8 +7,6 @@ import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.map.World;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,11 +14,11 @@ import java.util.List;
 import java.util.Stack;
 
 /**
+ * Controls the following behavior of a member of a formed group.
  * Created with IntelliJ IDEA.
  * User: benthorson
  * Date: 9/15/12
  * Time: 10:03 AM
- * To change this template use File | Settings | File Templates.
  */
 public class GroupFollowAI extends CreatureAI {
 
@@ -39,13 +37,13 @@ public class GroupFollowAI extends CreatureAI {
             return this;
         }
         if (!self.getTarget().equals(lastTarget) || path == null || path.isEmpty()){
-            path = new AStarPathTo().buildPath(World.getInstance(), self.position(), self.getTarget(), self instanceof Herd);
+            path = new AStarPathTo().buildPath(self.position(), self.getTarget(), self instanceof Herd);
             lastTarget = self.getTarget();
         }
         Point next = path.peek();
         Creature creat = World.getInstance().creature(next);
         if (creat != null && creat.getFaction().equals(self.getFaction())){
-            path = new AStarPathTo().buildPath(World.getInstance(), self.position(), self.getTarget(), self instanceof Herd);
+            path = new AStarPathTo().buildPath(self.position(), self.getTarget(), self instanceof Herd);
             next = path.peek();
         }
         if (self.move(next.subtract(self.position()))){

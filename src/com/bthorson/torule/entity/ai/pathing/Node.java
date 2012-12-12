@@ -69,4 +69,9 @@ public class Node {
         int result = pnt != null ? pnt.hashCode() : 0;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return pnt.toString() + " g= " + g + " h=" + h;
+    }
 }

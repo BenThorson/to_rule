@@ -1,8 +1,8 @@
 package com.bthorson.torule.screens;
 
-import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.screens.component.Menu;
 

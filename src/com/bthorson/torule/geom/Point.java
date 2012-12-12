@@ -1,6 +1,5 @@
 package com.bthorson.torule.geom;
 
-import com.bthorson.torule.map.MapConstants;
 import com.bthorson.torule.map.World;
 
 /**

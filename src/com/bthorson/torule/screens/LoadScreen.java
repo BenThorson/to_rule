@@ -1,7 +1,7 @@
 package com.bthorson.torule.screens;
 
-import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.persist.LoadAction;
 import com.bthorson.torule.screens.component.Menu;
 import com.bthorson.torule.worldgen.SavedWorldLoader;

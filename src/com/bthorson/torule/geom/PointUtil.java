@@ -1,7 +1,5 @@
 package com.bthorson.torule.geom;
 
-import com.bthorson.torule.map.MapConstants;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

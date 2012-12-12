@@ -15,10 +15,12 @@ import com.google.gson.JsonObject;
 import java.util.Stack;
 
 /**
+ * This builds a path to a target, then executes it, move by move
  * User: Ben Thorson
  * Date: 12/5/12
  * Time: 6:04 PM
  */
+//todo should merge this with SeekAI
 public class MoveToAI extends CreatureAI {
 
     private Point point;
@@ -49,7 +51,7 @@ public class MoveToAI extends CreatureAI {
         }
 
         if (path == null || path.empty()) {
-            path = pathTo.buildPath(World.getInstance(), self.position(), point, self instanceof Herd);
+            path = pathTo.buildPath(self.position(), point, self instanceof Herd);
             if (path == null || path.empty()){
                 return previous;
             }
@@ -70,7 +72,7 @@ public class MoveToAI extends CreatureAI {
                     path.pop();
                 } else if (!nextMove.equals(point)) {
                     if (++stuckCount % stuckCountMax == 0) {
-                        path = pathTo.buildPath(World.getInstance(), self.position(), point, self instanceof Herd);
+                        path = pathTo.buildPath(self.position(), point, self instanceof Herd);
                         return this;
                     }
                 }
@@ -90,7 +92,7 @@ public class MoveToAI extends CreatureAI {
 
     private void repairPath(Point nextMove) {
         path.pop();
-        Stack<Point> repair = pathTo.buildPath(World.getInstance(), self.position(), nextMove, self instanceof Herd);
+        Stack<Point> repair = pathTo.buildPath(self.position(), nextMove, self instanceof Herd);
         System.out.println("repairing path");
         Stack<Point> reverse = new Stack<Point>();
         while (!repair.empty()){

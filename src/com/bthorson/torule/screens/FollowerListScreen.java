@@ -5,13 +5,11 @@ import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
-import com.bthorson.torule.item.Item;
 import com.bthorson.torule.player.Player;
 import com.bthorson.torule.screens.component.Menu;
 import com.bthorson.torule.screens.component.ScrollList;
 
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 /**
  * User: Ben Thorson

@@ -1,6 +1,5 @@
 package com.bthorson.torule.quest;
 
-import com.bthorson.torule.StringUtil;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Describable;
 import com.bthorson.torule.entity.Entity;

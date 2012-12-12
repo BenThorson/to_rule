@@ -1,6 +1,5 @@
 package com.bthorson.torule.entity.ai;
 
-import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.entity.Herd;
 import com.bthorson.torule.geom.Point;
@@ -9,9 +8,9 @@ import com.bthorson.torule.map.World;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.util.Map;
-
 /**
+ * Used by a member of a Herd, which differs from a group in that there is no formation, and the looseness of the herd
+ * allows for non synchronous movement.
  * User: Ben Thorson
  * Date: 12/10/12
  * Time: 1:41 PM

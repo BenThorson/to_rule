@@ -1,9 +1,9 @@
 package com.bthorson.torule.screens;
 
-import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.map.Local;
 import com.bthorson.torule.map.LocalType;
 import com.bthorson.torule.map.MapConstants;

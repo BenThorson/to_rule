@@ -1,8 +1,8 @@
 package com.bthorson.torule.screens.component;
 
 import com.bthorson.torule.StringUtil;
-import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.screens.ScreenUtil;
 
 import java.awt.*;

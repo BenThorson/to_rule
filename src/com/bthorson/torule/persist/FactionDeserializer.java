@@ -1,6 +1,5 @@
 package com.bthorson.torule.persist;
 
-import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Faction;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
@@ -9,8 +8,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

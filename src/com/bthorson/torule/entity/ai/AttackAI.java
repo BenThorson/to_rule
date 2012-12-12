@@ -2,11 +2,12 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
-import com.bthorson.torule.geom.Point;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
+ * An AI that responds to a command to attack a target.  It delegates to other AIs the actual mechanics of
+ * hostility
  * User: Ben Thorson
  * Date: 12/7/12
  * Time: 10:30 AM

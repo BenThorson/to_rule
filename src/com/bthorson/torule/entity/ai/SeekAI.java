@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import java.util.Stack;
 
 /**
+ * Builds a path to a moving creature and then executes the path towards it, modifying it as needed
  * User: ben
  * Date: 9/14/12
  * Time: 11:29 PM
@@ -52,7 +53,7 @@ public class SeekAI extends CreatureAI{
             if (targetPosition.equals(self.position())){
                 return this;
             }
-            path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition, self instanceof Herd);
+            path = pathTo.buildPath(self.position(), targetPosition, self instanceof Herd);
         }
 
         Point nextMove = path.peek();
@@ -82,7 +83,7 @@ public class SeekAI extends CreatureAI{
 
     private void repairPath(Point nextMove) {
         path.pop();
-        Stack<Point> repair = pathTo.buildPath(World.getInstance(), self.position(), nextMove, self instanceof Herd);
+        Stack<Point> repair = pathTo.buildPath(self.position(), nextMove, self instanceof Herd);
         System.out.println("repairing path");
         Stack<Point> reverse = new Stack<Point>();
         while (!repair.empty()){
@@ -95,7 +96,7 @@ public class SeekAI extends CreatureAI{
 
     private void calcAndExecutePath() {
         targetPosition = new Point(target.position());
-        path = pathTo.buildPath(World.getInstance(), self.position(), targetPosition, self instanceof Herd);
+        path = pathTo.buildPath(self.position(), targetPosition, self instanceof Herd);
         Point nextMove = path.peek();
         if (self.move(nextMove.subtract(self.position()))){
             path.pop();

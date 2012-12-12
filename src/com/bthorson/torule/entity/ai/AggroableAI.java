@@ -2,9 +2,10 @@ package com.bthorson.torule.entity.ai;
 
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
-import com.google.gson.JsonElement;
 
 /**
+ * Determines whether an {@link AiControllable} should become hostile towards a target, and if so, changes state
+ * to hostile.
  * User: Ben Thorson
  * Date: 12/5/12
  * Time: 9:17 PM

@@ -1,7 +1,7 @@
 package com.bthorson.torule.screens;
 
-import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 
 import java.awt.event.KeyEvent;
 

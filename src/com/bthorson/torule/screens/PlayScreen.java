@@ -1,10 +1,14 @@
 package com.bthorson.torule.screens;
 
 import com.bthorson.torule.debug.DebugUtil;
-import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
-import com.bthorson.torule.entity.*;
+import com.bthorson.torule.entity.Corpse;
+import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.EntityManager;
+import com.bthorson.torule.entity.PhysicalEntity;
+import com.bthorson.torule.entity.ai.pathing.AStarPathTo;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.player.Player;
@@ -12,8 +16,10 @@ import com.bthorson.torule.player.Player;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
+ * Screen in which the game is played.  It handles the rendering of the game viewport and the commands therein
  * User: ben
  * Date: 9/7/12
  * Time: 12:07 PM
@@ -33,6 +39,10 @@ public class PlayScreen implements Screen {
         this.messageScreen = new MessageScreen(world, yBorder);
     }
 
+    /**
+     * Returns the difference between the origin(0,0) of the world, and the origin of the play screen
+     * @return {@link Point} representing the offset to transform world coodrinates to screen coordinates
+     */
     public Point getOffset() {
         return new Point(Math.max(0, Math.min(player.position().x() - xBorder / 2,
                                     world.width() - xBorder)),
@@ -92,20 +102,29 @@ public class PlayScreen implements Screen {
         }
         switch (key.getKeyCode()){
             case KeyEvent.VK_Q: return new SaveScreen(this);
+            case KeyEvent.VK_J:
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_NUMPAD4: player.move(Direction.WEST.point()); break;
+            case KeyEvent.VK_L:
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_NUMPAD6: player.move(Direction.EAST.point()); break;
+            case KeyEvent.VK_I:
             case KeyEvent.VK_UP:
             case KeyEvent.VK_NUMPAD8: player.move(Direction.NORTH.point()); break;
+            case KeyEvent.VK_COMMA:
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_NUMPAD2: player.move(Direction.SOUTH.point()); break;
+            case KeyEvent.VK_U:
             case KeyEvent.VK_NUMPAD7: player.move(Direction.NORTH_WEST.point()); break;
+            case KeyEvent.VK_O:
             case KeyEvent.VK_NUMPAD9: player.move(Direction.NORTH_EAST.point()); break;
+            case KeyEvent.VK_M:
             case KeyEvent.VK_NUMPAD1: player.move(Direction.SOUTH_WEST.point()); break;
+            case KeyEvent.VK_PERIOD:
             case KeyEvent.VK_NUMPAD3: player.move(Direction.SOUTH_EAST.point()); break;
+            case KeyEvent.VK_K:
             case KeyEvent.VK_NUMPAD5: break;
-            case KeyEvent.VK_I: return new InventoryManagementScreen(this, player);
+            case KeyEvent.VK_R: return new InventoryManagementScreen(this, player);
 //            case KeyEvent.VK_PERIOD: player.getGroup().rotateTest(); break;
             case KeyEvent.VK_B: return new FollowerListScreen(this);
             case KeyEvent.VK_F: return new FollowerCommandScreen(this, player.position().subtract(getOffset()));
@@ -125,9 +144,29 @@ public class PlayScreen implements Screen {
             case KeyEvent.VK_9:
                 DebugUtil.debugSpawnGoblin();
                 break;
+            case KeyEvent.VK_0:
+                while (true){
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.println(String.format("player position = %d, %d.  Enter position to path to", player.position().x(), player.position().y()));
+                    final int p1 = scanner.nextInt();
+                    final int p2 = scanner.nextInt();
+                    if (!World.getInstance().isTravelable(new Point(p1, p2))){
+                        System.out.println("not travelable");
+                        continue;
+                    }
+                    new Thread(new Runnable(){
+                        @Override
+                        public void run() {
+                            new AStarPathTo().buildPath(player.position(), new Point(p1, p2), false);
+                        }
+                    }).start();
 
-            case KeyEvent.VK_SEMICOLON:
-                player.addGold(5000);
+                }
+
+
+
+//            case KeyEvent.VK_SEMICOLON:
+//                player.addGold(5000);
             default:
                 return this;
         }
@@ -137,6 +176,11 @@ public class PlayScreen implements Screen {
         return this;
     }
 
+    /**
+     * Gets items to loot, should be moved to the {@link LootScreen} //todo do this someday
+     * @param position coordinate of the loot
+     * @return All items containing the loot
+     */
     private List<Item> getItems(Point position) {
         List<Item> items = new ArrayList<Item>();
         List<PhysicalEntity> entities = EntityManager.getInstance().item(position);

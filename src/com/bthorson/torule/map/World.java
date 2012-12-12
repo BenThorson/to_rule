@@ -1,24 +1,18 @@
 package com.bthorson.torule.map;
 
-import com.bthorson.torule.entity.*;
-import com.bthorson.torule.entity.ai.WanderAI;
-import com.bthorson.torule.geom.Direction;
+import com.bthorson.torule.entity.Creature;
+import com.bthorson.torule.entity.EntityManager;
+import com.bthorson.torule.entity.PhysicalEntity;
 import com.bthorson.torule.geom.Point;
 import com.bthorson.torule.geom.PointUtil;
-import com.bthorson.torule.player.Player;
-import com.bthorson.torule.town.Town;
-import com.bthorson.torule.town.TownBuilder;
-import com.bthorson.torule.town.WealthLevel;
 import com.bthorson.torule.worldgen.WorldGenParams;
 import com.bthorson.torule.worldgen.WorldGenerator;
 import com.bthorson.torule.worldgen.WorldLoader;
-import org.jgrapht.alg.KruskalMinimumSpanningTree;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleWeightedGraph;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.bthorson.torule.map.MapConstants.*;
 

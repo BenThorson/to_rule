@@ -3,9 +3,6 @@ package com.bthorson.torule.screens.component;
 import com.bthorson.torule.item.Item;
 import com.bthorson.torule.screens.EntityRenderer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * User: Ben Thorson
  * Date: 12/7/12

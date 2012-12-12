@@ -1,11 +1,11 @@
 package com.bthorson.torule.screens;
 
-import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.EntityManager;
 import com.bthorson.torule.entity.ai.AttackAI;
 import com.bthorson.torule.entity.ai.GuardAI;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.map.World;
 import com.bthorson.torule.screens.component.Menu;
 

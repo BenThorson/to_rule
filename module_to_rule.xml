@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_to_rule" default="compile.module.to_rule">
+  <dirname property="module.to_rule.basedir" file="${ant.file.module_to_rule}"/>
+  
+  <property name="module.jdk.home.to_rule" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.to_rule" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.to_rule" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.to_rule" value="${compiler.args}"/>
+  
+  <property name="to_rule.output.dir" value="${module.to_rule.basedir}/out/production/To_rule"/>
+  <property name="to_rule.testoutput.dir" value="${module.to_rule.basedir}/out/test/To_rule"/>
+  
+  <path id="to_rule.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="to_rule.module.production.classpath">
+    <path refid="${module.jdk.classpath.to_rule}"/>
+    <pathelement location="${basedir}/lib/jgrapht-jdk1.6.jar"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="to_rule.runtime.production.module.classpath">
+    <pathelement location="${to_rule.output.dir}"/>
+    <pathelement location="${basedir}/lib/jgrapht-jdk1.6.jar"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="to_rule.module.classpath">
+    <path refid="${module.jdk.classpath.to_rule}"/>
+    <pathelement location="${to_rule.output.dir}"/>
+    <pathelement location="${basedir}/lib/jgrapht-jdk1.6.jar"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="to_rule.runtime.module.classpath">
+    <pathelement location="${to_rule.testoutput.dir}"/>
+    <pathelement location="${to_rule.output.dir}"/>
+    <pathelement location="${basedir}/lib/jgrapht-jdk1.6.jar"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.to_rule">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.to_rule">
+    <patternset refid="excluded.from.module.to_rule"/>
+  </patternset>
+  
+  <path id="to_rule.module.sourcepath">
+    <dirset dir="${module.to_rule.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.to_rule" depends="compile.module.to_rule.production,compile.module.to_rule.tests" description="Compile module To_rule"/>
+  
+  <target name="compile.module.to_rule.production" depends="register.custom.compilers" description="Compile module To_rule; production classes">
+    <mkdir dir="${to_rule.output.dir}"/>
+    <javac2 destdir="${to_rule.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.to_rule}/javac">
+      <compilerarg line="${compiler.args.to_rule}"/>
+      <bootclasspath refid="to_rule.module.bootclasspath"/>
+      <classpath refid="to_rule.module.production.classpath"/>
+      <src refid="to_rule.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.to_rule"/>
+    </javac2>
+    
+    <copy todir="${to_rule.output.dir}">
+      <fileset dir="${module.to_rule.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.to_rule.tests" depends="register.custom.compilers,compile.module.to_rule.production" description="compile module To_rule; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.to_rule" description="cleanup module">
+    <delete dir="${to_rule.output.dir}"/>
+    <delete dir="${to_rule.testoutput.dir}"/>
+  </target>
+</project>

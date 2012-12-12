@@ -1,12 +1,10 @@
 package com.bthorson.torule.town;
 
-import com.bthorson.torule.entity.Creature;
-import com.bthorson.torule.entity.CreatureFactory;
-import com.bthorson.torule.entity.ai.WanderAI;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
-import com.bthorson.torule.geom.PointUtil;
-import com.bthorson.torule.map.*;
+import com.bthorson.torule.map.Local;
+import com.bthorson.torule.map.MapConstants;
+import com.bthorson.torule.map.Tile;
 
 import java.util.Arrays;
 

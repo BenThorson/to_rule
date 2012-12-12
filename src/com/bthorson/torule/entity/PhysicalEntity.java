@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.awt.*;
-import java.util.List;
 
 public abstract class PhysicalEntity extends Entity implements Describable {
     public String templateName;

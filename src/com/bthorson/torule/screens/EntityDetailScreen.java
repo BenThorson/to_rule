@@ -3,8 +3,8 @@ package com.bthorson.torule.screens;
 import com.bthorson.torule.StringUtil;
 import com.bthorson.torule.entity.Describable;
 import com.bthorson.torule.entity.Entity;
-import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.geom.Point;
+import com.bthorson.torule.graphics.asciiPanel.AsciiPanel;
 import com.bthorson.torule.screens.component.ScrollList;
 
 import java.awt.*;

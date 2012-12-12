@@ -1,6 +1,5 @@
 package com.bthorson.torule.entity.ai;
 
-import com.bthorson.torule.entity.Creature;
 import com.bthorson.torule.entity.Entity;
 import com.bthorson.torule.geom.Direction;
 import com.bthorson.torule.geom.Point;
@@ -13,6 +12,7 @@ import com.google.gson.JsonObject;
 import java.util.Random;
 
 /**
+ * Randomly and aimlessly moves around
  * User: ben
  * Date: 9/7/12
  * Time: 8:51 PM
@@ -22,8 +22,6 @@ public class WanderAI extends CreatureAI {
     private Point nwBound;
     private Point seBound;
     private boolean isAggroable;
-
-//    private AggroableAI aggroableAI;
 
     public WanderAI(AiControllable creature, CreatureAI previous, boolean isAggroable) {
         this(creature, PointUtil.POINT_ORIGIN, World.getInstance().seCorner(), previous, isAggroable);

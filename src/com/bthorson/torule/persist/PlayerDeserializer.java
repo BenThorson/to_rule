@@ -12,8 +12,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.

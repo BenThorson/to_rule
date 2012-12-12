@@ -7,7 +7,6 @@ import com.bthorson.torule.quest.ActiveQuest;
 import com.bthorson.torule.screens.component.DefaultRenderer;
 
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

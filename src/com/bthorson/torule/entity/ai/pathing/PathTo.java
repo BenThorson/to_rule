@@ -1,7 +1,6 @@
 package com.bthorson.torule.entity.ai.pathing;
 
 import com.bthorson.torule.geom.Point;
-import com.bthorson.torule.map.World;
 
 import java.util.Stack;
 
@@ -10,9 +9,15 @@ import java.util.Stack;
  * User: benthorson
  * Date: 9/13/12
  * Time: 12:05 PM
- * To change this template use File | Settings | File Templates.
  */
 public interface PathTo {
 
-    public Stack<Point> buildPath(World world, Point start, Point target, boolean ignoreTerrain);
+    /**
+     * Takes a start point, an end point, and determines the path between them.
+     * @param start     Start point
+     * @param target    End point
+     * @param ignoreTerrain  //todo create a straight line PathTo and deprecate/remove this
+     * @return a {@link Stack} of moves
+     */
+    public Stack<Point> buildPath(Point start, Point target, boolean ignoreTerrain);
 }
