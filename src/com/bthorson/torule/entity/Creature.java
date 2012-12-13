@@ -407,17 +407,23 @@ public class Creature extends PhysicalEntity implements AiControllable, Updatabl
             EntityManager.getInstance().addFreeItem(goldDrop);
         }
 
+        for (EquipmentSlot slot : equipmentSlots.values()){
+            slot.setItem(null);
+        }
 
         for (Item item: inventory){
+            item.setEquipped(false);
+            item.setOwnedBy(null);
             if (random.nextBoolean()){
                 item.setPosition(position);
-                item.setEquipped(false);
                 EntityManager.getInstance().addFreeItem(item);
             } else {
                 //destroys it
                 EntityManager.getInstance().destroyItem(item);
             }
         }
+        inventory = new ArrayList<Item>();
+
         List<Item> lootItems = CreatureFactory.INSTANCE.getLootDropsForCreature(templateName);
         for (Item item : lootItems){
             item.setPosition(position);

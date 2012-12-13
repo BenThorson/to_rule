@@ -272,6 +272,8 @@ public class LoadAction {
         } else if ("MeanderAI".equalsIgnoreCase(name)){
             return new MeanderAI(self,
                                  previous);
+        } else if ("AggroableAI".equalsIgnoreCase(name)){
+            return new AggroableAI(self, previous);
         }
         return null;
     }

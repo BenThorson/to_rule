@@ -184,7 +184,7 @@ public class EntityManager {
 
     public List<PhysicalEntity> item(Point itemPos) {
         List<PhysicalEntity> items = new ArrayList<PhysicalEntity>();
-        for (PhysicalEntity item : freeItems){
+        for (PhysicalEntity item : new ArrayList<PhysicalEntity>(freeItems)){
             if (item.position().equals(itemPos)){
                 items.add(item);
             }

@@ -30,7 +30,6 @@ public class SeekAI extends CreatureAI{
     public SeekAI(AiControllable self, Creature target, CreatureAI previous){
         super(self, previous);
         this.target = target;
-        this.previous = previous;
         targetPosition = new Point(target.position());
     }
 
